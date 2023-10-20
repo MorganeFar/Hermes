@@ -16,6 +16,8 @@ class Level :
         self.display_surface = surface 
         self.world_shift = 0
         self.current_x = None
+        self.current_y = None 
+        self.isDead = False
         
         #player 
         player_layout = import_csv_layout(level_data['player'])
@@ -115,6 +117,12 @@ class Level :
         if player.on_right and (player.rect.right > self.current_x or player.direction.x <= 0):
             player.on_right = False 
 
+    def dead(self):
+        # hermes meurt s'il tombe trop bas
+        self.current_y = self.player.sprite.rect.top
+        self.isDead =  self.current_y > screen_height + 50
+        return self.isDead
+
     def vertical_mouvement_collision(self):
         player = self.player.sprite
         player.apply_gravity()
@@ -174,6 +182,7 @@ class Level :
         self.horizontal_mouvement_collision()
         self.vertical_mouvement_collision()
         self.scroll_x()
+        self.dead()
         self.player.draw(self.display_surface)
         self.goal.update(self.world_shift)
         self.goal.draw(self.display_surface)
