@@ -1,5 +1,7 @@
-#from settings import screen_height, screen_width, hermes_logo, play_button, cloud_pic, sun_pic, menu_bg
+from settings import screen_height, screen_width, hermes_logo, play_button, menu_bg
+import sys, pygame
 from sceneryClass import Scenery
+sys.path.append("../niveau1")
 from mainCode import *
 from gameOver import over
 

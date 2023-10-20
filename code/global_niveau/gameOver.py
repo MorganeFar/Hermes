@@ -1,9 +1,10 @@
 # voir pour faire un bouton https://openclassrooms.com/forum/sujet/bouton-cliquable-pygame
 # https://www.codingninjas.com/studio/library/create-the-buttons-in-a-game-using-pygame
-
+import pygame, sys
+sys.path.append("../niveau1")
 from mainCode import *
 from sceneryClass import Scenery
-#from settings import screen_height, screen_width, replay_button, game_over_logo, charon_pic
+from settings import screen_height, screen_width, replay_button, game_over_logo, charon_pic
         
 
 pygame.init()
