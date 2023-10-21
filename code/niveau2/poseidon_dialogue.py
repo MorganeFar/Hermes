@@ -128,20 +128,20 @@ while True: #the loop
                 counter = 0
             
             else: #texte suivant selon l'objet ramasse 
-                #si le joueur a ramassé la lyre 
+                #si le joueur a ramassé le trident
                 if event.key == pygame.K_RETURN and done and objet_trident and active_mess_objets < len(dialogue_lyre) -1:
                     active_mess_objets += 1
                     done = False 
                     message = dialogue_lyre[active_mess_objets]
                     counter = 0
-                #si le joueur a ramassé l'arc
+                #si le joueur a ramassé la fourchette
                 elif event.key == pygame.K_RETURN and done and objet_fork and active_mess_objets < len(cas(objet1)) -1:
                     active_mess_objets += 1
                     done = False 
                     dialogue_obj = cas(objet1)
                     message = dialogue_obj[active_mess_objets]
                     counter = 0
-                #si le joueur a ramassé la montre 
+                #si le joueur a ramassé le beurre de cacahuette  
                 elif event.key == pygame.K_RETURN and done and objet_peanut and active_mess_objets < len(cas(objet2)) -1:
                     active_mess_objets += 1
                     done = False 
