@@ -82,8 +82,8 @@ pygame.display.set_caption('hades') #the title of the window
 
 #Scenery
 olympeGroup = pygame.sprite.Group()
-apollon = Scenery(0.55, 0.13, 0.25, 0.6, ["../../design/niveau3/hades.png"])
-olympeGroup.add(apollon)
+hades = Scenery(0.55, 0.13, 0.25, 0.6, ["../../design/niveau3/hades.png"])
+olympeGroup.add(hades)
 
 hermes = Scenery(0.2, 0.40, 0.10, 0.3, ["../../design/hermes/stand/hermes_s.png"])
 olympeGroup.add(hermes)
