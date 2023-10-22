@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-clear code le platformer complet, partie 2 sur le visual level editor, game_data
+game_data
 """
 
 level_1 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
