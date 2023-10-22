@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-clear code joueur du platformer complet 
+player
 """
 
 import pygame 
