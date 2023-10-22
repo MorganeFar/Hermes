@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-clear code le platformer complet, partie 2 sur le visual level editor, tiles
+tiles
 """
 
 import pygame
