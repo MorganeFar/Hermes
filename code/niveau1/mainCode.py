@@ -1,5 +1,5 @@
 import pygame, sys
-sys.path.append("../global_niveau")
+sys.path.append(".\\code\\global_niveau")
 from settings import *
 from level import Level
 from game_data import level_1
@@ -11,7 +11,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
 level = Level(level_1, screen) #pour avoir run autre level il suffit juste de changer 'level_1' par un autre nom de level
 
-background = pygame.image.load("../../design/niveau1/background.png")
+background = pygame.image.load(".\\design\\niveau1\\background.png")
 fond = pygame.transform.scale(background, (screen_width, screen_height))
 fond = fond.convert()
 

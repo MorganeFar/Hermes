@@ -52,25 +52,25 @@ class Level :
                     
                     if type == 'terrain':
                         #terrain_tile_list = import_cut_graphic('../../niveaux/nv_1_apollon/tiles/midTile_1.png')
-                        terrain_tile_list = import_folder('../../design/niveau1/tiles')
+                        terrain_tile_list = import_folder('.\\design\\niveau1\\tiles') #../../design/niveau1/tiles'
                         tile_surface = terrain_tile_list[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface)
                         
                     if type == 'item':
                         #sprite = AnimatedTile(tile_size, x, y, '../../niveaux/nv_1_apollon/object')
-                        item_tile_list = import_folder('../../design/niveau1/object')
+                        item_tile_list = import_folder('.\\design\\niveau1\\object') #../../design/niveau1/object'
                         tile_surface = item_tile_list[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface)
                         
                     if type == 'enemies': #a voir apres avec val si on peut avir les autres monstres (attention changer les dossiers)
                         if val == '0':
-                            sprite = Enemy(tile_size,x,y,'../../design/niveau1/monster/cyclope_w')
+                            sprite = Enemy(tile_size,x,y,'.\\design\\niveau1\\monster\\cyclope_w') #'../../design/niveau1/monster/cyclope_w'
                         if val == '1':
-                            sprite = Enemy(tile_size,x,y,'../../design/niveau1/monster/satyr')
+                            sprite = Enemy(tile_size,x,y,'.\\design\\niveau1\\monster\\satyr') #'../../design/niveau1/monster/satyr'
                         if val == '2':
-                            sprite = Enemy(tile_size,x,y,'../../design/niveau1/monster/cow_1')
+                            sprite = Enemy(tile_size,x,y,'.\\design\\niveau1\\monster\\cow_1') #'../../design/niveau1/monster/cow_1'
                         if val == '3':
-                            sprite = Enemy(tile_size,x,y,'../../design/niveau1/monster/cow_2')
+                            sprite = Enemy(tile_size,x,y,'.\\design\\niveau1\\monster\\cow_2') #'../../design/niveau1/monster/cow_2'
                         
                     if type == 'constraints':
                         sprite = Tile(tile_size,x,y)
@@ -88,7 +88,7 @@ class Level :
                     sprite = Player((x,y))
                     self.player.add(sprite)
                 if val == '0': #le goal 
-                    fin_surface = pygame.image.load('../../design/global/flag.png').convert_alpha()
+                    fin_surface = pygame.image.load('.\\design\\global\\flag.png').convert_alpha() #'../../design/global/flag.png'
                     sprite = StaticTile(tile_size,x,y,fin_surface)
                     self.goal.add(sprite)
     

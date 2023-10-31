@@ -31,7 +31,8 @@ class Player(pygame.sprite.Sprite):
         self.on_right = False 
         
     def import_character_assets(self):
-        character_path = '../../design/hermes/'
+        #'../../design/hermes/'
+        character_path = '.\\design\\hermes\\'
         self.animations = {'stand':[], 'run':[], 'jump':[], 'fly':[], 'swim':[]}
         
         for animation in self.animations.keys():

@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths":[
+        ".\\code\\niveau1",
+        ".\\code\\global_niveau"
+    ]
+}
