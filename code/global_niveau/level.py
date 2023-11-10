@@ -51,6 +51,7 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
         self.player = pygame.sprite.GroupSingle()
         self.goal = pygame.sprite.GroupSingle()
         self.player_setup(player_layout, change_health)
+        self.isDead = False
         
         #user interface 
         self.change_item = change_item
@@ -183,8 +184,9 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
             self.world_shift = 0 
             player.speed = 8  
         
-    def check_deth(self):
+    def check_death(self):
         if self.player.sprite.rect.top > screen_height:
+            self.isDead = True
             self.create_overworld(self.current_level,0) #gerer pour mettre le game over, ou remetre au debut du niveau, ou l'overworld ? a voir 
             
     def check_win(self):
@@ -253,7 +255,7 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
         self.goal.update(self.world_shift)
         self.goal.draw(self.display_surface)
         
-        self.check_deth()
+        self.check_death()
         self.check_win()
         
         self.check_item_collisions()

@@ -2,7 +2,7 @@
 # https://www.codingninjas.com/studio/library/create-the-buttons-in-a-game-using-pygame
 import pygame, sys
 sys.path.append("../niveau1")
-from mainCode import *
+#from mainCode import *
 from sceneryClass import Scenery
 from settings import screen_height, screen_width, replay_button, game_over_logo, charon_pic
         
@@ -32,7 +32,7 @@ RETRY_HEIGHT_COEF = 0.15
 retry = Scenery(RETRY_POS_X_COEF, RETRY_POS_Y_COEF, RETRY_WIDTH_COEF, RETRY_HEIGHT_COEF, replay_button)
 gameOverGroup.add(retry)
 
-
+status = 'dead'
 def over():
     while True:
         #Handling input
@@ -49,9 +49,9 @@ def over():
                 maxY = minY + screen_height * RETRY_HEIGHT_COEF
                 if ( minX <= posMouse[0] <= maxX
                     and minY <= posMouse[1] <= maxY):
-                    level.isDead = False
-                    start()
-            
+                    status = 'overworld'
+                    return status  #pour revenir dans l'overworld => sortir de la fct
+
         # logic
         charon.move_left()
         retry.zoom()

@@ -3,7 +3,7 @@ import sys, pygame
 from sceneryClass import Scenery
 sys.path.append("../niveau1")
 from mainCode import *
-from gameOver import over
+#from gameOver import over
 
 
 pygame.init()
@@ -52,10 +52,12 @@ def welcomeMenu():
                     and minY <= posMouse[1] <= maxY):
                     # PERMET DE LANCER LE NIVEAU 1
                     start()
-        
-        if level.isDead:
-            level.isDead = False
+        """
+        if game.level.isDead:
+            game.level.isDead = False
             over()
+            
+        """
             
             
         #logic
