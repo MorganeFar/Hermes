@@ -111,15 +111,15 @@ class Overworld:
                 self.moving = True 
             elif keys[pygame.K_RETURN]:
                 self.create_level(self.current_level)
-
-            # RESTE A FAIRE SI LE NIVEAU ACTUEL N'EST PAS LE NIVEAU CLIQUE CF IF ETELIF AU DESSUS !
             elif pygame.mouse.get_pressed()[0]: #si on clique avec le souris pour choisir le niveau
-                for i in range(self.current_level):
+                for i in range(self.max_level):
                     if (tabLevelsPos[i][0][0] <= posMouse[0] <= tabLevelsPos[i][1][0] and
                     tabLevelsPos[i][0][1] <= posMouse[1] <= tabLevelsPos[i][1][1]) and pygame.mouse.get_pressed():
-                        self.create_level(self.current_level)
+                        self.moving = True
+                        self.create_level(i+1)
 
-        
+
+
     def get_mouvement_data(self, target):
         start = pygame.math.Vector2(self.nodes.sprites()[self.current_level -1].rect.center) #on fait des -1 parce qu'on prend que des indices (c'est donc l'indice du niveau courant) 
         if target == 'next':
