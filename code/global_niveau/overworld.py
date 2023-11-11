@@ -7,12 +7,22 @@ import pygame
 from game_data import levels 
 from support import import_folder
 
+                  # top left  bottom right
+posButtonLevel1 = [(16, 358), (260, 438)] # pos shoe level1 = (140, 400)
+posButtonLevel2 = [(209, 188), (451, 269)]
+posButtonLevel3 = [(388, 569), (630, 650)]
+            # level1    level2      level3
+posShoe = [(140, 400), (330, 782), (512.29, 612.485)]
+
+
+tabLevelsPos = [posButtonLevel1, posButtonLevel2, posButtonLevel3]
 class Node(pygame.sprite.Sprite):
     def __init__(self, pos, status, icon_speed, path):
         super().__init__()
         self.image = pygame.image.load(path).convert_alpha()
         if status == 'available':
             self.status = 'available'
+            self.tableLevel = [posButtonLevel1]
         else:
             self.status = 'locked'
         self.rect = self.image.get_rect(center = pos)
@@ -79,17 +89,19 @@ class Overworld:
         if self.max_level >1:
              points = [node['node_pos'] for index,node in enumerate(levels.values()) if index+1 <= self.max_level]
              pygame.draw.lines(self.display_surface, '#a04f45', False, points, 6)
+             #print(self.icon.sprite.pos)
        
            
     def setup_icon(self):
         self.icon = pygame.sprite.GroupSingle()
         icon_sprite = Icon(self.nodes.sprites()[self.current_level-1].rect.center)
         self.icon.add(icon_sprite)
-         
+
     def input(self):
         keys = pygame.key.get_pressed()
         if not self.moving and self.allow_input:
-            if keys[pygame.K_RIGHT] and self.current_level < self.max_level: 
+            posMouse = pygame.mouse.get_pos()
+            if self.current_level < self.max_level and keys[pygame.K_RIGHT] :
                 self.move_direction = self.get_mouvement_data('next')
                 self.current_level += 1
                 self.moving = True 
@@ -99,6 +111,14 @@ class Overworld:
                 self.moving = True 
             elif keys[pygame.K_RETURN]:
                 self.create_level(self.current_level)
+
+            # RESTE A FAIRE SI LE NIVEAU ACTUEL N'EST PAS LE NIVEAU CLIQUE CF IF ETELIF AU DESSUS !
+            elif pygame.mouse.get_pressed()[0]: #si on clique avec le souris pour choisir le niveau
+                for i in range(self.current_level):
+                    if (tabLevelsPos[i][0][0] <= posMouse[0] <= tabLevelsPos[i][1][0] and
+                    tabLevelsPos[i][0][1] <= posMouse[1] <= tabLevelsPos[i][1][1]) and pygame.mouse.get_pressed():
+                        self.create_level(self.current_level)
+
         
     def get_mouvement_data(self, target):
         start = pygame.math.Vector2(self.nodes.sprites()[self.current_level -1].rect.center) #on fait des -1 parce qu'on prend que des indices (c'est donc l'indice du niveau courant) 
@@ -132,7 +152,13 @@ class Overworld:
         self.nodes.draw(self.display_surface)
         self.icon.draw(self.display_surface)
         self.nodes.update()
-        
+        """
+        posMouse = pygame.mouse.get_pos()
+        print(posMouse)
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print(posMouse)
+        """
         
         
         

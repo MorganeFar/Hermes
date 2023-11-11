@@ -40,7 +40,7 @@ class Game:
         #self.cur_health = 3 #normalement dès qu'il relance le niveau, donc des que game over 
         
     def create_overworld(self, current_level, new_max_level):
-        if new_max_level > self.max_level: 
+        if new_max_level > self.max_level:
             self.max_level = new_max_level
             self.cur_health = 3 
         else:

@@ -28,24 +28,10 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
         self.current_level = current_level
         level_data = levels[self.current_level]
         self.new_max_level = level_data['unlock']
-        
-        #le fond et les items (plus simple comme ça)
-        if self.current_level == 1:
-            self.the_fond = pygame.image.load('../../design/niveau1/background.png').convert_alpha()
-            self.tab_level = ['arc', 'lyre', 'montre']
-        elif self.current_level == 2:
-            self.the_fond = pygame.image.load('../../design/niveau2/ocean.png').convert_alpha()
-            self.tab_level = ['fourchette', 'peanut butter', 'trident']
-        elif self.current_level == 3:
-            self.the_fond = pygame.image.load('../../design/niveau3/enfer.png').convert_alpha()
-            self.tab_level = ['livre', 'casque', 'potion']
-        elif self.current_level == 4:
-            self.the_fond = pygame.image.load('../../design/niveau4/background.png').convert_alpha()
-            self.tab_level = ['ciseaux', 'amour', 'pelle']
-        elif self.current_level == 5:
-            self.the_fond = pygame.image.load('../../design/niveau5/background.png').convert_alpha()
-            self.tab_level = [None, None, None] #y'a pas d'item au niveau 5 enfaite 
-        
+        self.the_fond = pygame.image.load('../../design/niveau' + str(
+            self.current_level) + '/background.png').convert_alpha()
+        self.tab_level = level_data['items']
+
         #player 
         player_layout = import_csv_layout(level_data['player'])
         self.player = pygame.sprite.GroupSingle()
