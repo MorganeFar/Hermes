@@ -22,7 +22,7 @@ Press the right arrow on your keyboard to make Hermes move to the right.
 
 
 If you missed something, you can always go back in the level.
-Press the left arrow on your keyboard to make Hermes move the left.
+Press the left arrow on your keyboard to make Hermes move to the left.
 
 ![Run toward left](design/tuto/leftArrow.gif)
 
