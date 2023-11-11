@@ -40,6 +40,11 @@ def over():
             if event.type == pygame.QUIT:
                 pygame.quit() #ferme la fenetre/ jeux
                 sys.exit() #arrête tout le programme
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    status = 'overworld'
+                    return status
             
             if event.type == pygame.MOUSEBUTTONDOWN:
                 posMouse = pygame.mouse.get_pos()
@@ -48,7 +53,7 @@ def over():
                 minY = RETRY_POS_Y_COEF * screen_height
                 maxY = minY + screen_height * RETRY_HEIGHT_COEF
                 if ( minX <= posMouse[0] <= maxX
-                    and minY <= posMouse[1] <= maxY):
+                    and minY <= posMouse[1] <= maxY) :
                     status = 'overworld'
                     return status  #pour revenir dans l'overworld => sortir de la fct
 

@@ -111,7 +111,8 @@ class Overworld:
                 self.moving = True 
             elif keys[pygame.K_RETURN]:
                 self.create_level(self.current_level)
-            elif pygame.mouse.get_pressed()[0]: #si on clique avec le souris pour choisir le niveau
+            # si on clique avec le souris pour choisir le niveau
+            elif pygame.mouse.get_pressed()[0]:
                 for i in range(self.max_level):
                     if (tabLevelsPos[i][0][0] <= posMouse[0] <= tabLevelsPos[i][1][0] and
                     tabLevelsPos[i][0][1] <= posMouse[1] <= tabLevelsPos[i][1][1]) and pygame.mouse.get_pressed():
