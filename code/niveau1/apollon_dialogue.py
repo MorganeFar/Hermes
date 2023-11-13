@@ -4,6 +4,8 @@ la cinematique de niveau 1 avec apollon
 """
 
 import pygame, sys
+sys.path.append('../global_niveau') 
+from sceneryClass import Scenery
 
 #les dialogues
 dialogue_all = ["Apollon – Oh non pas toi ! Que fais tu ici mon frère ? Tu es encore venu me voler mes vaches ?",
@@ -39,22 +41,7 @@ dialogue_no = ["Hermes – Je n'ai rien à t'échanger.",
 
 #si le joueur recommence le niveau, il ne revoit pas le speech du debut 
 dialogue_recom = ["Apollon – Alors tu l'as trouvé ?"]
-
-class Scenery(pygame.sprite.Sprite):
-    def __init__(self, pos_x_coef, pos_y_coef, widthCoef, heightCoef, pics):
-        super().__init__()
-        self.sprites = []
-        self.current_sprite = 0
-        self.begin = True 
-        self.move = 0
-        self.moveX = 1
-        for pic in pics:
-            self.sprites.append((pygame.transform.scale(pygame.image.load(pic), (screen_width*widthCoef, screen_height*heightCoef))))
-        self.image = self.sprites[self.current_sprite]
-        self.rect = self.image.get_rect()
-        self.rect.topleft = [pos_x_coef*screen_width, pos_y_coef*screen_height]
-        
-        
+   
 #l objet que hermes ramene a la fin du niveau
 #ce ne sont que des teste, il faudra les import depuis le niveau concerné, faire en sorte que 1 seul des 3 soit true 
 objet_lyre = True
