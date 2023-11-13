@@ -4,6 +4,8 @@ la cinematique de niveau 2 avec poseidon
 """
 
 import pygame, sys
+sys.path.append('../global_niveau') 
+from sceneryClass import Scenery
 
 #les dialogues
 dialogue_all = ["Poséidon – Hermès ? Tu es encore là ? Je croyais qu'ils t'avaient enfin remplacé par les mails.",
@@ -38,22 +40,7 @@ dialogue_no = ["Hermes – Je n'ai rien à t'échanger.",
                 "*défaite, retour au début du niveau*"]
 
 #si le joueur recommence le niveau, il ne revoit pas le speech du debut 
-dialogue_recom = ["Poséidon – Tu en a mis du temps."]
-
-class Scenery(pygame.sprite.Sprite):
-    def __init__(self, pos_x_coef, pos_y_coef, widthCoef, heightCoef, pics):
-        super().__init__()
-        self.sprites = []
-        self.current_sprite = 0
-        self.begin = True 
-        self.move = 0
-        self.moveX = 1
-        for pic in pics:
-            self.sprites.append((pygame.transform.scale(pygame.image.load(pic), (screen_width*widthCoef, screen_height*heightCoef))))
-        self.image = self.sprites[self.current_sprite]
-        self.rect = self.image.get_rect()
-        self.rect.topleft = [pos_x_coef*screen_width, pos_y_coef*screen_height]
-        
+dialogue_recom = ["Poséidon – Tu en a mis du temps."] 
         
 #l objet que hermes ramene a la fin du niveau
 #ce ne sont que des teste, il faudra les import depuis le niveau concerné, faire en sorte que 1 seul des 3 soit true 
