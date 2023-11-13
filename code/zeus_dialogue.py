@@ -4,6 +4,8 @@ la cinematique de fin avec zeus
 """
 
 import pygame, sys
+sys.path.append('global_niveau') 
+from sceneryClass import Scenery
 
 dialogue_all = ["Zeus – Hermès ! Que fais-tu ici mon fils ? Quelqu'un t'envoie me porter un message ?",
                 "Hermès – Non pas aujourd'hui. Je viens placer mon trône, celui du douzième dieu de l'Olympe.", 
@@ -14,21 +16,6 @@ dialogue_all = ["Zeus – Hermès ! Que fais-tu ici mon fils ? Quelqu'un t'envoi
                 "Zeus – Ça c'est vraiment intéressant. Mais comment connais-tu la liste des ingrédients ? Je la garde toujours sur moi … *regarde dans sa poche* Elle n'est plus là ! Est-ce toi qui me l'a volé ?!", 
                 "Hermès – Euuuh … peut-être.", 
                 "Zeus – Ha ha ha, quel audace ! Tu es bien mon fils toi ! C'est d'accord alors. Hermès, je te proclame à partir d'aujourd'hui douzième dieu de l'Olympe !"]  
-
-class Scenery(pygame.sprite.Sprite):
-    def __init__(self, pos_x_coef, pos_y_coef, widthCoef, heightCoef, pics):
-        super().__init__()
-        self.sprites = []
-        self.current_sprite = 0
-        self.begin = True #correspond à toLeft pour charon et zoomIn pour retry
-        self.move = 0
-        self.moveX = 1
-        for pic in pics:
-            self.sprites.append((pygame.transform.scale(pygame.image.load(pic), (screen_width*widthCoef, screen_height*heightCoef))))
-        self.image = self.sprites[self.current_sprite]
-        self.rect = self.image.get_rect()
-        self.rect.topleft = [pos_x_coef*screen_width, pos_y_coef*screen_height]
-        
         
 #general setup
 pygame.init() #always need for any kind of pygame code 
