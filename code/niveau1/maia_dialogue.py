@@ -4,6 +4,8 @@ la cinematique de debut avec maia
 """
 
 import pygame, sys
+sys.path.append('../global_niveau') 
+from sceneryClass import Scenery
 
 dialogue_all = ["Maïa – Bonjour mon cher fils. Je suis ravie de te revoir.",
                 "Maïa – Je suis au courant pour tes projets de conquête d'une place à l'Olympe. Je t'en félicite et te souhaite bon courage." ,
@@ -11,22 +13,7 @@ dialogue_all = ["Maïa – Bonjour mon cher fils. Je suis ravie de te revoir.",
                 "Maïa – Et pour te donner un dernier conseil, le solstice d'été approche, il y aura un grand concert avec Apollon, le dieu de la musique.",
                 "Maïa – Tu sais ton demi-frère qui joue tout le temps de cet instrument si mélodieux...",
                 "Maïa – Il a l'air stressé en ce moment, je suis sure que tu pourra l'aider et peut-être qu'il t'aidera en retour.",
-                "Maïa – Au revoir mon fils, et que le sort te soit favorable."]  
-
-class Scenery(pygame.sprite.Sprite):
-    def __init__(self, pos_x_coef, pos_y_coef, widthCoef, heightCoef, pics):
-        super().__init__()
-        self.sprites = []
-        self.current_sprite = 0
-        self.begin = True #correspond à toLeft pour charon et zoomIn pour retry
-        self.move = 0
-        self.moveX = 1
-        for pic in pics:
-            self.sprites.append((pygame.transform.scale(pygame.image.load(pic), (screen_width*widthCoef, screen_height*heightCoef))))
-        self.image = self.sprites[self.current_sprite]
-        self.rect = self.image.get_rect()
-        self.rect.topleft = [pos_x_coef*screen_width, pos_y_coef*screen_height]
-        
+                "Maïa – Au revoir mon fils, et que le sort te soit favorable."]   
         
 #general setup
 pygame.init() #always need for any kind of pygame code 
