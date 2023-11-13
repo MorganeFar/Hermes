@@ -4,6 +4,8 @@ la cinematique de niveau 4 avec hephaistos
 """
 
 import pygame, sys
+sys.path.append('../global_niveau') 
+from sceneryClass import Scenery
 
 #les dialogues
 dialogue_all = ["Héphaistos – Hermès ! Mon vieil ami ! Que fais-tu ici ?",
@@ -45,21 +47,6 @@ dialogue_no = ["Hermès – Je n'ai rien à t'offrir en échange.",
 
 #si le joueur recommence le niveau, il ne revoit pas le speech du debut 
 dialogue_recom = ["Héphaistos – Tiens tu es encore là ? C'est rare une personne qui reste aussi longtemps dans ma forge."]
-
-class Scenery(pygame.sprite.Sprite):
-    def __init__(self, pos_x_coef, pos_y_coef, widthCoef, heightCoef, pics):
-        super().__init__()
-        self.sprites = []
-        self.current_sprite = 0
-        self.begin = True 
-        self.move = 0
-        self.moveX = 1
-        for pic in pics:
-            self.sprites.append((pygame.transform.scale(pygame.image.load(pic), (screen_width*widthCoef, screen_height*heightCoef))))
-        self.image = self.sprites[self.current_sprite]
-        self.rect = self.image.get_rect()
-        self.rect.topleft = [pos_x_coef*screen_width, pos_y_coef*screen_height]
-        
         
 #l objet que hermes ramene a la fin du niveau
 #ce ne sont que des teste, il faudra les import depuis le niveau concerné, faire en sorte que 1 seul des 3 soit true 
