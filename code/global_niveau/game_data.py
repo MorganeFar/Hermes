@@ -19,11 +19,11 @@ level_1 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
            'items' : ['arc', 'lyre', 'montre']
            } #design/
 
-level_2 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
-           'item': '../../design/niveau1/map/level_1_map_items.csv',
-           'enemies': '../../design/niveau1/map/level_1_map_enemies.csv',
-           'constraints': '../../design/niveau1/map/level_1_map_constraints.csv',
-           'player':'../../design/niveau1/map/level_1_map_player.csv',
+level_2 = {'terrain': '../../design/niveau2/map/level_2_map_terrain.csv',
+           'item': '../../design/niveau2/map/level_2_map_items.csv',
+           'enemies': '../../design/niveau2/map/level_2_map_enemies.csv',
+           'constraints': '../../design/niveau2/map/level_2_map_constraints.csv',
+           'player':'../../design/niveau2/map/level_2_map_player.csv',
            'node_pos': (330,230),
            'unlock': 3,
            'node_graphics': '../../design/overworld/2.png',
@@ -35,11 +35,11 @@ level_2 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
            'items' : ['fourchette', 'peanut butter', 'trident']
            }
 
-level_3 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
-           'item': '../../design/niveau1/map/level_1_map_items.csv',
-           'enemies': '../../design/niveau1/map/level_1_map_enemies.csv',
-           'constraints': '../../design/niveau1/map/level_1_map_constraints.csv',
-           'player':'../../design/niveau1/map/level_1_map_player.csv',
+level_3 = {'terrain': '../../design/niveau3/map/level_3_map_terrain.csv',
+           'item': '../../design/niveau3/map/level_3_map_items.csv',
+           'enemies': '../../design/niveau3/map/level_3_map_enemies.csv',
+           'constraints': '../../design/niveau3/map/level_3_map_constraints.csv',
+           'player':'../../design/niveau3/map/level_3_map_player.csv',
            'node_pos': (510,610),
            'unlock': 4,
            'node_graphics': '../../design/overworld/3.png',
