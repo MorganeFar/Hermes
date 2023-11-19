@@ -9,7 +9,9 @@ from settings import tile_size, screen_height, screen_width
 from tiles import Tile, StaticTile, AnimatedTile
 from enemy import Enemy 
 from player import Player 
-from game_data import levels 
+from game_data import levels
+
+screen = pygame.display.set_mode((screen_width, screen_height))
 
 class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est facile avec des if current level == ... pour changer les liens 
     def __init__(self, current_level, surface, create_overworld, change_item, change_health):
@@ -26,14 +28,15 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
         #overworld connection 
         self.create_overworld = create_overworld
         self.current_level = current_level
-        level_data = levels[self.current_level]
-        self.new_max_level = level_data['unlock']
+        self.level_data = levels[self.current_level] #permet de le mettre en paramètre du player
+
+        self.new_max_level = self.level_data['unlock']
         self.the_fond = pygame.image.load('../../design/niveau' + str(
             self.current_level) + '/background.png').convert_alpha()
-        self.tab_level = level_data['items']
+        self.tab_level = self.level_data['items']
 
         #player 
-        player_layout = import_csv_layout(level_data['player'])
+        player_layout = import_csv_layout(self.level_data['player'])
         self.player = pygame.sprite.GroupSingle()
         self.goal = pygame.sprite.GroupSingle()
         self.player_setup(player_layout, change_health)
@@ -43,19 +46,19 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
         self.change_item = change_item
         
         #terrain setup
-        terrain_layout = import_csv_layout(level_data['terrain'])
+        terrain_layout = import_csv_layout(self.level_data['terrain'])
         self.terrain_sprites = self.create_tile_group(terrain_layout, 'terrain') #ici le terrain est le nom de l'image de tuile, a voir si on peut mettre plusieurs tuiles pour 1 map
 
         #item setup (aussi a changer dans game_data, map test du niveau 1) item0 item1 item2 et du coup item0_sprite item1_sprite item2_sprite, en essayant de les laisser dans les fichiers design tels qu'ils sont 
-        item_layout = import_csv_layout(level_data['item'])
+        item_layout = import_csv_layout(self.level_data['item'])
         self.item_sprites = self.create_tile_group(item_layout, 'item')
         
         #enemy 
-        enemy_layout = import_csv_layout(level_data['enemies'])
+        enemy_layout = import_csv_layout(self.level_data['enemies'])
         self.enemy_sprites = self.create_tile_group(enemy_layout, 'enemies')
         
         #constraints 
-        constraint_layout = import_csv_layout(level_data['constraints'])
+        constraint_layout = import_csv_layout(self.level_data['constraints'])
         self.constraint_sprites = self.create_tile_group(constraint_layout, 'constraints')
         
     def create_tile_group(self, layout, type):
@@ -102,7 +105,7 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
                 x = col_index * tile_size
                 y = row_index * tile_size
                 if val == '1': #le player
-                    sprite = Player((x,y), change_health)
+                    sprite = Player((x,y), change_health, self.level_data)
                     self.player.add(sprite)
                 if val == '0': #le goal 
                     fin_surface = pygame.image.load('../../design/global/flag.png').convert_alpha()
@@ -115,21 +118,21 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
                 enemy.reverse()
         
     def horizontal_mouvement_collision(self):
-        player = self.player.sprite 
-        player.rect.x += player.direction.x * player.speed #on applique le mouvement horizontal
+        player = self.player.sprite
+        player.rect.x += player.direction.x * player.speed # on applique le mouvement horizontal
         
-        for sprite in self.terrain_sprites.sprites(): #si le pesro touche un mur en x (si collision avec le terrain)
+        for sprite in self.terrain_sprites.sprites(): # si le pesro touche un mur en x (si collision avec le terrain)
             if sprite.rect.colliderect(player.rect):
-                if player.direction.x < 0: #si le perso touche un truc alors qu'il va a gauche 
+                if player.direction.x < 0: # si le perso touche un truc alors qu'il va a gauche
                     player.rect.left = sprite.rect.right
                     player.on_left = True 
                     self.current_x = player.rect.left 
-                elif player.direction.x > 0: #si le perso touche qqch alors qu'il va a droite 
+                elif player.direction.x > 0: # si le perso touche qqch alors qu'il va a droite
                     player.rect.right = sprite.rect.left 
                     player.on_right = True 
                     self.current_x = player.rect.right
                 
-        if player.on_left and (player.rect.left < self.current_x or player.direction.x >= 0): #on ne touche plus qqch à gauche si on va à droite ou si on passe au dessus de ce mur 
+        if player.on_left and (player.rect.left < self.current_x or player.direction.x >= 0): # on ne touche plus qqch à gauche si on va à droite ou si on passe au dessus de ce mur
             player.on_left = False 
         if player.on_right and (player.rect.right > self.current_x or player.direction.x <= 0):
             player.on_right = False 
@@ -138,52 +141,52 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
         player = self.player.sprite
         player.apply_gravity()
         
-        for sprite in self.terrain_sprites.sprites(): #si le pesro touche un mur en y (si collision avec le terrain)
+        for sprite in self.terrain_sprites.sprites(): # si le pesro touche un mur en y (si collision avec le terrain)
             if sprite.rect.colliderect(player.rect):
-                if player.direction.y > 0: #si le perso touche un truc alors qu'il va vers le bas  
+                if player.direction.y > 0:  # si le perso touche un truc alors qu'il va vers le bas
                     player.rect.bottom = sprite.rect.top 
-                    player.direction.y = 0 #cela evite que la gravité augmente trop et fait passer le pero a travers les plateformes
-                    player.on_ground = True #il est bien sur le sol 
-                elif player.direction.y < 0: #si le perso touche qqch alors qu'il va vers le haut 
+                    player.direction.y = 0 # cela evite que la gravité augmente trop et fait passer le pero a travers les plateformes
+                    player.on_ground = True # il est bien sur le sol
+                elif player.direction.y < 0: # si le perso touche qqch alors qu'il va vers le haut
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
                     player.on_ceiling = True 
                     
-        if player.on_ground and player.direction.y < 0 or player.direction.y > 1: #si il touche le sol puis tombe ou saute 
+        if player.on_ground and player.direction.y < 0 or player.direction.y > 1:  # si il touche le sol puis tombe ou saute
             player.on_ground = False 
         if player.on_ceiling and player.direction.y > 0:
             player.on_ceiling = False 
         
-    def scroll_x(self): #on fait en sorte que le niveau scroll si le perso avance 
+    def scroll_x(self):  # on fait en sorte que le niveau scroll si le perso avance
         player = self.player.sprite 
         player_x = player.rect.centerx
         direction_x = player.direction.x
         
-        #la vitesse du pero est nulle et c'est le scroll qui remplace le mouvement du perso 
-        if player_x < screen_width/3 and direction_x < 0: #direction a gauche 
-            self.world_shift = 8 
+        # la vitesse du pero est nulle et c'est le scroll qui remplace le mouvement du perso
+        if player_x < screen_width/3 and direction_x < 0: # direction a gauche
+            self.world_shift = self.level_data['speed']
             player.speed = 0 
-        elif player_x > screen_width - (screen_width/3) and direction_x > 0: #direction a droite 
-            self.world_shift = -8
+        elif player_x > screen_width - (screen_width/3) and direction_x > 0:  # direction a droite
+            self.world_shift = - self.level_data['speed']
             player.speed = 0 
         else:
             self.world_shift = 0 
-            player.speed = 8  
+            player.speed = self.level_data['speed']
         
     def check_death(self):
         if self.player.sprite.rect.top > screen_height:
             self.isDead = True
-            self.create_overworld(self.current_level,0) #gerer pour mettre le game over, ou remetre au debut du niveau, ou l'overworld ? a voir 
+            self.create_overworld(self.current_level, 0) # gerer pour mettre le game over, ou remetre au debut du niveau, ou l'overworld ? a voir
             
     def check_win(self):
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, False):
             self.win_sound.play()
-            self.create_overworld(self.current_level,self.new_max_level) #c'est la qu'il faut gerer pour mettre le dialogue 
+            self.create_overworld(self.current_level, self.new_max_level) # c'est la qu'il faut gerer pour mettre le dialogue
             
-    def draw_back(self,surface):
+    def draw_back(self, surface):
         self.fond = pygame.transform.scale(self.the_fond, (screen_width, screen_height))
         self.fond = self.fond.convert()
-        self.fond = surface.blit(self.fond,(0,0))
+        self.fond = surface.blit(self.fond, (0, 0))
 
     """
     def check_item_collisions(self): #devrait marcher 
@@ -213,26 +216,26 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
     
     def run(self):
 
-        #run the entier game/level
+        # run the entier game/level
         
-        #fond
+        # fond
         self.draw_back(self.display_surface)
         
-        #terrain
+        # terrain
         self.terrain_sprites.draw(self.display_surface)
         self.terrain_sprites.update(self.world_shift)
         
-        #enemy
+        # enemy
         self.enemy_sprites.update(self.world_shift)
-        self.constraint_sprites.update(self.world_shift) #on ne dessine pas les constraints car on ne veux pas les voir mais on veut qu'elles existent 
+        self.constraint_sprites.update(self.world_shift)  # on ne dessine pas les constraints car on ne veux pas les voir mais on veut qu'elles existent
         self.enemy_collision_reverse()
         self.enemy_sprites.draw(self.display_surface)
         
-        #item 
+        # item
         self.item_sprites.update(self.world_shift)
         self.item_sprites.draw(self.display_surface)
     
-        #player sprite
+        # player sprite
         self.player.update()
         self.horizontal_mouvement_collision()
         self.vertical_mouvement_collision()

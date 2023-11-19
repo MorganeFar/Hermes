@@ -15,6 +15,7 @@ Getting started
 
 #### How to play ?
 
+
 To end a level, you need to reach the red flag. In order to do that, you have to go toward the right of the window.
 Press the right arrow on your keyboard to make Hermes move to the right.
 
@@ -36,5 +37,10 @@ Developers
 Two very motivated students passionate about computer science : 
 * Morgane Farez 
 * Cassiopée Gossin
+
+#### Designs : 
+* Cassiopée Gossin
+* https://opengameart.org/
+
 
 

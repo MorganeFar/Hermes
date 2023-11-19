@@ -2,6 +2,7 @@
 """
 clear code le platformer complet, partie 2 sur le visual level editor, game_data
 """
+
 #attention, a changer suivant les niveaux 
 level_1 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
            'item': '../../design/niveau1/map/level_1_map_items.csv',
@@ -16,7 +17,8 @@ level_1 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
            'speed': 8,
            'gravity': 0.8,
            'jump_speed': -16,
-           'items' : ['arc', 'lyre', 'montre']
+           'items': ['arc', 'lyre', 'montre'],
+           'rotation': 0
            } #design/
 
 level_2 = {'terrain': '../../design/niveau2/map/level_2_map_terrain.csv',
@@ -29,10 +31,11 @@ level_2 = {'terrain': '../../design/niveau2/map/level_2_map_terrain.csv',
            'node_graphics': '../../design/overworld/2.png',
            'animation_speed': 0.05,
            'status': 'swim',
-           'speed': 1,
-           'gravity': 0.01,
+           'speed': 4,
+           'gravity': 0.04,
            'jump_speed': -1,
-           'items' : ['fourchette', 'peanut butter', 'trident']
+           'items': ['fourchette', 'peanut butter', 'trident'],
+           'rotation': -90
            }
 
 level_3 = {'terrain': '../../design/niveau3/map/level_3_map_terrain.csv',
@@ -48,7 +51,8 @@ level_3 = {'terrain': '../../design/niveau3/map/level_3_map_terrain.csv',
            'speed': 8,
            'gravity': 0.8,
            'jump_speed': -16,
-           'items' : ['livre', 'casque', 'potion']
+           'items' : ['livre', 'casque', 'potion'],
+           'rotation':0
            }
  
 level_4 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
@@ -64,7 +68,8 @@ level_4 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
            'speed': 8,
            'gravity': 0.8,
            'jump_speed': -16,
-           'items' : ['ciseaux', 'amour', 'pelle']
+           'items' : ['ciseaux', 'amour', 'pelle'],
+           'rotation':0
            }
 
 level_5 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
@@ -80,7 +85,8 @@ level_5 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
            'speed': 8,
            'gravity': 0.8,
            'jump_speed': -16,
-            'items' : [None, None, None] #y'a pas d'item au niveau 5 enfaite
+            'items' : [None, None, None], #y'a pas d'item au niveau 5 enfaite,
+            'rotation':0
            }
 
 levels = {
@@ -89,8 +95,6 @@ levels = {
     3: level_3,
     4: level_4,
     5: level_5}
-
-
 
 
 

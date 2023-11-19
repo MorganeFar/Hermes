@@ -36,4 +36,7 @@ Deux étudiantes très motivées et passionnées d'informatique :
 * Morgane Farez 
 * Cassiopée Gossin
 
+#### Designs : 
+* Cassiopée Gossin
+* https://opengameart.org/
 

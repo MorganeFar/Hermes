@@ -12,32 +12,32 @@ import gameOver
 
 class Game:
     def __init__(self):
-        #game attributes 
+        # game attributes
         self.max_level = 1
         self.max_health = 3
         self.cur_health = 3
         self.item = None # a voir si on fait comme ca pour les items 
         
-        #audio 
+        # audio
         self.level_bg_music = pygame.mixer.Sound('../../audio/ambiance_niv1.mp3')
         self.overworld_bg_music = pygame.mixer.Sound('../../audio/overworld.mp3')
         self.dead_sound = pygame.mixer.Sound('../../audio/dead.wav')
         
-        #overworld creation 
+        # overworld creation
         self.overworld = Overworld(1, self.max_level, screen, self.create_level)
-        self.status = 'overworld' #le status de ou se trouve le joueur 
-        self.overworld_bg_music.play(loops = -1)
+        self.status = 'overworld' # le status de ou se trouve le joueur
+        self.overworld_bg_music.play(loops=-1)
         
-        #user interface 
+        # user interface
         self.ui = UI(screen)
         
     def create_level(self, current_level):
         self.level = Level(current_level, screen, self.create_overworld, self.change_item, self.change_health)
         self.status = 'level'
         self.overworld_bg_music.stop()
-        self.level_bg_music.play(loops = -1)
+        self.level_bg_music.play(loops=-1)
         self.item = None
-        #self.cur_health = 3 #normalement dès qu'il relance le niveau, donc des que game over 
+        # self.cur_health = 3 #normalement dès qu'il relance le niveau, donc des que game over
         
     def create_overworld(self, current_level, new_max_level):
         if new_max_level > self.max_level:
