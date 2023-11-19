@@ -20,7 +20,6 @@ class Game:
         
         # audio
         self.level_bg_music = ['', pygame.mixer.Sound('../../audio/ambiance_niv1.mp3'), pygame.mixer.Sound('../../audio/ambiance_niv2.wav'), pygame.mixer.Sound('../../audio/ambiance_niv3.mp3'), pygame.mixer.Sound('../../audio/ambiance_niv4.mp3'), pygame.mixer.Sound('../../audio/ambiance_niv5.mp3')]
-        #self.level_bg_music = pygame.mixer.Sound('../../audio/ambiance_niv1.mp3')
         self.overworld_bg_music = pygame.mixer.Sound('../../audio/overworld.mp3')
         self.dead_sound = pygame.mixer.Sound('../../audio/dead.wav')
         
