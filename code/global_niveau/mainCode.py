@@ -19,7 +19,8 @@ class Game:
         self.item = None # a voir si on fait comme ca pour les items 
         
         # audio
-        self.level_bg_music = pygame.mixer.Sound('../../audio/ambiance_niv1.mp3')
+        self.level_bg_music = ['', pygame.mixer.Sound('../../audio/ambiance_niv1.mp3'), pygame.mixer.Sound('../../audio/ambiance_niv2.wav'), pygame.mixer.Sound('../../audio/ambiance_niv3.mp3'), pygame.mixer.Sound('../../audio/ambiance_niv4.mp3'), pygame.mixer.Sound('../../audio/ambiance_niv5.mp3')]
+        #self.level_bg_music = pygame.mixer.Sound('../../audio/ambiance_niv1.mp3')
         self.overworld_bg_music = pygame.mixer.Sound('../../audio/overworld.mp3')
         self.dead_sound = pygame.mixer.Sound('../../audio/dead.wav')
         
@@ -35,7 +36,8 @@ class Game:
         self.level = Level(current_level, screen, self.create_overworld, self.change_item, self.change_health)
         self.status = 'level'
         self.overworld_bg_music.stop()
-        self.level_bg_music.play(loops=-1)
+        self.bg_music = self.level_bg_music[current_level]
+        self.bg_music.play(loops=-1)
         self.item = None
         # self.cur_health = 3 #normalement dès qu'il relance le niveau, donc des que game over
         
@@ -48,7 +50,7 @@ class Game:
             gameOver.over()
         self.overworld = Overworld(current_level, self.max_level, screen, self.create_level)
         self.status = 'overworld'
-        self.level_bg_music.stop()
+        self.bg_music.stop()
         self.overworld_bg_music.play(loops = -1)
         
     def change_item(self, lequel):
@@ -65,7 +67,7 @@ class Game:
             self.max_level = 1
             gameOver.over()
             self.overworld = Overworld(1, self.max_level, screen, self.create_level)
-            self.level_bg_music.stop()
+            self.bg_music.stop()
             self.overworld_bg_music.play(loops = -1)
             self.status = 'overworld'
     def run(self):

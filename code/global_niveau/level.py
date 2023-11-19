@@ -35,6 +35,9 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
             self.current_level) + '/background.png').convert_alpha()
         self.tab_level = self.level_data['items']
 
+        #monsters
+        self.tab_monsters = self.level_data['monsters']
+
         #player 
         player_layout = import_csv_layout(self.level_data['player'])
         self.player = pygame.sprite.GroupSingle()
@@ -72,25 +75,27 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
                     
                     if type == 'terrain':
                         #terrain_tile_list = import_cut_graphic('../../niveaux/nv_1_apollon/tiles/midTile_1.png')
-                        terrain_tile_list = import_folder('../../design/niveau1/tiles')
+                        path = '../../design/niveau' + str(self.current_level) + '/tiles'
+                        terrain_tile_list = import_folder(path)
                         tile_surface = terrain_tile_list[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface, 0)
                         
                     if type == 'item': #item0 item1 item2 
                         #sprite = AnimatedTile(tile_size, x, y, '../../niveaux/nv_1_apollon/object')
-                        item_tile_list = import_folder('../../design/niveau1/object')
+                        path = '../../design/niveau' + str(self.current_level) + '/object'
+                        item_tile_list = import_folder(path)
                         tile_surface = item_tile_list[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface, int(val))
                         
                     if type == 'enemies': #a voir apres avec val si on peut avir les autres monstres (attention changer les dossiers)
                         if val == '0':
-                            sprite = Enemy(tile_size,x,y,'../../design/niveau1/monster/cyclope_w')
+                            sprite = Enemy(tile_size,x,y,self.tab_monsters[0])
                         if val == '1':
-                            sprite = Enemy(tile_size,x,y,'../../design/niveau1/monster/satyr')
+                            sprite = Enemy(tile_size,x,y,self.tab_monsters[1])
                         if val == '2':
-                            sprite = Enemy(tile_size,x,y,'../../design/niveau1/monster/cow_1')
+                            sprite = Enemy(tile_size,x,y,self.tab_monsters[2])
                         if val == '3':
-                            sprite = Enemy(tile_size,x,y,'../../design/niveau1/monster/cow_2')
+                            sprite = Enemy(tile_size,x,y,self.tab_monsters[3])
                         
                     if type == 'constraints':
                         sprite = Tile(tile_size,x,y)

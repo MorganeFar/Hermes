@@ -44,8 +44,13 @@ class Player(pygame.sprite.Sprite):
         self.hurt_time = 0
         
         # audio
-        self.jump_sound = pygame.mixer.Sound('../../audio/jump.wav')
-        self.jump_sound.set_volume(0.1)
+
+        if self.noLevel == 2:
+            self.jump_sound = pygame.mixer.Sound('../../audio/swim.ogg')
+            #self.jump_sound.set_volume(0.1)
+        else:
+            self.jump_sound = pygame.mixer.Sound('../../audio/jump.wav')
+            self.jump_sound.set_volume(0.1)
         
     def import_character_assets(self):
         character_path = '../../design/hermes/'
