@@ -4,7 +4,7 @@ la cinematique de niveau 2 avec poseidon
 """
 
 import pygame, sys
-sys.path.append('../global_niveau') 
+sys.path.append('../global_niveau')
 from sceneryClass import Scenery
 
 #les dialogues
@@ -12,13 +12,13 @@ dialogue_all = ["Poséidon – Hermès ? Tu es encore là ? Je croyais qu'ils 
                 "Hermes – *pas content* Je suis venu te demander des pierres précieuses.",
                 "Poséidon – Des pierres précieuses ? Pourquoi en voudrais-tu ? Si c'est Hécate qui t'envoie, dit lui que je lui en ai donné bien assez et qu'elle ne vienne plus m'ennuyer avec ça.",
                 "Hermes – Personne ne m'envoie, les pierres sont pour moi. Je veux construire un trône, pour devenir le douzième dieu de l'Olympe.",
-                "Poséidon – Hahahahaha !! Tu es bien ambitieux mon neveux. Et qu'est-ce qu'il te fait croire que je vais te donner mes précieuses pierres ?"]  
+                "Poséidon – Hahaha !! Tu es bien ambitieux mon neveux. Et qu'est-ce qu'il te fait croire que je vais te donner mes précieuses pierres ?"]
 
 #les dialogue suivant l'objet, change suivant l'objet qu'hermes a avec lui 
 #l'objet utile ui fait passer au niveau suivant 
-dialogue_lyre = ["Hermes – J'ai trouvé ton trident sur le chemin jusqu'ici. Je veux bien te l'échanger contre les pierres.",
+dialogue_lyre = ["Hermes – J'ai trouvé ton trident sur le chemin jusqu'ici. Je te propose dde l'échanger contre les pierres.",
                  "Poséidon – Mon trident ! Tu as de la chance dieu de la ruse. Marché conclu, voilà les pierres.",
-                "Poséidon – Si tu veux un conseil, ne traine pas trop sous terre. Le dieu des morts ne peut plus cacher sa tête d'enterrement et il a l'air contrarié.",
+                "Poséidon – Un conseil pour ta quête, ne traine pas trop sous terre. Le dieu des morts ne peut plus cacher sa tête d'enterrement et il a l'air contrarié.",
                 "*victoire, niveau suivant*"]
 
 #les autres objets 'inutiles' qui font recommencer le niveau 
@@ -59,7 +59,7 @@ clock = pygame.time.Clock()
 screen_width = 1080
 screen_height = 704 #960
 screen = pygame.display.set_mode((screen_width, screen_height))
-background = pygame.image.load("../../design/niveau2/ocean.png")
+background = pygame.image.load("../../design/niveau2/background.png")
 fond = pygame.transform.scale(background, (screen_width, screen_height))
 fond = fond.convert()
 light_grey = (200, 200, 200)

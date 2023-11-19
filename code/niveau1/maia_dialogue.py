@@ -7,13 +7,12 @@ import pygame, sys
 sys.path.append('../global_niveau') 
 from sceneryClass import Scenery
 
-dialogue_all = ["Maïa – Bonjour mon cher fils. Je suis ravie de te revoir.",
-                "Maïa – Je suis au courant pour tes projets de conquête d'une place à l'Olympe. Je t'en félicite et te souhaite bon courage." ,
-                "Maïa – Pour mener à bien ta quête n’oublie pas ce que je t'ai appris. Tu peux réunir les ingrédients pour le trône en faisant des échanges avec les dieux, mais uniquement des échanges équivalents.", 
-                "Maïa – Et pour te donner un dernier conseil, le solstice d'été approche, il y aura un grand concert avec Apollon, le dieu de la musique.",
-                "Maïa – Tu sais ton demi-frère qui joue tout le temps de cet instrument si mélodieux...",
-                "Maïa – Il a l'air stressé en ce moment, je suis sure que tu pourra l'aider et peut-être qu'il t'aidera en retour.",
-                "Maïa – Au revoir mon fils, et que le sort te soit favorable."]   
+dialogue_all = ["Maïa – J'ai pris connaissance de tes projets de conquête d'une place à l'Olympe. Félicitation pour ton courage !" ,
+                "Maïa – Pour mener à bien ta quête n’oublie pas une chose: tu peux réunir les ingrédients pour constituer le trône en faisant des échanges équivalents avec les dieux.",
+                "Maïa – Et un dernier conseil, le solstice d'été approche, Apollon, le dieu de la musique organise un grand concert.",
+                "Maïa – Il y jouera même un solo de cet instrument si mélodieux...",
+                "Maïa – Si tu l'aides pour son concert, il t'aidera en retour.",
+                "Maïa – Au revoir Hermès, et que le sort te soit favorable."]
         
 #general setup
 pygame.init() #always need for any kind of pygame code 

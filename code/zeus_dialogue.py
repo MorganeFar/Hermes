@@ -4,17 +4,17 @@ la cinematique de fin avec zeus
 """
 
 import pygame, sys
-sys.path.append('global_niveau') 
+sys.path.append('global_niveau')
 from sceneryClass import Scenery
 
 dialogue_all = ["Zeus – Hermès ! Que fais-tu ici mon fils ? Quelqu'un t'envoie me porter un message ?",
-                "Hermès – Non pas aujourd'hui. Je viens placer mon trône, celui du douzième dieu de l'Olympe.", 
+                "Hermès – Non pas aujourd'hui. Je viens placer mon trône, celui du douzième dieu de l'Olympe !",
                 "Zeus – Ton trône ? Le douzième dieu de l'Olympe ? Hahahaha ! Quel audace ! Et qu'est-ce qu'il te fait croire que je vais accepter ta requête ?",
-                "Hermès – En tant que messagers des dieux, je peux aller partout où je veux et j'ai des oreilles partout donc je peux t'aider à éviter les rébellions. Je te propose donc mes services contre une place à l'Olympe.",
+                "Hermès – En tant que messagers des dieux, je peux aller là où je veux et j'ai des oreilles partout. Je te propose donc mes services contre une place à l'Olympe.",
                 "Zeus – Hmmm... Cela peut être vraiment avantageux. Et qu'est-ce qui me dit que ce n'est pas encore une ruse ?", 
-                "Hermès – Je te promets de ne plus te mentir. Je ne te dirais que et uniquement la vérité.", 
-                "Zeus – Ça c'est vraiment intéressant. Mais comment connais-tu la liste des ingrédients ? Je la garde toujours sur moi … *regarde dans sa poche* Elle n'est plus là ! Est-ce toi qui me l'a volé ?!", 
-                "Hermès – Euuuh … peut-être.", 
+                "Hermès – Je jure sur le Styx de ne rien te cacher et de ne plus jamais te mentir.",
+                "Zeus – Ça c'est vraiment intéressant! Mais au fait , comment connais-tu la liste des ingrédients ? Je la garde toujours sur moi … *regarde dans sa poche* Elle n'est plus là ! Est-ce toi qui me l'a volé ?!",
+                "Hermès – Euuuh … peut-être, oui.",
                 "Zeus – Ha ha ha, quel audace ! Tu es bien mon fils toi ! C'est d'accord alors. Hermès, je te proclame à partir d'aujourd'hui douzième dieu de l'Olympe !"]  
         
 #general setup
