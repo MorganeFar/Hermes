@@ -15,23 +15,21 @@ class Player(pygame.sprite.Sprite):
         self.frame_index = 0
         self.level_data = level_data
         self.noLevel = self.level_data['unlock'] - 1
-        self.animation_speed = self.level_data['animation_speed']  # a changer si on veut une animation plus lente /plus rapide (0.15/0.3/0.45/0.6/0.75/0.9/1.05)
+        self.animation_speed = self.level_data['animation_speed']  # a changer si on veut une animation plus lente /plus rapide (0.15/1.05)
         # rotation permettant de l'avoir couché pour nager
-        print(self.level_data['rotation'])
         self.image = pygame.transform.rotate(self.animations[self.level_data['status']][self.frame_index], self.level_data['rotation'])
         self.rect = self.image.get_rect(topleft=pos)
         
         # player mouvement
         self.direction = pygame.math.Vector2(0,0)
         self.speed = self.level_data['speed']
-        print(self.speed)
         self.gravity = self.level_data['gravity']
         self.jump_speed = self.level_data['jump_speed']  # a changer si on veut des sauts moins hauts
         
         # player status
         self.status = self.level_data['status']
         self.facing_right = True  # va vers la droite
-            # on met les retangles proprement
+        # on met les retangles proprement
         self.on_ground = False 
         self.on_ceiling = False 
         self.on_left = False 
@@ -47,7 +45,7 @@ class Player(pygame.sprite.Sprite):
 
         if self.noLevel == 2:
             self.jump_sound = pygame.mixer.Sound('../../audio/swim.ogg')
-            #self.jump_sound.set_volume(0.1)
+            # self.jump_sound.set_volume(0.1)
         else:
             self.jump_sound = pygame.mixer.Sound('../../audio/jump.wav')
             self.jump_sound.set_volume(0.1)

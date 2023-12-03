@@ -4,6 +4,7 @@ level
 """
 
 import pygame
+import time
 from support import import_csv_layout, import_cut_graphic, import_folder
 from settings import tile_size, screen_height, screen_width 
 from tiles import Tile, StaticTile, AnimatedTile
@@ -11,94 +12,108 @@ from enemy import Enemy
 from player import Player 
 from game_data import levels
 
+pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
+timeFont = pygame.font.Font(None, 50)
+TIME_TO_BREATH = 20
 
-class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est facile avec des if current level == ... pour changer les liens 
+# attention, il faut e rendre genera a tous niveaux, tkt c'est facile avec des if current level == ... pour changer les liens
+class Level :
     def __init__(self, current_level, surface, create_overworld, change_item, change_health):
-        #general setup
+        # general setup
         self.display_surface = surface 
         self.world_shift = 0
         self.current_x = None
         
-        #audio
+        # audio
         self.item_sound = pygame.mixer.Sound('../../audio/item.ogg')
         self.hit_sound = pygame.mixer.Sound('../../audio/hit.wav')
         self.win_sound = pygame.mixer.Sound('../../audio/victory.wav')
         
-        #overworld connection 
+        # overworld connection
         self.create_overworld = create_overworld
         self.current_level = current_level
-        self.level_data = levels[self.current_level] #permet de le mettre en paramètre du player
+        self.level_data = levels[self.current_level]  # permet de le mettre en paramètre du player
 
         self.new_max_level = self.level_data['unlock']
         self.the_fond = pygame.image.load('../../design/niveau' + str(
             self.current_level) + '/background.png').convert_alpha()
         self.tab_level = self.level_data['items']
 
-        #monsters
+        if self.current_level == 2:
+            self.current_time = 0
+            self.timeSinceLastBreath = round(time.time())  # get the number of seconds since epoch
+            # cf. epoch = moment where time begins => 1 january 1970 00:00:00
+            self.timeTab = []
+            for i in range(20):
+                self.timeTab.append(str(i+1))
+            self.timer()
+
+        # monsters
         self.tab_monsters = self.level_data['monsters']
 
-        #player 
+        # player
         player_layout = import_csv_layout(self.level_data['player'])
         self.player = pygame.sprite.GroupSingle()
         self.goal = pygame.sprite.GroupSingle()
         self.player_setup(player_layout, change_health)
         self.isDead = False
-        
-        #user interface 
+        self.isBreathing = True
+
+        # user interface
         self.change_item = change_item
         
-        #terrain setup
+        # terrain setup
         terrain_layout = import_csv_layout(self.level_data['terrain'])
-        self.terrain_sprites = self.create_tile_group(terrain_layout, 'terrain') #ici le terrain est le nom de l'image de tuile, a voir si on peut mettre plusieurs tuiles pour 1 map
+        self.terrain_sprites = self.create_tile_group(terrain_layout, 'terrain')  # ici le terrain est le nom de l'image de tuile, a voir si on peut mettre plusieurs tuiles pour 1 map
 
-        #item setup (aussi a changer dans game_data, map test du niveau 1) item0 item1 item2 et du coup item0_sprite item1_sprite item2_sprite, en essayant de les laisser dans les fichiers design tels qu'ils sont 
+        # item setup (aussi a changer dans game_data, map test du niveau 1) item0 item1 item2 et du coup item0_sprite item1_sprite item2_sprite, en essayant de les laisser dans les fichiers design tels qu'ils sont
         item_layout = import_csv_layout(self.level_data['item'])
         self.item_sprites = self.create_tile_group(item_layout, 'item')
         
-        #enemy 
+        # enemy
         enemy_layout = import_csv_layout(self.level_data['enemies'])
         self.enemy_sprites = self.create_tile_group(enemy_layout, 'enemies')
         
-        #constraints 
+        # constraints
         constraint_layout = import_csv_layout(self.level_data['constraints'])
         self.constraint_sprites = self.create_tile_group(constraint_layout, 'constraints')
         
     def create_tile_group(self, layout, type):
         sprite_group = pygame.sprite.Group()
         
-        for row_index, row in enumerate(layout): #on met un numero a nos row pour mieux les distinguer et les reperer plus facilement 
-            for col_index,val in enumerate(row): #pour chaque indice et chaque valeur de case 
-                if val != '-1': #si il y a qqch dans la case 
+        for row_index, row in enumerate(layout):  # on met un numero a nos row pour mieux les distinguer et les reperer plus facilement
+            for col_index, val in enumerate(row):  # pour chaque indice et chaque valeur de case
+                if val != '-1': # si il y a qqch dans la case
                     x = col_index * tile_size  
                     y = row_index * tile_size 
                     
                     if type == 'terrain':
-                        #terrain_tile_list = import_cut_graphic('../../niveaux/nv_1_apollon/tiles/midTile_1.png')
+                        # terrain_tile_list = import_cut_graphic('../../niveaux/nv_1_apollon/tiles/midTile_1.png')
                         path = '../../design/niveau' + str(self.current_level) + '/tiles'
                         terrain_tile_list = import_folder(path)
                         tile_surface = terrain_tile_list[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface, 0)
                         
-                    if type == 'item': #item0 item1 item2 
-                        #sprite = AnimatedTile(tile_size, x, y, '../../niveaux/nv_1_apollon/object')
+                    if type == 'item':  # item0 item1 item2
+                        # sprite = AnimatedTile(tile_size, x, y, '../../niveaux/nv_1_apollon/object')
                         path = '../../design/niveau' + str(self.current_level) + '/object'
                         item_tile_list = import_folder(path)
                         tile_surface = item_tile_list[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface, int(val))
                         
-                    if type == 'enemies': #a voir apres avec val si on peut avir les autres monstres (attention changer les dossiers)
+                    if type == 'enemies':  # a voir apres avec val si on peut avir les autres monstres (attention changer les dossiers)
                         if val == '0':
-                            sprite = Enemy(tile_size,x,y,self.tab_monsters[0])
+                            sprite = Enemy(tile_size, x, y, self.tab_monsters[0])
                         if val == '1':
-                            sprite = Enemy(tile_size,x,y,self.tab_monsters[1])
+                            sprite = Enemy(tile_size, x, y, self.tab_monsters[1])
                         if val == '2':
-                            sprite = Enemy(tile_size,x,y,self.tab_monsters[2])
+                            sprite = Enemy(tile_size, x, y, self.tab_monsters[2])
                         if val == '3':
-                            sprite = Enemy(tile_size,x,y,self.tab_monsters[3])
+                            sprite = Enemy(tile_size, x, y, self.tab_monsters[3])
                         
                     if type == 'constraints':
-                        sprite = Tile(tile_size,x,y)
+                        sprite = Tile(tile_size, x, y)
                         
                     sprite_group.add(sprite)
                     
@@ -109,17 +124,17 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
             for col_index,val in enumerate(row):
                 x = col_index * tile_size
                 y = row_index * tile_size
-                if val == '1': #le player
+                if val == '1':  # le player
                     sprite = Player((x,y), change_health, self.level_data)
                     self.player.add(sprite)
-                if val == '0': #le goal 
+                if val == '0':  # le goal
                     fin_surface = pygame.image.load('../../design/global/flag.png').convert_alpha()
-                    sprite = StaticTile(tile_size,x,y,fin_surface, 0)
+                    sprite = StaticTile(tile_size, x, y, fin_surface, 0)
                     self.goal.add(sprite)
     
     def enemy_collision_reverse(self):
         for enemy in self.enemy_sprites.sprites():
-            if pygame.sprite.spritecollide(enemy,self.constraint_sprites,False):
+            if pygame.sprite.spritecollide(enemy, self.constraint_sprites,False):
                 enemy.reverse()
         
     def horizontal_mouvement_collision(self):
@@ -128,16 +143,16 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
         
         for sprite in self.terrain_sprites.sprites(): # si le pesro touche un mur en x (si collision avec le terrain)
             if sprite.rect.colliderect(player.rect):
-                if player.direction.x < 0: # si le perso touche un truc alors qu'il va a gauche
+                if player.direction.x < 0:  # si le perso touche un truc alors qu'il va a gauche
                     player.rect.left = sprite.rect.right
                     player.on_left = True 
                     self.current_x = player.rect.left 
-                elif player.direction.x > 0: # si le perso touche qqch alors qu'il va a droite
+                elif player.direction.x > 0:  # si le perso touche qqch alors qu'il va a droite
                     player.rect.right = sprite.rect.left 
                     player.on_right = True 
                     self.current_x = player.rect.right
                 
-        if player.on_left and (player.rect.left < self.current_x or player.direction.x >= 0): # on ne touche plus qqch à gauche si on va à droite ou si on passe au dessus de ce mur
+        if player.on_left and (player.rect.left < self.current_x or player.direction.x >= 0):  # on ne touche plus qqch à gauche si on va à droite ou si on passe au dessus de ce mur
             player.on_left = False 
         if player.on_right and (player.rect.right > self.current_x or player.direction.x <= 0):
             player.on_right = False 
@@ -151,13 +166,21 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
                 if player.direction.y > 0:  # si le perso touche un truc alors qu'il va vers le bas
                     player.rect.bottom = sprite.rect.top 
                     player.direction.y = 0 # cela evite que la gravité augmente trop et fait passer le pero a travers les plateformes
-                    player.on_ground = True # il est bien sur le sol
-                elif player.direction.y < 0: # si le perso touche qqch alors qu'il va vers le haut
+                    player.on_ground = True  # il est bien sur le sol
+                elif player.direction.y < 0:  # si le perso touche qqch alors qu'il va vers le haut
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
-                    player.on_ceiling = True 
-                    
-        if player.on_ground and player.direction.y < 0 or player.direction.y > 1:  # si il touche le sol puis tombe ou saute
+                    player.on_ceiling = True
+
+            # Remet chrono a 0 apres respiration
+            if self.current_level == 2 and not player.on_ceiling and player.rect.top < 20:
+                self.isBreathing = True
+            if player.rect.top >= 64 and self.isBreathing:
+                self.timeSinceLastBreath = round(time.time())
+                self.isBreathing = False
+
+        # si il touche le sol puis tombe ou saute
+        if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False 
         if player.on_ceiling and player.direction.y > 0:
             player.on_ceiling = False 
@@ -179,14 +202,14 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
             player.speed = self.level_data['speed']
         
     def check_death(self):
-        if self.player.sprite.rect.top > screen_height:
+        if self.player.sprite.rect.top > screen_height or self.isDead:
             self.isDead = True
-            self.create_overworld(self.current_level, 0) # gerer pour mettre le game over, ou remetre au debut du niveau, ou l'overworld ? a voir
+            self.create_overworld(self.current_level, 0)  # gerer pour mettre le game over, ou remetre au debut du niveau, ou l'overworld ? a voir
             
     def check_win(self):
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, False):
             self.win_sound.play()
-            self.create_overworld(self.current_level, self.new_max_level) # c'est la qu'il faut gerer pour mettre le dialogue
+            self.create_overworld(self.current_level, self.new_max_level)  # c'est la qu'il faut gerer pour mettre le dialogue
             
     def draw_back(self, surface):
         self.fond = pygame.transform.scale(self.the_fond, (screen_width, screen_height))
@@ -218,28 +241,40 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
             self.hit_sound.play()
             for enemy in enemy_collisions:
                 self.player.sprite.get_damage()
-    
-    def run(self):
 
+    ### TIMER LEVEL 2 ###
+    def timer(self):
+        time_before = self.current_time
+        self.current_time = round(time.time())
+        time_left = TIME_TO_BREATH - (self.current_time - self.timeSinceLastBreath)
+        time_text = timeFont.render(f"{time_left}", False, (0, 0, 0))
+        if time_before != self.current_time:
+            time_left = 15 - (self.current_time - self.timeSinceLastBreath)
+            time_text = timeFont.render(f"{time_left}", False, (0, 0, 0))
+        screen.blit(time_text, (20, 110))  # print time before death
+        if time_left <= 0:
+            self.isDead = True
+
+    def run(self):
         # run the entier game/level
-        
         # fond
         self.draw_back(self.display_surface)
-        
+
         # terrain
         self.terrain_sprites.draw(self.display_surface)
         self.terrain_sprites.update(self.world_shift)
-        
+
         # enemy
         self.enemy_sprites.update(self.world_shift)
-        self.constraint_sprites.update(self.world_shift)  # on ne dessine pas les constraints car on ne veux pas les voir mais on veut qu'elles existent
+        self.constraint_sprites.update(
+            self.world_shift)  # on ne dessine pas les constraints car on ne veux pas les voir mais on veut qu'elles existent
         self.enemy_collision_reverse()
         self.enemy_sprites.draw(self.display_surface)
-        
+
         # item
         self.item_sprites.update(self.world_shift)
         self.item_sprites.draw(self.display_surface)
-    
+
         # player sprite
         self.player.update()
         self.horizontal_mouvement_collision()
@@ -248,10 +283,9 @@ class Level : #attention, il faut e rendre genera a tous niveaux, tkt c'est faci
         self.player.draw(self.display_surface)
         self.goal.update(self.world_shift)
         self.goal.draw(self.display_surface)
-        
+        if self.current_level == 2 and not self.isBreathing: self.timer()  # check le temps et s'il est a court des respiration
         self.check_death()
         self.check_win()
-        
+
         self.check_item_collisions()
         self.check_ennemy_collisions()
-    

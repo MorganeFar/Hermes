@@ -3,7 +3,7 @@ import sys, pygame
 from sceneryClass import Scenery
 sys.path.append("../niveau1")
 from mainCode import *
-#from gameOver import over
+# from gameOver import over
 
 
 pygame.init()

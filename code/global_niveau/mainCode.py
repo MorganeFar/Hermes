@@ -44,7 +44,7 @@ class Game:
         if new_max_level > self.max_level:
             self.max_level = new_max_level
             self.cur_health = 3 
-        else:
+        elif self.level.isDead:
             self.dead_sound.play()
             gameOver.over()
         self.overworld = Overworld(current_level, self.max_level, screen, self.create_level)
@@ -67,10 +67,10 @@ class Game:
             gameOver.over()
             self.overworld = Overworld(1, self.max_level, screen, self.create_level)
             self.bg_music.stop()
-            self.overworld_bg_music.play(loops = -1)
+            self.overworld_bg_music.play(loops=-1)
             self.status = 'overworld'
     def run(self):
-        if self.status == 'overworld': #switch entre les différents niveaux et la 'map' (l'overworld) 
+        if self.status == 'overworld': # switch entre les différents niveaux et la 'map' (l'overworld)
             self.overworld.run()
         else:
             self.level.run()
