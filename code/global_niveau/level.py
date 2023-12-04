@@ -13,11 +13,12 @@ from player import Player
 from game_data import levels
 
 pygame.init()
+
+### LEVEL 2 ###
 screen = pygame.display.set_mode((screen_width, screen_height))
 timeFont = pygame.font.Font(None, 50)
 TIME_TO_BREATH = 20
 
-# attention, il faut e rendre genera a tous niveaux, tkt c'est facile avec des if current level == ... pour changer les liens
 class Level :
     def __init__(self, current_level, surface, create_overworld, change_item, change_health):
         # general setup

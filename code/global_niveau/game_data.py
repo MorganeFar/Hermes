@@ -51,10 +51,10 @@ level_3 = {'terrain': '../../design/niveau3/map/level_3_map_terrain.csv',
            'animation_speed': 0.15,
            'status': 'stand',
            'speed': 8,
-           'gravity': 0.8,
+           'gravity': -0.8,
            'jump_speed': -16,
-           'items' : ['livre', 'casque', 'potion'],
-           'rotation':0,
+           'items': ['livre', 'casque', 'potion'],
+           'rotation': -180,
            'monsters': ['../../design/niveau3/monster/cerber', '../../design/niveau3/monster/ghost', '../../design/niveau3/monster/skeleton']
            }
  

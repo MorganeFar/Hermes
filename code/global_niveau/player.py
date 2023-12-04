@@ -29,6 +29,10 @@ class Player(pygame.sprite.Sprite):
         # player status
         self.status = self.level_data['status']
         self.facing_right = True  # va vers la droite
+
+        ### LEVEL 3
+        if self.noLevel == 3: self.facing_right = not self.facing_right
+
         # on met les retangles proprement
         self.on_ground = False 
         self.on_ceiling = False 
@@ -69,7 +73,7 @@ class Player(pygame.sprite.Sprite):
         # permet d'appliquer la bonne rotation de l'image cf niveau 2 => nage
         image = pygame.transform.rotate(animation[int(self.frame_index)], self.level_data['rotation'])
 
-        if self.facing_right: # si on va vers la droite on tourne pas les images
+        if self.facing_right:  # si on va vers la droite on tourne pas les images
             self.image = image
         else:  # permet de retrourner les images
             flipped_image = pygame.transform.flip(image, True, False)  # flippe horizontaly(x) and verticaly(y)
@@ -104,10 +108,20 @@ class Player(pygame.sprite.Sprite):
         
         if keys[pygame.K_RIGHT]:
             self.direction.x = 1
-            self.facing_right = True 
+            self.facing_right = True
+
+            # LEVEL 3 => Run toward right
+            if self.noLevel == 3:
+                self.facing_right = False
+
         elif keys[pygame.K_LEFT]:
             self.direction.x = -1
-            self.facing_right = False 
+            self.facing_right = False
+
+            # LEVEL 3 => Run toward left
+            if self.noLevel == 3:
+                self.facing_right = True
+
         else:
             self.direction.x = 0
 
@@ -115,7 +129,7 @@ class Player(pygame.sprite.Sprite):
             # pour monter dans l'eau => pas besoin de toucher le sol
             if keys[pygame.K_SPACE] or keys[pygame.K_UP]:
                 self.jump()
-        else :
+        else:
             # il peut sauter que si il est sur le sol
             if (keys[pygame.K_SPACE] or keys[pygame.K_UP]) and self.on_ground:
                 self.jump()
@@ -140,7 +154,7 @@ class Player(pygame.sprite.Sprite):
                 self.status = 'swim'
     
     def apply_gravity(self):  # sert pour le saut
-        self.direction.y += self.gravity   
+        self.direction.y += self.gravity
         self.rect.y += self.direction.y 
         
     def jump(self):

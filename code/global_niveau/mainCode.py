@@ -16,7 +16,7 @@ class Game:
         self.max_level = 1
         self.max_health = 3
         self.cur_health = 3
-        self.item = None # a voir si on fait comme ca pour les items 
+        self.item = None  # a voir si on fait comme ca pour les items
         
         # audio
         self.level_bg_music = ['', pygame.mixer.Sound('../../audio/ambiance_niv1.mp3'), pygame.mixer.Sound('../../audio/ambiance_niv2.wav'), pygame.mixer.Sound('../../audio/ambiance_niv3.mp3'), pygame.mixer.Sound('../../audio/ambiance_niv4.mp3'), pygame.mixer.Sound('../../audio/ambiance_niv5.mp3')]
@@ -50,7 +50,7 @@ class Game:
         self.overworld = Overworld(current_level, self.max_level, screen, self.create_level)
         self.status = 'overworld'
         self.bg_music.stop()
-        self.overworld_bg_music.play(loops = -1)
+        self.overworld_bg_music.play(loops=-1)
         
     def change_item(self, lequel):
         self.item = lequel 
