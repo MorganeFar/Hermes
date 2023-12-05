@@ -208,7 +208,7 @@ class Level :
             player.speed = self.level_data['speed']
         
     def check_death(self):
-        if self.player.sprite.rect.top > screen_height or self.isDead:
+        if self.player.sprite.rect.top > screen_height+2000 or self.isDead:
             self.isDead = True
             self.create_overworld(self.current_level, 0)  # gerer pour mettre le game over, ou remetre au debut du niveau, ou l'overworld ? a voir
             
@@ -218,7 +218,7 @@ class Level :
             if self.item == self.bon_obj: #verifie si le dernier item est le bon objet 
                 final = 'gagne'
             self.win_sound.play()
-            self.create_dialogue(self.current_level) #on cree un dial qui retourne si finlment il gagne ou pas 
+            self.create_dialogue(self.current_level) #on cree un dialogue qui retourne si finalment il gagne ou pas
             if final == 'gagne': 
                 self.create_overworld(self.current_level, self.new_max_level)
             else:

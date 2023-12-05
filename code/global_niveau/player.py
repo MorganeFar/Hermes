@@ -131,9 +131,11 @@ class Player(pygame.sprite.Sprite):
                 self.jump()
         else:
             # il peut sauter que si il est sur le sol
-            if (keys[pygame.K_SPACE] or keys[pygame.K_UP]) and self.on_ground:
+            if (keys[pygame.K_SPACE] or keys[pygame.K_UP]) and self.on_ground and self.noLevel != 3:
                 self.jump()
-            
+            elif (keys[pygame.K_SPACE] or keys[pygame.K_UP]) and self.on_ceiling and self.noLevel == 3:
+                self.jump()
+
     def get_status(self):  # on recup l etat du player (jump, stand, run, ...)
         keys = pygame.key.get_pressed()
 
@@ -155,7 +157,7 @@ class Player(pygame.sprite.Sprite):
     
     def apply_gravity(self):  # sert pour le saut
         self.direction.y += self.gravity
-        self.rect.y += self.direction.y 
+        self.rect.y += self.direction.y
         
     def jump(self):
         self.direction.y = self.jump_speed 
