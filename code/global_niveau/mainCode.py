@@ -48,7 +48,7 @@ class Game:
         if new_max_level > self.max_level:
             self.max_level = new_max_level
             self.cur_health = 3 
-        elif self.level.isDead:
+        else:
             self.dead_sound.play()
             gameOver.over()
         self.overworld = Overworld(current_level, self.max_level, screen, self.create_level)
