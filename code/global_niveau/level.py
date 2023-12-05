@@ -20,7 +20,7 @@ timeFont = pygame.font.Font(None, 50)
 TIME_TO_BREATH = 20
 
 class Level :
-    def __init__(self, current_level, surface, create_overworld, change_item, change_health):
+    def __init__(self, current_level, surface, create_overworld, change_item, change_health, create_dialogue):
         # general setup
         self.display_surface = surface 
         self.world_shift = 0
@@ -63,6 +63,11 @@ class Level :
 
         # user interface
         self.change_item = change_item
+
+        #dialogues 
+        self.create_dialogue = create_dialogue
+        self.item = ''
+        self.bon_obj = self.level_data['bon_obj']
         
         # terrain setup
         terrain_layout = import_csv_layout(self.level_data['terrain'])
@@ -209,8 +214,15 @@ class Level :
             
     def check_win(self):
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, False):
+            final = 'perdu'
+            if self.item == self.bon_obj: #verifie si le dernier item est le bon objet 
+                final = 'gagne'
             self.win_sound.play()
-            self.create_overworld(self.current_level, self.new_max_level)  # c'est la qu'il faut gerer pour mettre le dialogue
+            self.create_dialogue(self.current_level) #on cree un dial qui retourne si finlment il gagne ou pas 
+            if final == 'gagne': 
+                self.create_overworld(self.current_level, self.new_max_level)
+            else:
+                self.create_overworld(self.current_level, self.current_level)
             
     def draw_back(self, surface):
         self.fond = pygame.transform.scale(self.the_fond, (screen_width, screen_height))
