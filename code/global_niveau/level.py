@@ -250,6 +250,7 @@ class Level :
             self.item_sound.play()
             for item in collided_item:
                 self.change_item(self.tab_level[item.value])
+                self.item = self.tab_level[item.value]
     
     def check_ennemy_collisions(self):
         enemy_collisions = pygame.sprite.spritecollide(self.player.sprite, self.enemy_sprites, False)
