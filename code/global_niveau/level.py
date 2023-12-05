@@ -211,6 +211,9 @@ class Level :
         if self.player.sprite.rect.top > screen_height+2000 or self.isDead:
             self.isDead = True
             self.create_overworld(self.current_level, 0)  # gerer pour mettre le game over, ou remetre au debut du niveau, ou l'overworld ? a voir
+        elif self.player.sprite.rect.top < -2000 or self.isDead:
+            self.isDead = True
+            self.create_overworld(self.current_level, 0)
             
     def check_win(self):
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, False):
