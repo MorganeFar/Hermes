@@ -8,6 +8,7 @@ from level import Level
 from overworld import Overworld 
 from ui import UI
 import gameOver
+from dialogues import Dialogue
 #from gameOver import over
 
 class Game:
@@ -30,6 +31,9 @@ class Game:
         
         # user interface
         self.ui = UI(screen)
+
+        #dialogues variables 
+        self.recom_niveaux = [False, False, False, False, False]
         
     def create_level(self, current_level):
         self.level = Level(current_level, screen, self.create_overworld, self.change_item, self.change_health)
@@ -51,7 +55,12 @@ class Game:
         self.status = 'overworld'
         self.bg_music.stop()
         self.overworld_bg_music.play(loops=-1)
-        
+
+    def create_dialogue(self, current_level):
+        self.dialogue = Dialogue(current_level, self.item, self.recom_niveaux[current_level -1])
+        self.dialogue.run()
+        self.recom_niveaux[current_level -1] = True
+    
     def change_item(self, lequel):
         self.item = lequel 
         
@@ -69,6 +78,7 @@ class Game:
             self.bg_music.stop()
             self.overworld_bg_music.play(loops=-1)
             self.status = 'overworld'
+            
     def run(self):
         if self.status == 'overworld': # switch entre les différents niveaux et la 'map' (l'overworld)
             self.overworld.run()
