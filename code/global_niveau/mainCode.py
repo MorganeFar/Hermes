@@ -9,7 +9,9 @@ from overworld import Overworld
 from ui import UI
 import gameOver
 from dialogues import Dialogue
-#from gameOver import over
+
+sys.path.append('../') 
+import maia_dialogue
 
 class Game:
     def __init__(self):
@@ -25,6 +27,7 @@ class Game:
         self.dead_sound = pygame.mixer.Sound('../../audio/dead.wav')
         
         # overworld creation
+        maia_dialogue.run()
         self.overworld = Overworld(1, self.max_level, screen, self.create_level)
         self.status = 'overworld' # le status de ou se trouve le joueur
         self.overworld_bg_music.play(loops=-1)
