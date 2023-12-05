@@ -250,7 +250,7 @@ class Level :
         time_left = TIME_TO_BREATH - (self.current_time - self.timeSinceLastBreath)
         time_text = timeFont.render(f"{time_left}", False, (0, 0, 0))
         if time_before != self.current_time:
-            time_left = 15 - (self.current_time - self.timeSinceLastBreath)
+            time_left = TIME_TO_BREATH - (self.current_time - self.timeSinceLastBreath)
             time_text = timeFont.render(f"{time_left}", False, (0, 0, 0))
         screen.blit(time_text, (20, 110))  # print time before death
         if time_left <= 0:
