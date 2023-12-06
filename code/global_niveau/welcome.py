@@ -1,10 +1,6 @@
 from settings import screen_height, screen_width, hermes_logo, play_button, menu_bg
 import sys, pygame
 from sceneryClass import Scenery
-sys.path.append("../niveau1")
-from mainCode import *
-# from gameOver import over
-
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -41,7 +37,7 @@ def welcomeMenu():
             if event.type == pygame.QUIT:
                 pygame.quit() #ferme la fenetre/ jeux
                 sys.exit() #arrête tout le programme
-            """
+            
             if event.type == pygame.MOUSEBUTTONDOWN:
                 posMouse = pygame.mouse.get_pos()
                 minX = PLAY_POS_X_COEF * screen_width
@@ -51,23 +47,20 @@ def welcomeMenu():
                 if ( minX <= posMouse[0] <= maxX
                     and minY <= posMouse[1] <= maxY):
                     # PERMET DE LANCER LE NIVEAU 1
-                    start()
+                    return 'start'
+            
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    return 'start'
+            
         
-        if game.level.isDead:
-            game.level.isDead = False
-            over()
-            
-        """
-            
-            
         #logic
         play.zoom()
-        play.update(0.015, 1.9)
-    
+        play.update(0.030, 1.9) #a changer pour la vitesse 
+        
         screen.blit(background,(0,0))
         welcomeGroup.draw(screen)
        
         pygame.display.flip()
         clock.tick(60)# controle la vite de maj
         
-welcomeMenu()
