@@ -84,9 +84,7 @@ class Dialogue:
     def run(self):
         pygame.init() #always need for any kind of pygame code 
         clock = pygame.time.Clock()
-        """final = 'perdu'
-        if self.objet_bon == True :
-            final = 'gagne'"""
+        
         while True: #the loop 
 
             if self.counter < self.speed * len(self.message):
