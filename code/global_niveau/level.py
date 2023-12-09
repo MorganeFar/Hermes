@@ -11,6 +11,7 @@ from tiles import Tile, StaticTile, AnimatedTile
 from enemy import Enemy 
 from player import Player 
 from game_data import levels
+from sceneryClass import Scenery
 
 pygame.init()
 
@@ -30,6 +31,7 @@ class Level :
         self.item_sound = pygame.mixer.Sound('../../audio/item.ogg')
         self.hit_sound = pygame.mixer.Sound('../../audio/hit.wav')
         self.win_sound = pygame.mixer.Sound('../../audio/victory.wav')
+        self.no_time_sound = pygame.mixer.Sound('../../audio/no_time.wav')
         
         # overworld connection
         self.create_overworld = create_overworld
@@ -72,6 +74,7 @@ class Level :
         # terrain setup
         terrain_layout = import_csv_layout(self.level_data['terrain'])
         self.terrain_sprites = self.create_tile_group(terrain_layout, 'terrain')  # ici le terrain est le nom de l'image de tuile, a voir si on peut mettre plusieurs tuiles pour 1 map
+        # soit coder en dur ici le blocage du niv 2
 
         # item setup (aussi a changer dans game_data, map test du niveau 1) item0 item1 item2 et du coup item0_sprite item1_sprite item2_sprite, en essayant de les laisser dans les fichiers design tels qu'ils sont
         item_layout = import_csv_layout(self.level_data['item'])
@@ -85,6 +88,12 @@ class Level :
         constraint_layout = import_csv_layout(self.level_data['constraints'])
         self.constraint_sprites = self.create_tile_group(constraint_layout, 'constraints')
         
+        #air pour le niveau 2
+        if self.current_level==2:
+            air_layout = import_csv_layout(self.level_data['air'])
+            self.air_sprites = self.create_tile_group(air_layout, 'air')
+            self.limite = pygame.Rect(0, -64, screen_width, 64)
+
     def create_tile_group(self, layout, type):
         sprite_group = pygame.sprite.Group()
         
@@ -120,6 +129,12 @@ class Level :
                         
                     if type == 'constraints':
                         sprite = Tile(tile_size, x, y)
+                        
+                    if type == 'air':
+                        path = '../../design/niveau2/air'
+                        air_tile_list = import_folder(path)
+                        tile_surface = air_tile_list[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface, 0)
                         
                     sprite_group.add(sprite)
                     
@@ -191,6 +206,13 @@ class Level :
         if player.on_ceiling and player.direction.y > 0:
             player.on_ceiling = False 
         
+    def plafond_collison_niv2(self):
+        player = self.player.sprite
+        if self.limite.colliderect(player.rect):
+            player.rect.top = self.limite.bottom
+            player.direction.y = 0
+            player.on_ceiling = True
+        
     def scroll_x(self):  # on fait en sorte que le niveau scroll si le perso avance
         player = self.player.sprite 
         player_x = player.rect.centerx
@@ -231,19 +253,7 @@ class Level :
         self.fond = pygame.transform.scale(self.the_fond, (screen_width, screen_height))
         self.fond = self.fond.convert()
         self.fond = surface.blit(self.fond, (0, 0))
-
-    """
-    def check_item_collisions(self): #devrait marcher 
-        collided_item0 = pygame.sprite.spritecollide(self.player.sprite, self.item0_sprites, True)
-        collided_item1 = pygame.sprite.spritecollide(self.player.sprite, self.item1_sprites, True)
-        collided_item2 = pygame.sprite.spritecollide(self.player.sprite, self.item2_sprites, True)
-        if collided_item0:
-            self.change_item(self.tab_level[0])
-        elif collided_item1:
-            self.change_item(self.tab_level[1])
-        elif collided_item2:
-            self.change_item(self.tab_level[2])
-    """        
+       
     def check_item_collisions(self):
         collided_item = pygame.sprite.spritecollide(self.player.sprite, self.item_sprites, True)
         if collided_item:
@@ -268,6 +278,8 @@ class Level :
         if time_before != self.current_time:
             time_left = TIME_TO_BREATH - (self.current_time - self.timeSinceLastBreath)
             time_text = timeFont.render(f"{time_left}", False, (0, 0, 0))
+            if time_left <= 5:
+                self.no_time_sound.play()
         screen.blit(time_text, (20, 110))  # print time before death
         if time_left <= 0:
             self.isDead = True
@@ -276,6 +288,11 @@ class Level :
         # run the entier game/level
         # fond
         self.draw_back(self.display_surface)
+        
+        #air
+        if self.current_level == 2 :
+            self.air_sprites.draw(self.display_surface)
+            self.air_sprites.update(self.world_shift)
 
         # terrain
         self.terrain_sprites.draw(self.display_surface)
@@ -296,6 +313,7 @@ class Level :
         self.player.update()
         self.horizontal_mouvement_collision()
         self.vertical_mouvement_collision()
+        if self.current_level == 2: self.plafond_collison_niv2()
         self.scroll_x()
         self.player.draw(self.display_surface)
         self.goal.update(self.world_shift)
