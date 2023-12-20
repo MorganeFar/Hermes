@@ -25,6 +25,9 @@ Appuyez sur la touche espace pour sauter.
 
 ![Run toward left](design/tuto/jump.gif)
 
+### Les objets 
+Tout au long de votre odyssée vous pouvez ramasser des objets. Pour cela il vous suffit juste de passer sur cet objet et il sera récupéré automatiquement. Mais faites attention jeune voyageur, vous n'avez pas un grand sac à dos, il ne peux acceuilir qu'un seul objet à la fois, et l'ancient objet est perdu à jamais dans le néan. 
+
 Installation et démarrage
 ---------------
 ### Conditions préalables  
