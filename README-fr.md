@@ -5,7 +5,7 @@ Incarnez Hermès, le messager des dieux dans une épopée fantastique à la conq
 Tutoriel
 ---------------
 ### Les game over 
-Attention voyageur, les moires vous observent et elles sont de votre coté. Elles vous laisseront recommencer le niveau si vous êtes assez maladroit pour tomber ou vous noyer, mais les monstres sont leurs créations. Si vous vous faites toucher par eux, vous perdrez la vie que chacune vous a offert avant votre départ. 3 vies pour 3 moires. Si vous perdez ces 3 vies alors elles penseront que vous n'avez pas l'étoffe d'un vrai dieux et vous forceront à recommencer le jeux entier pour prouver votre vraie valeur. 
+Attention voyageur, les moires vous observent et elles sont de votre coté. Elles vous laisseront recommencer le niveau si vous êtes assez maladroit pour tomber ou vous noyer, mais les monstres sont leurs créations. Si vous vous faites toucher par eux, vous perdrez une vie que chacune vous a offerte avant votre départ. 3 vies pour 3 moires. Si vous perdez ces 3 vies alors elles penseront que vous n'avez pas l'étoffe d'un vrai dieux et vous forceront à recommencer le jeux entier pour prouver votre vraie valeur. 
 Est-ce que vous serez assez fort pour survivre à ce périple ?
 
 ### Les déplacements
