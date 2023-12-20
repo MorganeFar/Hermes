@@ -7,7 +7,6 @@ import pygame
 from support import import_folder 
 from math import sin
 
-
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, change_health, level_data):
         super().__init__()
@@ -29,6 +28,7 @@ class Player(pygame.sprite.Sprite):
         # player status
         self.status = self.level_data['status']
         self.facing_right = True  # va vers la droite
+        self.cpt_jump = 0
 
         ### LEVEL 3
         if self.noLevel == 3: self.facing_right = not self.facing_right
@@ -84,28 +84,37 @@ class Player(pygame.sprite.Sprite):
             self.image.set_alpha(alpha)
         else:
             self.image.set_alpha(255)
-        
-        """
-        #set the rectangle, on prend toutes les situations possibles, enleve certains bugs 
+
+        # set the rectangle, on prend toutes les situations possibles, enleve certains bugs
         if self.on_ground and self.on_right:
             self.rect = self.image.get_rect(bottomright = self.rect.bottomright)
+
         elif self.on_ground and self.on_left:
             self.rect = self.image.get_rect(bottomleft = self.rect.bottomleft)
+
         elif self.on_ground:
             self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
+
         elif self.on_ceiling and self.on_right:
             self.rect = self.image.get_rect(topright = self.rect.topright)
+
         elif self.on_ceiling and self.on_left:
             self.rect = self.image.get_rect(topleft = self.rect.topleft)
+
         elif self.on_ceiling:
             self.rect = self.image.get_rect(midtop = self.rect.midtop)
+
+        print(f'on ceiling : {self.on_ceiling}')
+        print(f'on ground : {self.on_ground}')
+        print(f'on left : {self.on_left}')
+        print(f'on right : {self.on_right}')
         #else:
             #self.rect = self.image.get_rect(center = self.rect.center)
-        """
+
         
     def get_input(self):  # on fait bouger le personnage suivant les touches
         keys = pygame.key.get_pressed()
-        
+
         if keys[pygame.K_RIGHT]:
             self.direction.x = 1
             self.facing_right = True
@@ -133,6 +142,7 @@ class Player(pygame.sprite.Sprite):
             # il peut sauter que si il est sur le sol
             if (keys[pygame.K_SPACE] or keys[pygame.K_UP]) and self.on_ground and self.noLevel != 3:
                 self.jump()
+                self.on_ground = False
             elif (keys[pygame.K_SPACE] or keys[pygame.K_UP]) and self.on_ceiling and self.noLevel == 3:
                 self.jump()
 
@@ -154,13 +164,16 @@ class Player(pygame.sprite.Sprite):
             if (self.direction.x != 0 or keys[pygame.K_RIGHT] or
                     keys[pygame.K_LEFT] or keys[pygame.K_SPACE]):  # si il va dans une direction c est qu il nage
                 self.status = 'swim'
+
+        #print(self.status)
     
     def apply_gravity(self):  # sert pour le saut
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
-        
+
     def jump(self):
-        self.direction.y = self.jump_speed 
+        self.direction.y = self.jump_speed
+        self.cpt_jump += 1
         self.jump_sound.play()
     
     def get_damage(self):

@@ -162,19 +162,19 @@ class Level :
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed # on applique le mouvement horizontal
         
-        for sprite in self.terrain_sprites.sprites(): # si le pesro touche un mur en x (si collision avec le terrain)
+        for sprite in self.terrain_sprites.sprites():  # si le pesro touche un mur en x (si collision avec le terrain)
             if sprite.rect.colliderect(player.rect):
                 if player.direction.x < 0:  # si le perso touche un truc alors qu'il va a gauche
                     player.rect.left = sprite.rect.right
-                    player.on_left = True 
+                    player.on_left = True
                     self.current_x = player.rect.left 
                 elif player.direction.x > 0:  # si le perso touche qqch alors qu'il va a droite
-                    player.rect.right = sprite.rect.left 
-                    player.on_right = True 
+                    player.rect.right = sprite.rect.left
+                    player.on_right = True
                     self.current_x = player.rect.right
-                
+
         if player.on_left and (player.rect.left < self.current_x or player.direction.x >= 0):  # on ne touche plus qqch à gauche si on va à droite ou si on passe au dessus de ce mur
-            player.on_left = False 
+            player.on_left = False
         if player.on_right and (player.rect.right > self.current_x or player.direction.x <= 0):
             player.on_right = False 
 

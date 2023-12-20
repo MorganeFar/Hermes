@@ -46,7 +46,7 @@ class Game:
 
         #dialogues variables 
         self.recom_niveaux = [False, False, False, False, False]
-        
+
     def create_level(self, current_level):
         self.level = Level(current_level, screen, self.create_overworld, self.change_item, self.change_health, self.create_dialogue)
         self.status = 'level'
