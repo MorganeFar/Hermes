@@ -87,27 +87,37 @@ class Player(pygame.sprite.Sprite):
 
         # set the rectangle, on prend toutes les situations possibles, enleve certains bugs
         if self.on_ground and self.on_right:
+            #print(1)
             self.rect = self.image.get_rect(bottomright = self.rect.bottomright)
 
         elif self.on_ground and self.on_left:
+            #print(2)
             self.rect = self.image.get_rect(bottomleft = self.rect.bottomleft)
 
         elif self.on_ground:
+            #print(3)
             self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
 
         elif self.on_ceiling and self.on_right:
+            #print(4)
             self.rect = self.image.get_rect(topright = self.rect.topright)
 
         elif self.on_ceiling and self.on_left:
+            #print(5)
             self.rect = self.image.get_rect(topleft = self.rect.topleft)
 
         elif self.on_ceiling:
+            #print(6)
             self.rect = self.image.get_rect(midtop = self.rect.midtop)
 
+        #print(f'direction Y : {self.direction.y}')
+        """
         print(f'on ceiling : {self.on_ceiling}')
         print(f'on ground : {self.on_ground}')
         print(f'on left : {self.on_left}')
         print(f'on right : {self.on_right}')
+        """
+        #print()
         #else:
             #self.rect = self.image.get_rect(center = self.rect.center)
 
@@ -138,6 +148,7 @@ class Player(pygame.sprite.Sprite):
             # pour monter dans l'eau => pas besoin de toucher le sol
             if keys[pygame.K_SPACE] or keys[pygame.K_UP]:
                 self.jump()
+                self.on_ground = False
         else:
             # il peut sauter que si il est sur le sol
             if (keys[pygame.K_SPACE] or keys[pygame.K_UP]) and self.on_ground and self.noLevel != 3:
