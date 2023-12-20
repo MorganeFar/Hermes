@@ -19,7 +19,7 @@ qu'Hermès parte à gauche.
 
 ![Run toward left](design/tuto/leftArrow.gif)
 
-Sur votre chemin vous allez rencontrer des obstacles et ennemis. En tant que Hermès, vous ne vous battez pas, faîtes
+Sur votre chemin vous allez rencontrer des obstacles et ennemis. En tant que Hermès, vous ne vous battez pas, faîtes preuve
 de ruse et éviter les !
 Appuyez sur la touche espace pour sauter.
 
