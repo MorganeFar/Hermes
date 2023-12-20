@@ -1,19 +1,14 @@
 ![Hermes title](design/menu/titre_7.png)
 
-Entrez dans la peau d'Hermès, le messager des dieux et obtennez une place à l'Olympe !
+Incarnez Hermès, le messager des dieux dans une épopée fantastique à la conquête de l'Olympe ! Votre but est de vous imposer comme le douzième dieu de l'Olympe devant Zeus lui-même. Mais pour y arriver, vous devrez vous montrer rusé afin d’éviter les dangers, récupérer les différentes parties de votre trône et le forger. Entre les paysages fabuleux mais dangereux, les monstres, les marchés avec les dieux et le courroux d'Héra, arriverez-vous à conquérir l'Olympe ?  
 
-Comment jouer ?
+Tutoriel
 ---------------
-### Conditions préalables  
+### Les game over 
+Attention voyageur, les moires vous observent et elles sont de votre coté. Elles vous laisseront recommencer le niveau si vous êtes assez maladroit pour tomber ou vous noyer, mais les monstres sont leurs créations. Si vous vous faites toucher par eux, vous perdrez la vie que chacune vous a offert avant votre départ. 3 vies pour 3 moires. Si vous perdez ces 3 vies alors elles penseront que vous n'avez pas l'étoffe d'un vrai dieux et vous forceront à recommencer le jeux entier pour prouver votre vraie valeur. 
+Est-ce que vous serez assez fort pour survivre à ce périple ?
 
-* Télécharger la librairie pygame
-* Télécharger le dossier gitHub complet
-* Activé le son pour une meilleure expérience
-
-
-### Tutoriel
-
-#### Les déplacements
+### Les déplacements
 Le niveau s'achève lorsque vous atteignez le drapeau rouge. Comme un platformer classique, il faut vous déplacer
 vers la droite. Appuyez sur la flèche de droite pour que Hermès se déplace à droite.
 
@@ -29,6 +24,15 @@ de ruse et éviter les !
 Appuyez sur la touche espace pour sauter.
 
 ![Run toward left](design/tuto/jump.gif)
+
+Installation et démarrage
+---------------
+### Conditions préalables  
+* Télécharger la librairie pygame
+* Télécharger le dossier gitHub complet
+* Activer le son pour une meilleure expérience
+* Lancer le fichier mainCode.py se trouvant dans le dossier code/global
+* Pofiter de votre incroyable aventure !
 
 Dévelopeuses 
 ---------------
