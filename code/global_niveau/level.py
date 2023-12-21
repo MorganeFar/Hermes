@@ -150,6 +150,8 @@ class Level :
                     self.player.add(sprite)
                 if val == '0':  # le goal
                     fin_surface = pygame.image.load('../../design/global/flag.png').convert_alpha()
+                    if self.current_level == 3:
+                        fin_surface = pygame.transform.flip(fin_surface, False, True)
                     sprite = StaticTile(tile_size, x, y, fin_surface, 0)
                     self.goal.add(sprite)
     
