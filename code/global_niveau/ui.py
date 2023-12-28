@@ -6,11 +6,17 @@ UI (user interface)
 import pygame
 
 class UI: 
-    def __init__(self, surface):
+    def __init__(self, surface, current_level):
         #setup
         self.display_surface = surface 
         
-        #health 
+        #level
+        self.current_level = current_level
+        
+        #couleur du texte des objets :
+        self.couleur = 'black'
+        if self.current_level == 4:
+            self.couleur = 'white'
         
         #item (pas forcement besoin, a voi ce qu'il va faire avec)
         self.item = pygame.image.load('../../design/ui/backpack.png').convert_alpha()
@@ -30,6 +36,6 @@ class UI:
     
     def show_item(self,lequel):
         self.display_surface.blit(self.item, self.item_rect)
-        item_text_surf = self.font.render(lequel,False,'black')
+        item_text_surf = self.font.render(lequel,False,self.couleur)
         item_text_rect = item_text_surf.get_rect(midleft = (self.item_rect.right+15 ,self.item_rect.centery))
         self.display_surface.blit(item_text_surf, item_text_rect)
