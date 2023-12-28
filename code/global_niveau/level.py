@@ -92,7 +92,14 @@ class Level :
         if self.current_level==2:
             air_layout = import_csv_layout(self.level_data['air'])
             self.air_sprites = self.create_tile_group(air_layout, 'air')
-            self.limite = pygame.Rect(0, -64, screen_width, 64)
+            
+        #lava pour le niveau 4
+        if self.current_level == 4:
+            lava_layout = import_csv_layout(self.level_data['lava'])
+            self.lava_sprites = self.create_tile_group(lava_layout, 'lava')
+        
+        #limite poiur les niveaux 2et4
+        self.limite = pygame.Rect(0, -64, screen_width, 64)
 
     def create_tile_group(self, layout, type):
         sprite_group = pygame.sprite.Group()
@@ -134,6 +141,12 @@ class Level :
                         path = '../../design/niveau2/air'
                         air_tile_list = import_folder(path)
                         tile_surface = air_tile_list[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface, 0)
+                        
+                    if type == 'lava':
+                        path = '../../design/niveau4/lava'
+                        lava_tile_list = import_folder(path)
+                        tile_surface = lava_tile_list[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface, 0)
                         
                     sprite_group.add(sprite)
@@ -208,7 +221,7 @@ class Level :
         if player.on_ceiling and player.direction.y > 0:
             player.on_ceiling = False 
         
-    def plafond_collison_niv2(self):
+    def plafond_collison_niv24(self):
         player = self.player.sprite
         if self.limite.colliderect(player.rect):
             player.rect.top = self.limite.bottom
@@ -234,10 +247,10 @@ class Level :
     def check_death(self):
         if self.player.sprite.rect.top > screen_height+2000 or self.isDead:
             self.isDead = True
-            self.create_overworld(self.current_level, 0)  # gerer pour mettre le game over, ou remetre au debut du niveau, ou l'overworld ? a voir
+            self.create_overworld(self.current_level, 0, 'perdu')  # gerer pour mettre le game over, ou remetre au debut du niveau, ou l'overworld ? a voir
         elif self.player.sprite.rect.top < -2000 or self.isDead:
             self.isDead = True
-            self.create_overworld(self.current_level, 0)
+            self.create_overworld(self.current_level, 0, 'perdu')
             
     def check_win(self):
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, False):
@@ -245,11 +258,11 @@ class Level :
             if self.item == self.bon_obj: #verifie si le dernier item est le bon objet 
                 final = 'gagne'
             self.win_sound.play()
-            self.create_dialogue(self.current_level) #on cree un dialogue qui retourne si finalment il gagne ou pas
+            self.create_dialogue(self.current_level) #on cree un dialogue
             if final == 'gagne': 
-                self.create_overworld(self.current_level, self.new_max_level)
+                self.create_overworld(self.current_level, self.new_max_level, final)
             else:
-                self.create_overworld(self.current_level, self.current_level)
+                self.create_overworld(self.current_level, self.current_level, final)
             
     def draw_back(self, surface):
         self.fond = pygame.transform.scale(self.the_fond, (screen_width, screen_height))
@@ -295,6 +308,11 @@ class Level :
         if self.current_level == 2 :
             self.air_sprites.draw(self.display_surface)
             self.air_sprites.update(self.world_shift)
+            
+        #lava
+        if self.current_level == 4 :
+            self.lava_sprites.draw(self.display_surface)
+            self.lava_sprites.update(self.world_shift)
 
         # terrain
         self.terrain_sprites.draw(self.display_surface)
@@ -315,7 +333,7 @@ class Level :
         self.player.update()
         self.horizontal_mouvement_collision()
         self.vertical_mouvement_collision()
-        if self.current_level == 2: self.plafond_collison_niv2()
+        if (self.current_level == 2) or (self.current_level == 4): self.plafond_collison_niv24()
         self.scroll_x()
         self.player.draw(self.display_surface)
         self.goal.update(self.world_shift)
@@ -326,3 +344,4 @@ class Level :
 
         self.check_item_collisions()
         self.check_ennemy_collisions()
+
