@@ -125,24 +125,26 @@ class Player(pygame.sprite.Sprite):
     def get_input(self):  # on fait bouger le personnage suivant les touches
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_RIGHT]:
-            self.direction.x = 1
-            self.facing_right = True
-
-            # LEVEL 3 => Run toward right
-            if self.noLevel == 3:
+        if self.noLevel == 3:
+            if keys[pygame.K_LEFT]:
+                self.direction.x = 1
                 self.facing_right = False
 
-        elif keys[pygame.K_LEFT]:
-            self.direction.x = -1
-            self.facing_right = False
-
-            # LEVEL 3 => Run toward left
-            if self.noLevel == 3:
+            elif keys[pygame.K_RIGHT]:
+                self.direction.x = -1
                 self.facing_right = True
 
+            else:
+                self.direction.x = 0
         else:
-            self.direction.x = 0
+            if keys[pygame.K_RIGHT]:
+                self.direction.x = 1
+                self.facing_right = True
+            elif keys[pygame.K_LEFT]:
+                self.direction.x = -1
+                self.facing_right = False
+            else:
+                self.direction.x = 0
 
         if self.noLevel == 2:
             # pour monter dans l'eau => pas besoin de toucher le sol
