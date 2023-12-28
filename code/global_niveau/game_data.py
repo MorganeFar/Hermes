@@ -142,13 +142,13 @@ level_3 = {'terrain': '../../design/niveau3/map/level_3_map_terrain.csv',
                            "*défaite, retour au début du niveau* *appuyez sur 'e' pour sortir*"],
            'dialogue_recom': ["Hadès – Déjà de retour à ce que je vois."]
            }
- 
-level_4 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
-           'item': '../../design/niveau1/map/level_1_map_items.csv',
-           'enemies': '../../design/niveau1/map/level_1_map_enemies.csv',
-           'constraints': '../../design/niveau1/map/level_1_map_constraints.csv',
-           'player':'../../design/niveau1/map/level_1_map_player.csv',
-           'node_pos': (640,350),
+
+level_4 = {'terrain': '../../design/niveau4/map/level_4_map_terrain.csv',
+           'item': '../../design/niveau4/map/level_4_map_items.csv',
+           'enemies': '../../design/niveau4/map/level_4_map_enemies.csv',
+           'constraints': '../../design/niveau4/map/level_4_map_constraints.csv',
+           'player':'../../design/niveau4/map/level_4_map_player.csv',
+           'node_pos': (640,355),
            'unlock': 5,
            'node_graphics': '../../design/overworld/4.png',
            'animation_speed': 0.15,
@@ -158,7 +158,42 @@ level_4 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
            'jump_speed': -16,
            'items' : ['ciseaux', 'amour', 'pelle'],
            'rotation':0,
-           'monsters': ['../../design/niveau4/monster/bat', '../../design/niveau4/monster/fire', '../../design/niveau4/monster/stalactite']
+           'lava':'../../design/niveau4/map/level_4_map_lava.csv',
+           'monsters': ['../../design/niveau4/monster/bat', '../../design/niveau4/monster/fire'], 
+           'dieu': ['../../design/niveau4/hephaistos.png'], 
+           'place_dieu': [0.55, 0.13, 0.25, 0.6],
+           'bon_obj': 'amour',
+           'mauv_obj1': 'ciseaux',
+           'mauv_obj2': 'pelle',
+           'dialogue_all': ["Héphaistos – Hermès ! Mon vieil ami ! Que fais-tu ici ?",
+                           "Hermès – Salut Héphaïstos ! J'ai besoin que tu me fabriques quelque chose, le plus vite possible.",
+                           "Héphaistos - Bien sûr, qu'est-ce qu'il te faut ?",
+                           "Hermès – Il me faut un trône, le même que les onze dieux de l'Olympe. Je veux devenir le douzième.",
+                           "Héphaistos – Toi, le douzième dieu de l'Olympe ? Je ne veux pas te décourager mais il va te falloir plus qu'un simple trône pour convaincre Zeus. De plus, je n'ai pas les ingrédients nécessaires.",
+                           "Hermès – J'ai tout prévu, voilà les ingrédients.",
+                           "Héphaistos – Tu es déterminé à ce qu'il paraît. Très bien, je peux te faire un trône, mais qu'as-tu à m'offrir en échange ?"],
+           'dialogue_bon_obj': ["Hermès – Je te propose un service contre un service. Tu construis mon trône, et je te trouve une épouse. La plus belle d'entre toutes. Aphrodite elle-même.",
+                                "Héphaistos – Aphrodite ? La déesse de l'amour et de la beauté mariée à un boiteux ? Elle n'acceptera jamais !",
+                                "Hermès – Fais moi confiance. Une fois que je serai un dieu de l'Olympe je ferai en sorte que vous soyez marié. T'ai-je déjà déçu mon ami ?",
+                                "Héphaistos – Jamais ! D'accord, marché conclu dieu de la ruse. Cependant, si tu ne honores pas ta part du contrat, je veillerai personnellement à te laisser moisir dans l'un de mes pièges.",
+                                "*1h plus tard*",
+                                "Héphaistos – Voilà ton trône Hermès. Je te fais également un cadeau, des chaussures volantes. Tu arriveras en haut du mont Olympe bien plus rapidement avec elles.",
+                                "Héphaistos – Tu devrais faire attention, il y a une rumeur qui dit que Héra est à ta recherche. Sois prudent.",
+                                "*victoire, niveau suivant* *appuyez sur 'e' pour sortir*"],
+           'dialogue_mauv_obj1': ["Hèrmes – Je t'offre une coupe de cheveux gratuite, faite par mes soins.", 
+                                  "Héphaistos – Euuuuu... Non merci je ne veux pas finir chauve.",
+                                  "Hermès – Mince, je ne sais pas quoi t'offrir d'autre en échange.",
+                                  "Héphaistos – Bon courage, je n'ai besoin de rien. En tous cas repasse quand tu veux, c'est sympa d'avoir de la companie pour une fois.",
+                                  "*défaite, retour au début du niveau* *appuyez sur 'e' pour sortir*"],
+           'dialogue_mauv_obj2': ["Hèrmes – Je m'occupe personnellement de ton jardin.", 
+                                  "Héphaistos – Mais enfin Hermès, je n'ai même pas de jardin.",
+                                  "Hermès – Mince, je ne sais pas quoi t'offrir d'autre en échange.",
+                                  "Héphaistos – Bon courage, je n'ai besoin de rien. En tous cas repasse quand tu veux, c'est sympa d'avoir de la companie pour une fois.",
+                                  "*défaite, retour au début du niveau* *appuyez sur 'e' pour sortir*"],
+           'dialogue_no': ["Hermès – Je n'ai rien à t'offrir en échange.",
+                          "Héphaistos – Bon courage, je n'ai besoin de rien. En tous cas repasse quand tu veux, c'est sympa d'avoir de la companie pour une fois.",
+                          "*défaite, retour au début du niveau* *appuyez sur 'e' pour sortir*"],
+           'dialogue_recom': ["Héphaistos – Tiens tu es encore là ? C'est rare une personne qui reste aussi longtemps dans ma forge."]
            }
 
 level_5 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
@@ -185,17 +220,4 @@ levels = {
     3: level_3,
     4: level_4,
     5: level_5}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
