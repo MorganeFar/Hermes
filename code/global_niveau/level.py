@@ -9,6 +9,7 @@ from support import import_csv_layout, import_cut_graphic, import_folder
 from settings import tile_size, screen_height, screen_width 
 from tiles import Tile, StaticTile, AnimatedTile
 from enemy import Enemy 
+from stalactite import Stalactite
 from player import Player 
 from game_data import levels
 from sceneryClass import Scenery
@@ -97,8 +98,14 @@ class Level :
         if self.current_level == 4:
             lava_layout = import_csv_layout(self.level_data['lava'])
             self.lava_sprites = self.create_tile_group(lava_layout, 'lava')
+            
+            stalactite_layout = import_csv_layout(self.level_data['stalactite'])
+            self.stalactite_sprites = self.create_tile_group(stalactite_layout, 'stalactite')
+            
+            piege_layout = import_csv_layout(self.level_data['piege'])
+            self.piege_sprites = self.create_tile_group(piege_layout, 'piege')
         
-        #limite poiur les niveaux 2et4
+        #limite poiur les niveaux 2 et 4
         self.limite = pygame.Rect(0, -64, screen_width, 64)
 
     def create_tile_group(self, layout, type):
@@ -149,6 +156,20 @@ class Level :
                         tile_surface = lava_tile_list[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface, 0)
                         
+                    if type == 'stalactite':
+                        if val == '0':
+                            sprite = Stalactite(tile_size, x, y, '../../design/niveau4/stalactite', False, int(val))
+                        if val == '1':
+                            sprite = Stalactite(tile_size, x, y, '../../design/niveau4/stalactite', False, int(val))
+                        if val == '2':
+                            sprite = Stalactite(tile_size, x, y, '../../design/niveau4/stalactite', False, int(val))
+                        
+                    if type == 'piege':
+                        path = '../../design/niveau4/piege'
+                        piege_tile_list = import_folder(path)
+                        tile_surface = piege_tile_list[int(val)]
+                        sprite = StaticTile(tile_size, x, y, tile_surface, int(val))
+                        
                     sprite_group.add(sprite)
                     
         return sprite_group
@@ -172,7 +193,16 @@ class Level :
         for enemy in self.enemy_sprites.sprites():
             if pygame.sprite.spritecollide(enemy, self.constraint_sprites,False):
                 enemy.reverse()
-        
+                
+    def stalactite_fall(self): #le stalactite tome quand le player arrive au piege 
+        collided_piege = pygame.sprite.spritecollide(self.player.sprite, self.piege_sprites, True)
+        if collided_piege:
+            for piege in collided_piege:
+                self.id_stalactite = piege.value 
+                for stalactite in self.stalactite_sprites :
+                    if stalactite.value == piege.value:
+                        stalactite.active(True)
+                
     def horizontal_mouvement_collision(self):
         player = self.player.sprite
         player.rect.x += player.direction.x * player.speed # on applique le mouvement horizontal
@@ -283,6 +313,13 @@ class Level :
             self.hit_sound.play()
             for enemy in enemy_collisions:
                 self.player.sprite.get_damage()
+                
+    def check_stalactite_collision(self):
+        stalactite_collisions = pygame.sprite.spritecollide(self.player.sprite, self.stalactite_sprites, False)
+        if stalactite_collisions:
+            self.hit_sound.play()
+            for stalactite in stalactite_collisions:
+                self.player.sprite.get_damage()
 
     ### TIMER LEVEL 2 ###
     def timer(self):
@@ -320,10 +357,16 @@ class Level :
 
         # enemy
         self.enemy_sprites.update(self.world_shift)
-        self.constraint_sprites.update(
-            self.world_shift)  # on ne dessine pas les constraints car on ne veux pas les voir mais on veut qu'elles existent
+        self.constraint_sprites.update(self.world_shift)  # on ne dessine pas les constraints car on ne veux pas les voir mais on veut qu'elles existent
         self.enemy_collision_reverse()
         self.enemy_sprites.draw(self.display_surface)
+        
+        #stalactite
+        if self.current_level == 4:
+            self.stalactite_sprites.update(self.world_shift)
+            self.piege_sprites.update(self.world_shift)  # on ne dessine pas les pieges car on ne veux pas les voir mais on veut qu'elles existent
+            self.stalactite_fall()
+            self.stalactite_sprites.draw(self.display_surface)
 
         # item
         self.item_sprites.update(self.world_shift)
@@ -344,4 +387,5 @@ class Level :
 
         self.check_item_collisions()
         self.check_ennemy_collisions()
-
+        if self.current_level == 4:
+            self.check_stalactite_collision()
