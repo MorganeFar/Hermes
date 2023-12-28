@@ -80,6 +80,12 @@ class Dialogue:
 
         #score timer 
         self.score_time = True
+        
+    def objets(self):
+        self.trone = Scenery(0.3, 0.4, 0.16, 0.32, ["../../design/niveau4/obj_spe/trone.png"])
+        self.olympeGroup.add(self.trone)
+        self.shoes = Scenery(0.45, 0.61, 0.12, 0.1, ["../../design/niveau4/obj_spe/chaussure.png"])
+        self.olympeGroup.add(self.shoes)
 
     def run(self):
         pygame.init() #always need for any kind of pygame code 
@@ -106,24 +112,24 @@ class Dialogue:
                         self.counter = 0
                     
                     else: #texte suivant selon l'objet ramasse 
-                        #si le joueur a ramassé la lyre 
+                        #si le joueur a ramassé le bon objet  
                         if event.key == pygame.K_RETURN and self.done and self.objet_bon and self.active_mess_objets < len(self.dialogue_bon_obj) -1:
                             self.active_mess_objets += 1
                             self.done = False 
                             self.message = self.dialogue_bon_obj[self.active_mess_objets]
                             self.counter = 0
-                        #si le joueur a ramassé l'arc
+                            if (self.active_mess_objets == 5) and (self.current_level == 4):
+                                self.objets()
+                        #si le joueur a ramassé le mauvais obj 1
                         elif event.key == pygame.K_RETURN and self.done and self.objet_mauv1 and self.active_mess_objets < len(self.dialogue_mauv_obj1) -1:
                             self.active_mess_objets += 1
                             self.done = False 
-                            #self.dialogue_obj = cas(objet1)
                             self.message = self.dialogue_mauv_obj1[self.active_mess_objets]
                             self.counter = 0
-                        #si le joueur a ramassé la montre 
+                        #si le joueur a ramassé le mauvais obj 2
                         elif event.key == pygame.K_RETURN and self.done and self.objet_mauv2 and self.active_mess_objets < len(self.dialogue_mauv_obj2) -1:
                             self.active_mess_objets += 1
                             self.done = False 
-                            #self.dialogue_obj = cas(objet2)
                             self.message = self.dialogue_mauv_obj2[self.active_mess_objets]
                             self.counter = 0
                         #si le joueur n'a ramassé aucun objet
@@ -133,7 +139,6 @@ class Dialogue:
                             self.message = self.dialogue_no[self.active_mess_objets]
                             self.counter = 0
                         elif event.key == pygame.K_e:
-                            #status = 'overworld'
                             return 'final'
                             
             #visual 
@@ -178,4 +183,3 @@ class Dialogue:
             
             clock.tick(60)
 
-    
