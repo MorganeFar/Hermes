@@ -33,7 +33,7 @@ def run():
     light_grey = (200, 200, 200)
     black = (0,0,0)
     yellow = (230, 219, 65)
-    pygame.display.set_caption('maia') #the title of the window 
+    pygame.display.set_caption('hermes') #the title of the window 
     
     #Scenery
     olympeGroup = pygame.sprite.Group()
