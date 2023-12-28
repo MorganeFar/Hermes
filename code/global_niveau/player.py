@@ -109,18 +109,6 @@ class Player(pygame.sprite.Sprite):
         elif self.on_ceiling:
             #print(6)
             self.rect = self.image.get_rect(midtop = self.rect.midtop)
-
-        #print(f'direction Y : {self.direction.y}')
-        """
-        print(f'on ceiling : {self.on_ceiling}')
-        print(f'on ground : {self.on_ground}')
-        print(f'on left : {self.on_left}')
-        print(f'on right : {self.on_right}')
-        """
-        #print()
-        #else:
-            #self.rect = self.image.get_rect(center = self.rect.center)
-
         
     def get_input(self):  # on fait bouger le personnage suivant les touches
         keys = pygame.key.get_pressed()
