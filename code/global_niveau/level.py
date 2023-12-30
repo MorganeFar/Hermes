@@ -20,6 +20,7 @@ pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
 timeFont = pygame.font.Font(None, 50)
 TIME_TO_BREATH = 20
+###############
 
 class Level :
     def __init__(self, current_level, surface, create_overworld, change_item, change_health, create_dialogue):
@@ -67,7 +68,7 @@ class Level :
         # user interface
         self.change_item = change_item
 
-        #dialogues 
+        # dialogues
         self.create_dialogue = create_dialogue
         self.item = ''
         self.bon_obj = self.level_data['bon_obj']
@@ -89,12 +90,12 @@ class Level :
         constraint_layout = import_csv_layout(self.level_data['constraints'])
         self.constraint_sprites = self.create_tile_group(constraint_layout, 'constraints')
         
-        #air pour le niveau 2
-        if self.current_level==2:
+        # air pour le niveau 2
+        if self.current_level == 2:
             air_layout = import_csv_layout(self.level_data['air'])
             self.air_sprites = self.create_tile_group(air_layout, 'air')
             
-        #lava pour le niveau 4
+        # lava pour le niveau 4
         if self.current_level == 4:
             lava_layout = import_csv_layout(self.level_data['lava'])
             self.lava_sprites = self.create_tile_group(lava_layout, 'lava')
@@ -105,7 +106,7 @@ class Level :
             piege_layout = import_csv_layout(self.level_data['piege'])
             self.piege_sprites = self.create_tile_group(piege_layout, 'piege')
         
-        #limite poiur les niveaux 2 et 4
+        # limite poiur les niveaux 2 et 4
         self.limite = pygame.Rect(0, -64, screen_width, 64)
 
     def create_tile_group(self, layout, type):
@@ -179,10 +180,10 @@ class Level :
             for col_index,val in enumerate(row):
                 x = col_index * tile_size
                 y = row_index * tile_size
-                if val == '1':  # le player
+                if val == '1':  # player
                     sprite = Player((x,y), change_health, self.level_data)
                     self.player.add(sprite)
-                if val == '0':  # le goal
+                if val == '0':  # goal
                     fin_surface = pygame.image.load('../../design/global/flag.png').convert_alpha()
                     if self.current_level == 3:
                         fin_surface = pygame.transform.flip(fin_surface, False, True)
@@ -191,10 +192,10 @@ class Level :
     
     def enemy_collision_reverse(self):
         for enemy in self.enemy_sprites.sprites():
-            if pygame.sprite.spritecollide(enemy, self.constraint_sprites,False):
+            if pygame.sprite.spritecollide(enemy, self.constraint_sprites, False):
                 enemy.reverse()
                 
-    def stalactite_fall(self): #le stalactite tome quand le player arrive au piege 
+    def stalactite_fall(self):  # le stalactite tome quand le player arrive au piege
         collided_piege = pygame.sprite.spritecollide(self.player.sprite, self.piege_sprites, True)
         if collided_piege:
             for piege in collided_piege:
@@ -205,7 +206,7 @@ class Level :
                 
     def horizontal_mouvement_collision(self):
         player = self.player.sprite
-        player.rect.x += player.direction.x * player.speed # on applique le mouvement horizontal
+        player.rect.x += player.direction.x * player.speed  # on applique le mouvement horizontal
         
         for sprite in self.terrain_sprites.sprites():  # si le pesro touche un mur en x (si collision avec le terrain)
             if sprite.rect.colliderect(player.rect):
@@ -231,15 +232,17 @@ class Level :
             if sprite.rect.colliderect(player.rect):
                 if player.direction.y > 0:  # si le perso touche un truc alors qu'il va vers le bas
                     player.rect.bottom = sprite.rect.top 
-                    player.direction.y = 0 # cela evite que la gravité augmente trop et fait passer le pero a travers les plateformes
+                    player.direction.y = 0  # cela evite que la gravité augmente trop et fait passer le pero a travers les plateformes
                     player.on_ground = True  # il est bien sur le sol
+                    player.on_ceiling = False  # A RETIRER SI BESOIN
                 elif player.direction.y < 0:  # si le perso touche qqch alors qu'il va vers le haut
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
                     player.on_ceiling = True
+                    player.on_ground = False  # A RETIRER SI BESOIN
 
             # Remet chrono a 0 apres respiration
-            if self.current_level == 2 and not player.on_ceiling and player.rect.top < 20:
+            if self.current_level == 2 and player.rect.top < 20:
                 self.isBreathing = True
             if player.rect.top >= 64 and self.isBreathing:
                 self.timeSinceLastBreath = round(time.time())
@@ -247,7 +250,7 @@ class Level :
 
         # si il touche le sol puis tombe ou saute
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
-            player.on_ground = False 
+            player.on_ground = False
         if player.on_ceiling and player.direction.y > 0:
             player.on_ceiling = False 
         
@@ -257,14 +260,14 @@ class Level :
             player.rect.top = self.limite.bottom
             player.direction.y = 0
             player.on_ceiling = True
-        
+
     def scroll_x(self):  # on fait en sorte que le niveau scroll si le perso avance
         player = self.player.sprite 
         player_x = player.rect.centerx
         direction_x = player.direction.x
         
         # la vitesse du pero est nulle et c'est le scroll qui remplace le mouvement du perso
-        if player_x < screen_width/3 and direction_x < 0: # direction a gauche
+        if player_x < screen_width/3 and direction_x < 0:  # direction a gauche
             self.world_shift = self.level_data['speed']
             player.speed = 0 
         elif player_x > screen_width - (screen_width/3) and direction_x > 0:  # direction a droite
@@ -285,10 +288,10 @@ class Level :
     def check_win(self):
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, False):
             final = 'perdu'
-            if self.item == self.bon_obj: #verifie si le dernier item est le bon objet 
+            if self.item == self.bon_obj:  # verifie si le dernier item est le bon objet
                 final = 'gagne'
             self.win_sound.play()
-            self.create_dialogue(self.current_level) #on cree un dialogue
+            self.create_dialogue(self.current_level)  # on cree un dialogue
             if final == 'gagne': 
                 self.create_overworld(self.current_level, self.new_max_level, final)
             else:
@@ -341,13 +344,13 @@ class Level :
         # fond
         self.draw_back(self.display_surface)
         
-        #air
-        if self.current_level == 2 :
+        # air
+        if self.current_level == 2:
             self.air_sprites.draw(self.display_surface)
             self.air_sprites.update(self.world_shift)
             
-        #lava
-        if self.current_level == 4 :
+        # lava
+        if self.current_level == 4:
             self.lava_sprites.draw(self.display_surface)
             self.lava_sprites.update(self.world_shift)
 
@@ -361,7 +364,7 @@ class Level :
         self.enemy_collision_reverse()
         self.enemy_sprites.draw(self.display_surface)
         
-        #stalactite
+        # stalactite
         if self.current_level == 4:
             self.stalactite_sprites.update(self.world_shift)
             self.piege_sprites.update(self.world_shift)  # on ne dessine pas les pieges car on ne veux pas les voir mais on veut qu'elles existent

@@ -10,6 +10,8 @@ from math import sin
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, change_health, level_data):
         super().__init__()
+        self.tab = [0]
+        self.tabState = []
         self.import_character_assets()
         self.frame_index = 0
         self.level_data = level_data
@@ -28,7 +30,6 @@ class Player(pygame.sprite.Sprite):
         # player status
         self.status = self.level_data['status']
         self.facing_right = True  # va vers la droite
-        self.cpt_jump = 0
 
         ### LEVEL 3
         if self.noLevel == 3: self.facing_right = not self.facing_right
@@ -87,29 +88,49 @@ class Player(pygame.sprite.Sprite):
 
         # set the rectangle, on prend toutes les situations possibles, enleve certains bugs
         if self.on_ground and self.on_right:
-            #print(1)
-            self.rect = self.image.get_rect(bottomright = self.rect.bottomright)
+            if self.tab[len(self.tab)-1] != 1:
+                self.tab.append(1)
+                self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right, 'left': self.on_left})
+            self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
 
         elif self.on_ground and self.on_left:
-            #print(2)
-            self.rect = self.image.get_rect(bottomleft = self.rect.bottomleft)
+            if self.tab[len(self.tab)-1] != 2:
+                self.tab.append(2)
+                self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right,
+                                      'left': self.on_left})
+            self.rect = self.image.get_rect(bottomleft=self.rect.bottomleft)
 
         elif self.on_ground:
-            #print(3)
-            self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
+            if self.tab[len(self.tab)-1] != 3:
+                self.tab.append(3)
+                self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right,
+                                      'left': self.on_left})
+            self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
 
         elif self.on_ceiling and self.on_right:
-            #print(4)
-            self.rect = self.image.get_rect(topright = self.rect.topright)
+            if self.tab[len(self.tab)-1] != 4:
+                self.tab.append(4)
+                self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right,
+                                      'left': self.on_left})
+            self.rect = self.image.get_rect(topright=self.rect.topright)
 
         elif self.on_ceiling and self.on_left:
-            #print(5)
-            self.rect = self.image.get_rect(topleft = self.rect.topleft)
+            if self.tab[len(self.tab)-1] != 5:
+                self.tab.append(5)
+                self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right,
+                                      'left': self.on_left})
+            self.rect = self.image.get_rect(topleft=self.rect.topleft)
 
         elif self.on_ceiling:
-            #print(6)
-            self.rect = self.image.get_rect(midtop = self.rect.midtop)
-        
+            if self.tab[len(self.tab)-1] != 6:
+                self.tab.append(6)
+                self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right,
+                                      'left': self.on_left})
+            self.rect = self.image.get_rect(midtop=self.rect.midtop)
+        print(self.rect.bottomright)
+        print(self.direction.x)
+        print(self.direction.y)
+        print()
     def get_input(self):  # on fait bouger le personnage suivant les touches
         keys = pygame.key.get_pressed()
 
@@ -174,7 +195,6 @@ class Player(pygame.sprite.Sprite):
 
     def jump(self):
         self.direction.y = self.jump_speed
-        self.cpt_jump += 1
         self.jump_sound.play()
     
     def get_damage(self):
