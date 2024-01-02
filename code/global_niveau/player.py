@@ -87,54 +87,30 @@ class Player(pygame.sprite.Sprite):
             self.image.set_alpha(alpha)
         else:
             self.image.set_alpha(255)
-
+        print(f'y direction : {self.direction.y}')
         # set the rectangle, on prend toutes les situations possibles, enleve certains bugs
         if self.on_ground and self.on_right:
-            #print(1)
-            if self.tab[len(self.tab)-1] != 1:
-                self.tab.append(1)
-                self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right, 'left': self.on_left})
+            print(1)
             self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
 
         elif self.on_ground and self.on_left:
-            #print(2)
-            if self.tab[len(self.tab)-1] != 2:
-                self.tab.append(2)
-                self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right,
-                                      'left': self.on_left})
+            print(2)
             self.rect = self.image.get_rect(bottomleft=self.rect.bottomleft)
 
         elif self.on_ground:
-            #print(3)
-            if self.tab[len(self.tab)-1] != 3:
-                self.tab.append(3)
-                self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right,
-                                      'left': self.on_left})
+            print(3)
             self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
 
         elif self.on_ceiling and self.on_right:
-            #print(4)
-            if self.tab[len(self.tab)-1] != 4:
-                self.tab.append(4)
-                self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right,
-                                      'left': self.on_left})
+            print(4)
             self.rect = self.image.get_rect(topright=self.rect.topright)
 
         elif self.on_ceiling and self.on_left:
-            #print(5)
-            if self.tab[len(self.tab)-1] != 5:
-                self.tab.append(5)
-                self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right,
-                                      'left': self.on_left})
+            print(5)
             self.rect = self.image.get_rect(topleft=self.rect.topleft)
 
         elif self.on_ceiling:
-            #print(6)
-            if self.tab[len(self.tab)-1] != 6:
-                self.tab.append(6)
-                self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right,
-                                      'left': self.on_left})
-
+            print(6)
             self.rect = self.image.get_rect(midtop=self.rect.midtop)
 
         #print(self.rect.bottomright)
@@ -197,8 +173,6 @@ class Player(pygame.sprite.Sprite):
                     keys[pygame.K_LEFT] or keys[pygame.K_SPACE]):  # si il va dans une direction c est qu il nage
                 self.status = 'swim'
 
-        #print(self.status)
-    
     def apply_gravity(self):  # sert pour le saut
         self.direction.y += self.gravity
         self.rect.y += self.direction.y

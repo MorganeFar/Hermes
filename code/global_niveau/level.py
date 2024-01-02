@@ -214,22 +214,24 @@ class Level :
                 if player.direction.x < 0:  # si le perso touche un truc alors qu'il va a gauche
                     player.rect.left = sprite.rect.right
                     player.on_left = True
+                    player.on_right = False  # A RETIRER SI BESOIN
                     self.current_x = player.rect.left 
                 elif player.direction.x > 0:  # si le perso touche qqch alors qu'il va a droite
                     player.rect.right = sprite.rect.left
                     player.on_right = True
+                    player.on_left = False  # A RETIRER SI BESOIN
                     self.current_x = player.rect.right
-
-        if player.on_left and (player.rect.left < self.current_x or player.direction.x >= 0):  # on ne touche plus qqch à gauche si on va à droite ou si on passe au dessus de ce mur
+                                                                                    #>= semble mieu fonctionner avec > ou <
+        if player.on_left and (player.rect.left < self.current_x or player.direction.x > 0):  # on ne touche plus qqch à gauche si on va à droite ou si on passe au dessus de ce mur
             player.on_left = False
-        if player.on_right and (player.rect.right > self.current_x or player.direction.x <= 0):
+        if player.on_right and (player.rect.right > self.current_x or player.direction.x < 0):
             player.on_right = False 
 
     def vertical_mouvement_collision(self):
         player = self.player.sprite
         player.apply_gravity()
         
-        for sprite in self.terrain_sprites.sprites(): # si le pesro touche un mur en y (si collision avec le terrain)
+        for sprite in self.terrain_sprites.sprites():  # si le pesro touche un mur en y (si collision avec le terrain)
             if sprite.rect.colliderect(player.rect):
                 if player.direction.y > 0:  # si le perso touche un truc alors qu'il va vers le bas
                     player.rect.bottom = sprite.rect.top 
@@ -261,8 +263,12 @@ class Level :
             print(f'limite :{self.limite.bottom}')
             print(f'player top :{player.rect.top}')
             player.rect.top = self.limite.bottom
-            player.direction.y = 0
+            #player.direction.y = 0
+            print(player.on_right)
+            print(player.on_left)
+            print(player.direction.x)
             player.on_ceiling = True
+            player.on_ground = False
 
     def scroll_x(self):  # on fait en sorte que le niveau scroll si le perso avance
         player = self.player.sprite 
