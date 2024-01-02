@@ -9,9 +9,15 @@ Getting started
 ---------------
 ### Prerequisites  
 
+* Download a python editor
 * Download the pygame library
 * Download the whole gitHub folder
 * Sound on for a better experience
+* Enjoy this fantastic adventure !
+
+### Launch of the game
+Open with your python editor the code/global_niveau/mainCode.py file.
+Run the file and your quest begins.
 
 Tutorial
 ---------------

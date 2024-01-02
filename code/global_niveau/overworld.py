@@ -51,7 +51,7 @@ class Overworld:
     def __init__(self, start_level, max_level, surface, create_level):
         # setup 
         self.display_surface = surface 
-        self.max_level = max_level
+        self.max_level = 4#max_level
         self.current_level = start_level 
         self.create_level = create_level
 

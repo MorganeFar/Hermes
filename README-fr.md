@@ -10,7 +10,12 @@ Installation et démarrage
 * Télécharger le dossier gitHub complet
 * Activer le son pour une meilleure expérience
 * Lancer le fichier mainCode.py se trouvant dans le dossier code/global
-* Pofiter de votre incroyable aventure !
+* Profiter de votre incroyable aventure !
+
+### Démarrage du jeu
+
+Ouvrez dans votre éditeur python le fichier code/global_niveau/mainCode.py .
+Lancer le fichier et votre quête débute.
 
 Tutoriel
 ---------------

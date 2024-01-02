@@ -5,6 +5,9 @@ tiles
 
 import pygame
 from support import import_folder
+# DEBUG
+from settings import screen_height, screen_width
+screen = pygame.display.set_mode((screen_width, screen_height))
 
 class Tile(pygame.sprite.Sprite):
     def __init__(self, size, x, y):
@@ -36,6 +39,6 @@ class AnimatedTile(Tile): #pour avoir du decor anime
          
      def update(self, shift):
          self.animate()
-         self.rect.x += shift 
-         
+         self.rect.x += shift
+
          

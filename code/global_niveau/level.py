@@ -19,7 +19,7 @@ pygame.init()
 ### LEVEL 2 ###
 screen = pygame.display.set_mode((screen_width, screen_height))
 timeFont = pygame.font.Font(None, 50)
-TIME_TO_BREATH = 20
+TIME_TO_BREATH = 200
 ###############
 
 class Level :
@@ -45,6 +45,7 @@ class Level :
             self.current_level) + '/background.png').convert_alpha()
         self.tab_level = self.level_data['items']
 
+        # Breathing level 2
         if self.current_level == 2:
             self.current_time = 0
             self.timeSinceLastBreath = round(time.time())  # get the number of seconds since epoch
@@ -114,7 +115,7 @@ class Level :
         
         for row_index, row in enumerate(layout):  # on met un numero a nos row pour mieux les distinguer et les reperer plus facilement
             for col_index, val in enumerate(row):  # pour chaque indice et chaque valeur de case
-                if val != '-1': # si il y a qqch dans la case
+                if val != '-1':  # si il y a qqch dans la case
                     x = col_index * tile_size  
                     y = row_index * tile_size 
                     
@@ -132,7 +133,7 @@ class Level :
                         tile_surface = item_tile_list[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface, int(val))
                         
-                    if type == 'enemies':  # a voir apres avec val si on peut avir les autres monstres (attention changer les dossiers)
+                    if type == 'enemies':  # a voir apres avec val si on peut avoir les autres monstres (attention changer les dossiers)
                         if val == '0':
                             sprite = Enemy(tile_size, x, y, self.tab_monsters[0])
                         if val == '1':
@@ -141,7 +142,7 @@ class Level :
                             sprite = Enemy(tile_size, x, y, self.tab_monsters[2])
                         if val == '3':
                             sprite = Enemy(tile_size, x, y, self.tab_monsters[3])
-                        
+
                     if type == 'constraints':
                         sprite = Tile(tile_size, x, y)
                         
@@ -257,6 +258,8 @@ class Level :
     def plafond_collison_niv24(self):
         player = self.player.sprite
         if self.limite.colliderect(player.rect):
+            print(f'limite :{self.limite.bottom}')
+            print(f'player top :{player.rect.top}')
             player.rect.top = self.limite.bottom
             player.direction.y = 0
             player.on_ceiling = True

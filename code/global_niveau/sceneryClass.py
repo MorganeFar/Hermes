@@ -1,6 +1,7 @@
 
 import pygame, sys
 from settings import screen_height, screen_width
+screen = pygame.display.set_mode((screen_width, screen_height))
 
 class Scenery(pygame.sprite.Sprite):
     def __init__(self, pos_x_coef, pos_y_coef, widthCoef, heightCoef, pics):
@@ -14,6 +15,7 @@ class Scenery(pygame.sprite.Sprite):
             self.sprites.append((pygame.transform.scale(pygame.image.load(pic), (screen_width*widthCoef, screen_height*heightCoef))))
         self.image = self.sprites[self.current_sprite]
         self.rect = self.image.get_rect()
+        pygame.draw.rect(screen, (0, 0, 255), self.image.get_rect(), 2)
         self.rect.topleft = [pos_x_coef*screen_width, pos_y_coef*screen_height]
         
         

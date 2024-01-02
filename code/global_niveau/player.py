@@ -6,6 +6,8 @@ player
 import pygame 
 from support import import_folder 
 from math import sin
+from settings import screen_height, screen_width
+screen = pygame.display.set_mode((screen_width, screen_height))
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, change_health, level_data):
@@ -20,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         # rotation permettant de l'avoir couché pour nager
         self.image = pygame.transform.rotate(self.animations[self.level_data['status']][self.frame_index], self.level_data['rotation'])
         self.rect = self.image.get_rect(topleft=pos)
-        
+
         # player mouvement
         self.direction = pygame.math.Vector2(0,0)
         self.speed = self.level_data['speed']
@@ -88,12 +90,14 @@ class Player(pygame.sprite.Sprite):
 
         # set the rectangle, on prend toutes les situations possibles, enleve certains bugs
         if self.on_ground and self.on_right:
+            #print(1)
             if self.tab[len(self.tab)-1] != 1:
                 self.tab.append(1)
                 self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right, 'left': self.on_left})
             self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
 
         elif self.on_ground and self.on_left:
+            #print(2)
             if self.tab[len(self.tab)-1] != 2:
                 self.tab.append(2)
                 self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right,
@@ -101,6 +105,7 @@ class Player(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(bottomleft=self.rect.bottomleft)
 
         elif self.on_ground:
+            #print(3)
             if self.tab[len(self.tab)-1] != 3:
                 self.tab.append(3)
                 self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right,
@@ -108,6 +113,7 @@ class Player(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
 
         elif self.on_ceiling and self.on_right:
+            #print(4)
             if self.tab[len(self.tab)-1] != 4:
                 self.tab.append(4)
                 self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right,
@@ -115,6 +121,7 @@ class Player(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(topright=self.rect.topright)
 
         elif self.on_ceiling and self.on_left:
+            #print(5)
             if self.tab[len(self.tab)-1] != 5:
                 self.tab.append(5)
                 self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right,
@@ -122,15 +129,18 @@ class Player(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(topleft=self.rect.topleft)
 
         elif self.on_ceiling:
+            #print(6)
             if self.tab[len(self.tab)-1] != 6:
                 self.tab.append(6)
                 self.tabState.append({'ground': self.on_ground, 'ceiling': self.on_ceiling, 'right': self.on_right,
                                       'left': self.on_left})
+
             self.rect = self.image.get_rect(midtop=self.rect.midtop)
-        print(self.rect.bottomright)
-        print(self.direction.x)
-        print(self.direction.y)
-        print()
+
+        #print(self.rect.bottomright)
+        #print(self.direction.x)
+        #print(self.direction.y)
+        #print()
     def get_input(self):  # on fait bouger le personnage suivant les touches
         keys = pygame.key.get_pressed()
 
@@ -192,8 +202,10 @@ class Player(pygame.sprite.Sprite):
     def apply_gravity(self):  # sert pour le saut
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
+        #print(f'jump rect.y : {self.rect.y}')
 
     def jump(self):
+        #print(f'jump direction.y : {self.direction.y}')
         self.direction.y = self.jump_speed
         self.jump_sound.play()
     
@@ -220,4 +232,5 @@ class Player(pygame.sprite.Sprite):
         self.animate()
         self.invincibility_timer()
         self.wave_value()
+        pygame.draw.rect(screen, (0, 0, 255), self.rect, 2)  ### DEBUG
         

@@ -5,7 +5,10 @@ enemy
 
 import pygame
 from tiles import AnimatedTile 
-from random import randint 
+from random import randint
+# DEBUG
+from settings import screen_height, screen_width
+screen = pygame.display.set_mode((screen_width, screen_height))
 
 """
 class Enemy(AnimatedTile):
@@ -18,8 +21,14 @@ class Enemy(AnimatedTile):
 class Enemy(AnimatedTile):
     def __init__(self,size,x,y,path):
         super().__init__(size,x,y,path)
-        self.rect.y += size - self.image.get_size()[1] #reposotionne les enemies 
-        self.speed = randint(2,3)
+        if path == '../../design/niveau2/monster/poulpe':
+            self.rect = self.image.get_rect(midtop=(x, y))  # midtop
+            self.rect[3] = self.rect[3]-15  # reduit taille du rect de collision avec le pouple
+            self.rect.y += size - self.image.get_size()[1]  # reposotionne les enemies
+        else:
+            self.rect = self.image.get_rect(midtop=(x, y))
+            self.rect.y += size - self.image.get_size()[1]  # reposotionne les enemies
+        self.speed = randint(2, 3)
 
     def move(self):
         self.rect.x += self.speed 
@@ -36,6 +45,7 @@ class Enemy(AnimatedTile):
         self.animate()
         self.move()
         self.reverse_image()
+        pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)  ### DEBUG
         
         
         
