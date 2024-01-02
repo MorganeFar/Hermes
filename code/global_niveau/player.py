@@ -232,5 +232,5 @@ class Player(pygame.sprite.Sprite):
         self.animate()
         self.invincibility_timer()
         self.wave_value()
-        pygame.draw.rect(screen, (0, 0, 255), self.rect, 2)  ### DEBUG
+        #pygame.draw.rect(screen, (0, 0, 255), self.rect, 2)  ### DEBUG
         

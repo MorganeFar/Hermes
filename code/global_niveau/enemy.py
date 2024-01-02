@@ -45,7 +45,7 @@ class Enemy(AnimatedTile):
         self.animate()
         self.move()
         self.reverse_image()
-        pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)  ### DEBUG
+        #pygame.draw.rect(screen, (255, 0, 0), self.rect, 2)  ### DEBUG
         
         
         

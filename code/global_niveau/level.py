@@ -310,6 +310,8 @@ class Level :
         if collided_item:
             self.item_sound.play()
             for item in collided_item:
+                #print(f'item : {self.item}')
+                #print(f'change item : {self.change_item}')
                 self.change_item(self.tab_level[item.value])
                 self.item = self.tab_level[item.value]
     
