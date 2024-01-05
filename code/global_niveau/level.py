@@ -324,6 +324,7 @@ class Level :
         player = self.player.sprite
         if self.limite.colliderect(player.rect):
             player.rect.top = self.limite.bottom
+            player.apply_gravity()  # evite qu'Hermes "colle" au plafond
             #player.direction.y = 0
             player.on_ceiling = True
             player.on_ground = False
