@@ -38,7 +38,8 @@ class Game:
         self.dialogue_sound.play(loops=-1)
         maia_dialogue.run()
         self.dialogue_sound.stop()
-        self.overworld = Overworld(1, self.max_level, screen, self.create_level)
+        self.fini = True #False
+        self.overworld = Overworld(1, self.max_level, screen, self.create_level, self.fini)
         self.status = 'overworld' # le status de ou se trouve le joueur
         self.overworld_bg_music.play(loops=-1)
         
@@ -46,7 +47,7 @@ class Game:
         self.ui = UI(screen, self.cur_levl)
 
         #dialogues variables 
-        self.recom_niveaux = [False, False, False, False, False]
+        self.recom_niveaux = [False, False, False, False, False, False]
 
     def create_level(self, current_level):
         self.level = Level(current_level, screen, self.create_overworld, self.change_item, self.change_health, self.create_dialogue)
@@ -57,6 +58,8 @@ class Game:
         self.item = None
         self.cur_levl = current_level 
         self.ui = UI(screen, self.cur_levl)
+        if current_level == 5:
+            self.fini = True 
         
     def create_overworld(self, current_level, new_max_level, final):
         self.bg_music.stop()
@@ -70,13 +73,14 @@ class Game:
             self.gameOver_sound.play(loops=-1)
             gameOver.over()
             self.gameOver_sound.stop()
-        self.overworld = Overworld(current_level, self.max_level, screen, self.create_level)
+        self.overworld = Overworld(current_level, self.max_level, screen, self.create_level, self.fini)
         self.status = 'overworld'
         self.overworld_bg_music.play(loops=-1)
 
     def create_dialogue(self, current_level):
-        self.bg_music.stop()
-        self.dialogue_sound.play(loops=-1)
+        if current_level != 5:
+            self.bg_music.stop()
+            self.dialogue_sound.play(loops=-1)
         self.dialogue = Dialogue(current_level, self.item, self.recom_niveaux[current_level -1])
         self.dialogue.run()
         self.recom_niveaux[current_level -1] = True
@@ -97,7 +101,7 @@ class Game:
             self.gameOver_sound.play(loops=-1)
             gameOver.over()
             self.gameOver_sound.stop()
-            self.overworld = Overworld(1, self.max_level, screen, self.create_level)
+            self.overworld = Overworld(1, self.max_level, screen, self.create_level, self.fini)
             self.overworld_bg_music.play(loops=-1)
             self.status = 'overworld'
             
@@ -107,7 +111,8 @@ class Game:
         else:
             self.level.run()
             self.ui.show_health(self.cur_health)
-            self.ui.show_item(self.item)
+            if self.cur_levl !=5:
+                self.ui.show_item(self.item)
             self.check_game_over()
             
 #setup 
