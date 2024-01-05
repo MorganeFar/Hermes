@@ -48,13 +48,15 @@ class Icon(pygame.sprite.Sprite):
         self.rect.center = self.pos 
         
 class Overworld:
-    def __init__(self, start_level, max_level, surface, create_level):
+    def __init__(self, start_level, max_level, surface, create_level, fini):
         # setup 
         self.display_surface = surface 
-        self.max_level = 4#max_level
+        if fini == True :
+            self.max_level = 5
+        else : 
+            self.max_level = max_level
         self.current_level = start_level 
-        self.create_level = create_level
-
+        self.create_level = create_level 
         
         # mouvement logic
         self.moving = False 
@@ -80,12 +82,13 @@ class Overworld:
         self.nodes = pygame.sprite.Group()
         
         for index, node_data in enumerate(levels.values()):
-            if index+1 <= self.max_level:
-                node_sprite = Node(node_data['node_pos'], 'available', self.speed,node_data['node_graphics'])         
-            else:
-                node_sprite = Node(node_data['node_pos'], 'locked', self.speed, node_data['node_graphics'])         
-            self.nodes.add(node_sprite)
-                   
+            if index != 5 :
+                if index+1 <= self.max_level:
+                    node_sprite = Node(node_data['node_pos'], 'available', self.speed,node_data['node_graphics'])         
+                else:
+                    node_sprite = Node(node_data['node_pos'], 'locked', self.speed, node_data['node_graphics'])         
+                self.nodes.add(node_sprite)
+    
     def draw_paths(self):
         if self.max_level >1:
              points = [node['node_pos'] for index,node in enumerate(levels.values()) if index+1 <= self.max_level]
@@ -154,15 +157,4 @@ class Overworld:
         self.nodes.draw(self.display_surface)
         self.icon.draw(self.display_surface)
         self.nodes.update()
-        """
-        posMouse = pygame.mouse.get_pos()
-        print(posMouse)
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                print(posMouse)
-        """
-        
-        
-        
-        
-        
+
