@@ -44,10 +44,30 @@ class Level :
         #general setup suite 
         if current_level == 5: 
             self.world_shift = self.level_data['speed']
-
         self.new_max_level = self.level_data['unlock']
-        self.the_fond = pygame.image.load('../../design/niveau' + str(self.current_level) + '/background.png').convert_alpha()
+        
+        #le fond
         self.x_fond = 0
+        self.y_fond = 0
+        #le fond paralaxe pour le niveau 5
+        if self.current_level == 5:
+            self.fond1 = pygame.transform.scale(pygame.image.load('../../design/niveau5/background1.png').convert_alpha(), (screen_width, screen_height))
+            self.fond2 = pygame.transform.scale(pygame.image.load('../../design/niveau5/background2.png').convert_alpha(), (screen_width, screen_height))
+            self.fond3 = pygame.transform.scale(pygame.image.load('../../design/niveau5/background3.png').convert_alpha(), (screen_width, screen_height))
+            self.fond4 = pygame.transform.scale(pygame.image.load('../../design/niveau5/background4.png').convert_alpha(), (screen_width, screen_height))
+            self.fond5 = pygame.transform.scale(pygame.image.load('../../design/niveau5/background5.png').convert_alpha(), (screen_width, screen_height))
+            self.fond6 = pygame.transform.scale(pygame.image.load('../../design/niveau5/background6.png').convert_alpha(), (screen_width, screen_height))
+            self.fond7 = pygame.transform.scale(pygame.image.load('../../design/niveau5/background7.png').convert_alpha(), (screen_width, screen_height))
+            self.fond1 = pygame.transform.scale(self.fond1, (screen_width, screen_height)).convert()
+            self.fond2 = pygame.transform.scale(self.fond2, (screen_width, screen_height)).convert()
+            self.fond3 = pygame.transform.scale(self.fond3, (screen_width, screen_height)).convert()
+            self.fond4 = pygame.transform.scale(self.fond4, (screen_width, screen_height)).convert()
+            self.fond5 = pygame.transform.scale(self.fond5, (screen_width, screen_height)).convert()
+            self.fond6 = pygame.transform.scale(self.fond6, (screen_width, screen_height)).convert()
+            self.fond7 = pygame.transform.scale(self.fond7, (screen_width, screen_height)).convert()
+        #le fond des autres niveaux 
+        else:
+            self.the_fond = pygame.image.load('../../design/niveau' + str(self.current_level) + '/background.png').convert_alpha()
         
         if self.current_level !=5:
             self.tab_level = self.level_data['items']
@@ -358,13 +378,23 @@ class Level :
             self.create_overworld(self.current_level, self.new_max_level, 'gagne')
             
     def draw_back(self, surface):
-        self.fond = pygame.transform.scale(self.the_fond, (screen_width, screen_height))
-        self.fond = self.fond.convert()
-        if (self.x_fond > screen_width) or (self.x_fond < -screen_width):
-            self.x_fond = 0
-        self.fond0 = surface.blit(self.fond, (self.x_fond, 0))
-        self.fond1 = surface.blit(self.fond, (self.x_fond - screen_width, 0))
-        self.fond2 = surface.blit(self.fond, (self.x_fond + screen_width, 0))
+        if self.current_level == 5:
+            self.fondA = surface.blit(self.fond1, (0, self.y_fond))
+            self.fondB = surface.blit(self.fond2, (0, self.y_fond - screen_height))
+            self.fondC = surface.blit(self.fond3, (0, self.y_fond - 2*screen_height))
+            self.fondD = surface.blit(self.fond4, (0, self.y_fond - 3*screen_height))
+            self.fondE = surface.blit(self.fond5, (0, self.y_fond - 4*screen_height))
+            self.fondF = surface.blit(self.fond6, (0, self.y_fond - 5*screen_height))
+            self.fondG = surface.blit(self.fond7, (0, self.y_fond - 6*screen_height))
+        else:
+            self.fond = pygame.transform.scale(self.the_fond, (screen_width, screen_height))
+            self.fond = self.fond.convert()
+            if (self.x_fond > screen_width) or (self.x_fond < -screen_width):
+                self.x_fond = 0
+            self.fond0 = surface.blit(self.fond, (self.x_fond, 0))
+            self.fond1 = surface.blit(self.fond, (self.x_fond - screen_width, 0))
+            self.fond2 = surface.blit(self.fond, (self.x_fond + screen_width, 0))
+            
        
     def check_item_collisions(self):
         collided_item = pygame.sprite.spritecollide(self.player.sprite, self.item_sprites, True)
@@ -485,6 +515,7 @@ class Level :
             
             # fond
             self.draw_back(self.display_surface)
+            self.y_fond += 1.5
             
             # terrain
             self.terrain_sprites.draw(self.display_surface)
