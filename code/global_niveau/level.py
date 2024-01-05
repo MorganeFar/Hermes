@@ -47,6 +47,7 @@ class Level :
 
         self.new_max_level = self.level_data['unlock']
         self.the_fond = pygame.image.load('../../design/niveau' + str(self.current_level) + '/background.png').convert_alpha()
+        self.x_fond = 0
         
         if self.current_level !=5:
             self.tab_level = self.level_data['items']
@@ -316,9 +317,11 @@ class Level :
         if player_x < screen_width/3 and direction_x < 0: # direction a gauche
             self.world_shift = self.level_data['speed']
             player.speed = 0 
+            self.x_fond += 1.5
         elif player_x > screen_width - (screen_width/3) and direction_x > 0:  # direction a droite
             self.world_shift = - self.level_data['speed']
             player.speed = 0 
+            self.x_fond -= 1.5
         else:
             self.world_shift = 0 
             player.speed = self.level_data['speed']
@@ -357,7 +360,11 @@ class Level :
     def draw_back(self, surface):
         self.fond = pygame.transform.scale(self.the_fond, (screen_width, screen_height))
         self.fond = self.fond.convert()
-        self.fond = surface.blit(self.fond, (0, 0))
+        if (self.x_fond > screen_width) or (self.x_fond < -screen_width):
+            self.x_fond = 0
+        self.fond0 = surface.blit(self.fond, (self.x_fond, 0))
+        self.fond1 = surface.blit(self.fond, (self.x_fond - screen_width, 0))
+        self.fond2 = surface.blit(self.fond, (self.x_fond + screen_width, 0))
        
     def check_item_collisions(self):
         collided_item = pygame.sprite.spritecollide(self.player.sprite, self.item_sprites, True)
