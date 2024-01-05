@@ -22,6 +22,7 @@ class Player(pygame.sprite.Sprite):
         # rotation permettant de l'avoir couché pour nager
         self.image = pygame.transform.rotate(self.animations[self.level_data['status']][self.frame_index], self.level_data['rotation'])
         self.rect = self.image.get_rect(topleft=pos)
+        self.previousRect = self.rect
 
         # player mouvement
         self.direction = pygame.math.Vector2(0,0)
@@ -65,12 +66,13 @@ class Player(pygame.sprite.Sprite):
             full_path = character_path + animation 
             self.animations[animation] = import_folder(full_path)
         
-    def animate(self):  # on choisi l action du perso (run, fly, jump, stand et autre), donc on recup son etat
+    def animate(self):
+        # on choisi l action du perso (run, fly, jump, stand et autre), donc on recup son etat
         animation = self.animations[self.status]
         
         # loop over frame index
         self.frame_index += self.animation_speed
-        if self.frame_index >= len(animation): # si on depase le tableau on revient au debut
+        if self.frame_index >= len(animation):  # si on depase le tableau on revient au debut
             self.frame_index = 0
 
         # permet d'appliquer la bonne rotation de l'image cf niveau 2 => nage
@@ -87,19 +89,26 @@ class Player(pygame.sprite.Sprite):
             self.image.set_alpha(alpha)
         else:
             self.image.set_alpha(255)
-        print(f'y direction : {self.direction.y}')
+
         # set the rectangle, on prend toutes les situations possibles, enleve certains bugs
         if self.on_ground and self.on_right:
             print(1)
             self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
 
-        elif self.on_ground and self.on_left:
+            self.on_ground = False  # A RETIRER SI BESOIN
+
+        elif self.on_ground and self.on_left :
             print(2)
             self.rect = self.image.get_rect(bottomleft=self.rect.bottomleft)
+
+            self.on_ground = False  # A RETIRER SI BESOIN
+
 
         elif self.on_ground:
             print(3)
             self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
+            self.on_ground = False  # A RETIRER SI BESOIN
+
 
         elif self.on_ceiling and self.on_right:
             print(4)
@@ -108,19 +117,20 @@ class Player(pygame.sprite.Sprite):
         elif self.on_ceiling and self.on_left:
             print(5)
             self.rect = self.image.get_rect(topleft=self.rect.topleft)
+            self.on_ceiling = False
 
-        elif self.on_ceiling:
+
+        elif self.on_ceiling :
             print(6)
             self.rect = self.image.get_rect(midtop=self.rect.midtop)
+            self.on_ceiling = False
 
-        #print(self.rect.bottomright)
-        #print(self.direction.x)
-        #print(self.direction.y)
-        #print()
+
     def get_input(self):  # on fait bouger le personnage suivant les touches
         keys = pygame.key.get_pressed()
 
         if self.noLevel == 3:
+            # Fleches inversees
             if keys[pygame.K_LEFT]:
                 self.direction.x = 1
                 self.facing_right = False
@@ -147,12 +157,13 @@ class Player(pygame.sprite.Sprite):
                 self.jump()
                 self.on_ground = False
         else:
-            # il peut sauter que si il est sur le sol
+            # il peut sauter que s'il est sur le sol
             if (keys[pygame.K_SPACE] or keys[pygame.K_UP]) and self.on_ground and self.noLevel != 3:
                 self.jump()
                 self.on_ground = False
             elif (keys[pygame.K_SPACE] or keys[pygame.K_UP]) and self.on_ceiling and self.noLevel == 3:
                 self.jump()
+                self.on_ceiling = False
 
     def get_status(self):  # on recup l etat du player (jump, stand, run, ...)
         keys = pygame.key.get_pressed()
@@ -176,13 +187,12 @@ class Player(pygame.sprite.Sprite):
     def apply_gravity(self):  # sert pour le saut
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
-        #print(f'jump rect.y : {self.rect.y}')
 
     def jump(self):
-        #print(f'jump direction.y : {self.direction.y}')
         self.direction.y = self.jump_speed
         self.jump_sound.play()
-    
+
+
     def get_damage(self):
         if not self.invincible:
             self.change_health(-1)  # <=> change_health -= 1
@@ -206,5 +216,5 @@ class Player(pygame.sprite.Sprite):
         self.animate()
         self.invincibility_timer()
         self.wave_value()
-        #pygame.draw.rect(screen, (0, 0, 255), self.rect, 2)  ### DEBUG
+        #pygame.draw.rect(screen, (0, 0, 255), self.rect, 2) # DEBUG
         

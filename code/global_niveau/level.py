@@ -211,6 +211,7 @@ class Level :
         
         for sprite in self.terrain_sprites.sprites():  # si le pesro touche un mur en x (si collision avec le terrain)
             if sprite.rect.colliderect(player.rect):
+                #pygame.draw.rect(screen, (0, 0, 0), sprite.rect) # DEBUG
                 if player.direction.x < 0:  # si le perso touche un truc alors qu'il va a gauche
                     player.rect.left = sprite.rect.right
                     player.on_left = True
@@ -221,7 +222,11 @@ class Level :
                     player.on_right = True
                     player.on_left = False  # A RETIRER SI BESOIN
                     self.current_x = player.rect.right
-                                                                                    #>= semble mieu fonctionner avec > ou <
+
+            elif self.current_level == 2 or self.current_level == 4:
+                self.plafond_collison_niv24()
+
+                                           #>= semble mieu fonctionner avec > ou <
         if player.on_left and (player.rect.left < self.current_x or player.direction.x > 0):  # on ne touche plus qqch à gauche si on va à droite ou si on passe au dessus de ce mur
             player.on_left = False
         if player.on_right and (player.rect.right > self.current_x or player.direction.x < 0):
@@ -233,14 +238,20 @@ class Level :
         
         for sprite in self.terrain_sprites.sprites():  # si le pesro touche un mur en y (si collision avec le terrain)
             if sprite.rect.colliderect(player.rect):
-                if player.direction.y > 0:  # si le perso touche un truc alors qu'il va vers le bas
-                    player.rect.bottom = sprite.rect.top 
-                    player.direction.y = 0  # cela evite que la gravité augmente trop et fait passer le pero a travers les plateformes
-                    player.on_ground = True  # il est bien sur le sol
-                    player.on_ceiling = False  # A RETIRER SI BESOIN
+
+                if player.direction.y > 0:  # si le perso touche un truc alors qu'il va vers le bas #> A CHANGER SI BESOIN
+                        player.on_ground = True  # il est bien sur le sol
+                        player.on_ceiling = False  # A RETIRER SI BESOIN
+                        print("OK3")
+                        player.rect.bottom = sprite.rect.top
+                        player.direction.y = 0  # evite que la gravite augmente trop et qu'Hermes passe a travers les plateformes
+                        print("OK1")
+
                 elif player.direction.y < 0:  # si le perso touche qqch alors qu'il va vers le haut
-                    player.rect.top = sprite.rect.bottom
+                    #pygame.draw.rect(screen, (255, 255, 255), sprite.rect) # DEBUG
                     player.direction.y = 0
+                    print("OK2")
+                    player.rect.top = sprite.rect.bottom
                     player.on_ceiling = True
                     player.on_ground = False  # A RETIRER SI BESOIN
 
@@ -255,20 +266,22 @@ class Level :
         if player.on_ground and player.direction.y < 0 or player.direction.y > 1:
             player.on_ground = False
         if player.on_ceiling and player.direction.y > 0:
+            print(f'player direction y : {player.direction.y}')
             player.on_ceiling = False 
         
     def plafond_collison_niv24(self):
         player = self.player.sprite
         if self.limite.colliderect(player.rect):
-            print(f'limite :{self.limite.bottom}')
+            player.apply_gravity()  # évite que le personnage "colle" au plafond lorsqu'il saute
             print(f'player top :{player.rect.top}')
             player.rect.top = self.limite.bottom
-            #player.direction.y = 0
-            print(player.on_right)
-            print(player.on_left)
-            print(player.direction.x)
+            print(f'player top after : {player.rect.top}')
+            player.rect[1] = self.limite.bottom
+            player.direction.y = 0
             player.on_ceiling = True
             player.on_ground = False
+
+
 
     def scroll_x(self):  # on fait en sorte que le niveau scroll si le perso avance
         player = self.player.sprite 
@@ -316,8 +329,6 @@ class Level :
         if collided_item:
             self.item_sound.play()
             for item in collided_item:
-                #print(f'item : {self.item}')
-                #print(f'change item : {self.change_item}')
                 self.change_item(self.tab_level[item.value])
                 self.item = self.tab_level[item.value]
     
@@ -390,7 +401,7 @@ class Level :
         self.player.update()
         self.horizontal_mouvement_collision()
         self.vertical_mouvement_collision()
-        if (self.current_level == 2) or (self.current_level == 4): self.plafond_collison_niv24()
+        #if (self.current_level == 2) or (self.current_level == 4): self.plafond_collison_niv24()
         self.scroll_x()
         self.player.draw(self.display_surface)
         self.goal.update(self.world_shift)
@@ -403,3 +414,5 @@ class Level :
         self.check_ennemy_collisions()
         if self.current_level == 4:
             self.check_stalactite_collision()
+
+        #pygame.draw.rect(screen, (0, 255, 0), self.limite, 2) # DEBUG

@@ -102,7 +102,7 @@ class Game:
             self.status = 'overworld'
             
     def run(self):
-        if self.status == 'overworld': # switch entre les différents niveaux et la 'map' (l'overworld)
+        if self.status == 'overworld':  # switch entre les différents niveaux et la 'map' (l'overworld)
             self.overworld.run()
         else:
             self.level.run()
