@@ -6,14 +6,11 @@ player
 import pygame 
 from support import import_folder 
 from math import sin
-from settings import screen_height, screen_width
-screen = pygame.display.set_mode((screen_width, screen_height))
+from settings import screen_width
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, change_health, level_data):
         super().__init__()
-        self.tab = [0]
-        self.tabState = []
         self.import_character_assets()
         self.frame_index = 0
         self.level_data = level_data
@@ -22,7 +19,7 @@ class Player(pygame.sprite.Sprite):
         # rotation permettant de l'avoir couché pour nager
         self.image = pygame.transform.rotate(self.animations[self.level_data['status']][self.frame_index], self.level_data['rotation'])
         self.rect = self.image.get_rect(topleft=pos)
-
+        
         # player mouvement
         self.direction = pygame.math.Vector2(0,0)
         self.speed = self.level_data['speed']
@@ -36,6 +33,12 @@ class Player(pygame.sprite.Sprite):
         ### LEVEL 3
         if self.noLevel == 3: self.facing_right = not self.facing_right
 
+        #level 5 
+        self.NoNiveau = self.level_data['NoNiveau']
+        if self.NoNiveau == 5:
+            self.rect = self.image.get_rect(midbottom = pos) #on adapte la position du perso
+            self.max_x_constraint = screen_width
+        
         # on met les retangles proprement
         self.on_ground = False 
         self.on_ceiling = False 
@@ -87,50 +90,54 @@ class Player(pygame.sprite.Sprite):
             self.image.set_alpha(alpha)
         else:
             self.image.set_alpha(255)
-        print(f'y direction : {self.direction.y}')
+
         # set the rectangle, on prend toutes les situations possibles, enleve certains bugs
         if self.on_ground and self.on_right:
-            print(1)
-            self.rect = self.image.get_rect(bottomright=self.rect.bottomright)
+            #print(1)
+            self.rect = self.image.get_rect(bottomright = self.rect.bottomright)
 
         elif self.on_ground and self.on_left:
-            print(2)
-            self.rect = self.image.get_rect(bottomleft=self.rect.bottomleft)
+            #print(2)
+            self.rect = self.image.get_rect(bottomleft = self.rect.bottomleft)
 
         elif self.on_ground:
-            print(3)
-            self.rect = self.image.get_rect(midbottom=self.rect.midbottom)
+            #print(3)
+            self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
 
         elif self.on_ceiling and self.on_right:
-            print(4)
-            self.rect = self.image.get_rect(topright=self.rect.topright)
+            #print(4)
+            self.rect = self.image.get_rect(topright = self.rect.topright)
 
         elif self.on_ceiling and self.on_left:
-            print(5)
-            self.rect = self.image.get_rect(topleft=self.rect.topleft)
+            #print(5)
+            self.rect = self.image.get_rect(topleft = self.rect.topleft)
 
         elif self.on_ceiling:
-            print(6)
-            self.rect = self.image.get_rect(midtop=self.rect.midtop)
-
-        #print(self.rect.bottomright)
-        #print(self.direction.x)
-        #print(self.direction.y)
-        #print()
+            #print(6)
+            self.rect = self.image.get_rect(midtop = self.rect.midtop)
+        
     def get_input(self):  # on fait bouger le personnage suivant les touches
         keys = pygame.key.get_pressed()
 
+        #mvt horizontaux 
         if self.noLevel == 3:
             if keys[pygame.K_LEFT]:
                 self.direction.x = 1
                 self.facing_right = False
-
             elif keys[pygame.K_RIGHT]:
                 self.direction.x = -1
                 self.facing_right = True
-
             else:
                 self.direction.x = 0
+                
+        elif self.NoNiveau == 5:
+            if  keys[pygame.K_RIGHT]:
+                self.rect.x += self.speed 
+                self.facing_right = True
+            elif keys[pygame.K_LEFT]:
+                self.rect.x -= self.speed 
+                self.facing_right = False
+                
         else:
             if keys[pygame.K_RIGHT]:
                 self.direction.x = 1
@@ -141,11 +148,14 @@ class Player(pygame.sprite.Sprite):
             else:
                 self.direction.x = 0
 
+        #le saut 
         if self.noLevel == 2:
             # pour monter dans l'eau => pas besoin de toucher le sol
             if keys[pygame.K_SPACE] or keys[pygame.K_UP]:
                 self.jump()
                 self.on_ground = False
+        elif self.NoNiveau == 5:
+            pass
         else:
             # il peut sauter que si il est sur le sol
             if (keys[pygame.K_SPACE] or keys[pygame.K_UP]) and self.on_ground and self.noLevel != 3:
@@ -158,28 +168,29 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
 
         if self.noLevel != 2:  # == 1: en attend que les autres niveaux soient fait
-            if self.direction.y < 0:  # si il va vers le haut
-                self.status = 'jump'
-            elif self.direction.y > 1:  # si il va vers le bas
-                self.status = 'stand'  # ou fall si on avait des sprites de fall
-            else:
-                if self.direction.x != 0:  # si il va dans une direction c est qu il cours
-                    self.status = 'run'
+            if self.NoNiveau!=5:
+                if self.direction.y < 0:  # si il va vers le haut
+                    self.status = 'jump'
+                elif self.direction.y > 1:  # si il va vers le bas
+                    self.status = 'stand'  # ou fall si on avait des sprites de fall
                 else:
-                    self.status = 'stand'
+                    if self.direction.x != 0:  # si il va dans une direction c est qu il cours
+                        self.status = 'run'
+                    else:
+                        self.status = 'stand'
 
         elif self.noLevel == 2:
             if (self.direction.x != 0 or keys[pygame.K_RIGHT] or
                     keys[pygame.K_LEFT] or keys[pygame.K_SPACE]):  # si il va dans une direction c est qu il nage
                 self.status = 'swim'
 
+        #print(self.status)
+    
     def apply_gravity(self):  # sert pour le saut
         self.direction.y += self.gravity
         self.rect.y += self.direction.y
-        #print(f'jump rect.y : {self.rect.y}')
 
     def jump(self):
-        #print(f'jump direction.y : {self.direction.y}')
         self.direction.y = self.jump_speed
         self.jump_sound.play()
     
@@ -199,12 +210,19 @@ class Player(pygame.sprite.Sprite):
         value = sin(pygame.time.get_ticks())
         if value >= 0: return 255
         else: return 0
+        
+    def constraint(self):
+        if self.rect.left <= 0:
+            self.rect.left = 0
+        if self.rect.right >= self.max_x_constraint:
+            self.rect.right = self.max_x_constraint
     
     def update(self):
         self.get_input()
         self.get_status()
         self.animate()
+        if self.NoNiveau == 5:
+            self.constraint()
         self.invincibility_timer()
         self.wave_value()
-        #pygame.draw.rect(screen, (0, 0, 255), self.rect, 2)  ### DEBUG
         
