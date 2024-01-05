@@ -294,7 +294,7 @@ class Level :
         player = self.player.sprite
         player.apply_gravity()
         
-        for sprite in self.terrain_sprites.sprites(): # si le pesro touche un mur en y (si collision avec le terrain)
+        for sprite in self.terrain_sprites.sprites():  # si le pesro touche un mur en y (si collision avec le terrain)
             if sprite.rect.colliderect(player.rect):
                 if player.direction.y > 0:  # si le perso touche un truc alors qu'il va vers le bas
                     player.rect.bottom = sprite.rect.top 
@@ -325,7 +325,7 @@ class Level :
         if self.limite.colliderect(player.rect):
             player.rect.top = self.limite.bottom
             player.apply_gravity()  # evite qu'Hermes "colle" au plafond
-            #player.direction.y = 0
+            player.direction.y = 0
             player.on_ceiling = True
             player.on_ground = False
         
@@ -335,7 +335,7 @@ class Level :
         direction_x = player.direction.x
         
         # la vitesse du pero est nulle et c'est le scroll qui remplace le mouvement du perso
-        if player_x < screen_width/3 and direction_x < 0: # direction a gauche
+        if player_x < screen_width/3 and direction_x < 0:  # direction a gauche
             self.world_shift = self.level_data['speed']
             player.speed = 0 
             self.x_fond += 1.5
@@ -363,10 +363,10 @@ class Level :
     def check_win(self):
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, False):
             final = 'perdu'
-            if self.item == self.bon_obj: #verifie si le dernier item est le bon objet 
+            if self.item == self.bon_obj:  # verifie si le dernier item est le bon objet
                 final = 'gagne'
             self.win_sound.play()
-            self.create_dialogue(self.current_level) #on cree un dialogue
+            self.create_dialogue(self.current_level)  # on cree un dialogue
             if final == 'gagne': 
                 self.create_overworld(self.current_level, self.new_max_level, final)
             else:
@@ -441,9 +441,9 @@ class Level :
         if time_left <= 0:
             self.isDead = True
             
-    #hera pour le niveau 5
+    # hera pour le niveau 5
     def hera_ai(self):
-        #on fait en sorte que hera bouge en suivant le joueur 
+        # on fait en sorte que hera bouge en suivant le joueur
         player = self.player.sprite 
         player_x = player.rect.centerx
         if self.hera_x < player_x:
