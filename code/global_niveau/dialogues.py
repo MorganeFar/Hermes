@@ -17,7 +17,10 @@ class Dialogue:
         
         #window
         self.screen = pygame.display.set_mode((screen_width, screen_height))
-        path = "../../design/niveau" + str(self.current_level) + "/background.png"
+        if current_level != 6 :
+            path = "../../design/niveau" + str(self.current_level) + "/background.png"
+        else : 
+            path = "../../design/the_end/olympe.png"
         self.background = pygame.image.load(path)
         self.fond = pygame.transform.scale(self.background, (screen_width, screen_height))
         self.fond = self.fond.convert()
@@ -47,8 +50,9 @@ class Dialogue:
         #Scenery
         self.place = self.level_data['place_dieu']
         self.olympeGroup = pygame.sprite.Group()
-        self.dieu = Scenery(self.place[0], self.place[1], self.place[2], self.place[3], self.level_data['dieu'])
-        self.olympeGroup.add(self.dieu)
+        if self.current_level != 5:
+            self.dieu = Scenery(self.place[0], self.place[1], self.place[2], self.place[3], self.level_data['dieu'])
+            self.olympeGroup.add(self.dieu)
         
         hermes = Scenery(0.2, 0.40, 0.10, 0.3, ["../../design/hermes/stand/hermes_s.png"])
         self.olympeGroup.add(hermes)
@@ -86,6 +90,14 @@ class Dialogue:
         self.olympeGroup.add(self.trone)
         self.shoes = Scenery(0.45, 0.61, 0.12, 0.1, ["../../design/niveau4/obj_spe/chaussure.png"])
         self.olympeGroup.add(self.shoes)
+        
+    def chaise(self):
+        self.chair = Scenery(0.3, 0.4, 0.16, 0.32, ["../../design/niveau4/obj_spe/trone.png"])
+        self.olympeGroup.add(self.chair)
+        
+    def hera(self):
+        self.dieu = Scenery(self.place[0], self.place[1], self.place[2], self.place[3], self.level_data['dieu'])
+        self.olympeGroup.add(self.dieu)
 
     def run(self):
         pygame.init() #always need for any kind of pygame code 
@@ -110,6 +122,10 @@ class Dialogue:
                         self.done = False 
                         self.message = self.dialogue_all[self.active_message]
                         self.counter = 0
+                        if (self.active_message == 1) and (self.current_level == 6):
+                            self.chaise()
+                        if (self.active_message == 1) and (self.current_level == 5):
+                            self.hera()
                     
                     else: #texte suivant selon l'objet ramasse 
                         #si le joueur a ramassé le bon objet  
