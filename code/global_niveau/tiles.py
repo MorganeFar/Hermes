@@ -41,4 +41,11 @@ class AnimatedTile(Tile): #pour avoir du decor anime
          self.animate()
          self.rect.x += shift
 
-         
+class TileLevel5(Tile):
+    def __init__(self, size, x, y, surface, value):
+        super().__init__(size, x, y)
+        self.image = surface 
+        self.value = value
+        
+    def update(self, shift):
+        self.rect.y -= shift
