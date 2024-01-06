@@ -40,13 +40,13 @@ class Game:
         self.dialogue_sound.stop()
         self.fini = True #False
         self.overworld = Overworld(1, self.max_level, screen, self.create_level, self.fini)
-        self.status = 'overworld' # le status de ou se trouve le joueur
+        self.status = 'overworld'  # le status de ou se trouve le joueur
         self.overworld_bg_music.play(loops=-1)
         
         # user interface
         self.ui = UI(screen, self.cur_levl)
 
-        #dialogues variables 
+        # dialogues variables
         self.recom_niveaux = [False, False, False, False, False, False]
 
     def create_level(self, current_level):
@@ -67,7 +67,9 @@ class Game:
         if final == 'gagne':
             self.cur_health = 3
             if new_max_level > self.max_level:
-                self.max_level = new_max_level 
+                self.max_level = new_max_level
+                if self.fini:
+                    self.max_level = 5
         else:
             self.dead_sound.play()
             self.gameOver_sound.play(loops=-1)
@@ -111,11 +113,11 @@ class Game:
         else:
             self.level.run()
             self.ui.show_health(self.cur_health)
-            if self.cur_levl !=5:
+            if self.cur_levl != 5:
                 self.ui.show_item(self.item)
             self.check_game_over()
             
-#setup 
+# setup
 pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()

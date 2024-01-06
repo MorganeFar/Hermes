@@ -41,15 +41,15 @@ class Level :
         self.current_level = current_level
         self.level_data = levels[self.current_level]  # permet de le mettre en paramètre du player
         
-        #general setup suite 
+        # general setup suite
         if current_level == 5: 
             self.world_shift = self.level_data['speed']
         self.new_max_level = self.level_data['unlock']
         
-        #le fond
+        # le fond
         self.x_fond = 0
         self.y_fond = 0
-        #le fond paralaxe pour le niveau 5
+        # le fond paralaxe pour le niveau 5
         if self.current_level == 5:
             self.fond1 = pygame.transform.scale(pygame.image.load('../../design/niveau5/background1.png').convert_alpha(), (screen_width, screen_height))
             self.fond2 = pygame.transform.scale(pygame.image.load('../../design/niveau5/background2.png').convert_alpha(), (screen_width, screen_height))
@@ -65,7 +65,7 @@ class Level :
             self.fond5 = pygame.transform.scale(self.fond5, (screen_width, screen_height)).convert()
             self.fond6 = pygame.transform.scale(self.fond6, (screen_width, screen_height)).convert()
             self.fond7 = pygame.transform.scale(self.fond7, (screen_width, screen_height)).convert()
-        #le fond des autres niveaux 
+        # le fond des autres niveaux
         else:
             self.the_fond = pygame.image.load('../../design/niveau' + str(self.current_level) + '/background.png').convert_alpha()
         
@@ -82,9 +82,9 @@ class Level :
                 self.timeTab.append(str(i+1))
             self.timer()
 
-        #replacement pour le niveau 5
+        # replacement pour le niveau 5
         self.replace = False 
-        self.taille = 11664 - 704 #taille complete du niveau - taille de l'ecran (en y)
+        self.taille = 11664 - 704  # taille complete du niveau - taille de l'ecran (en y)
 
         # monsters
         if self.current_level !=5:
@@ -102,7 +102,7 @@ class Level :
         if self.current_level !=5:
             self.change_item = change_item
 
-        #dialogues 
+        # dialogues
         self.create_dialogue = create_dialogue
         self.item = ''
         if self.current_level !=5:
@@ -112,7 +112,7 @@ class Level :
         terrain_layout = import_csv_layout(self.level_data['terrain'])
         self.terrain_sprites = self.create_tile_group(terrain_layout, 'terrain')  # ici le terrain est le nom de l'image de tuile
 
-        if self.current_level !=5:
+        if self.current_level != 5:
             # item setup 
             item_layout = import_csv_layout(self.level_data['item'])
             self.item_sprites = self.create_tile_group(item_layout, 'item')
@@ -125,12 +125,12 @@ class Level :
             constraint_layout = import_csv_layout(self.level_data['constraints'])
             self.constraint_sprites = self.create_tile_group(constraint_layout, 'constraints')
             
-        #air pour le niveau 2
-        if self.current_level==2:
+        # air pour le niveau 2
+        if self.current_level == 2:
             air_layout = import_csv_layout(self.level_data['air'])
             self.air_sprites = self.create_tile_group(air_layout, 'air')
             
-        #lava pour le niveau 4
+        # lava pour le niveau 4
         if self.current_level == 4:
             lava_layout = import_csv_layout(self.level_data['lava'])
             self.lava_sprites = self.create_tile_group(lava_layout, 'lava')
@@ -141,15 +141,15 @@ class Level :
             piege_layout = import_csv_layout(self.level_data['piege'])
             self.piege_sprites = self.create_tile_group(piege_layout, 'piege')
         
-        #limite poiur les niveaux 2 et 4
+        # limite poiur les niveaux 2 et 4
         self.limite = pygame.Rect(0, -64, screen_width, 64)
         
-        #limite pour le niveau 5 
+        # limite pour le niveau 5
         if self.current_level == 5:
             death_line_layout = import_csv_layout(self.level_data['death_line'])
             self.death_line = self.create_tile_group(death_line_layout, 'death_line')
             
-        #hera pour le niveau 5
+        # hera pour le niveau 5
         self.hera = pygame.image.load("../../design/niveau5/hera_2.png").convert_alpha()
         self.hera = pygame.transform.scale(self.hera, (47.5, 110))
         self.hera_x = screen_width * (1/2)
@@ -175,7 +175,7 @@ class Level :
                         
                         if self.current_level !=5:
                             sprite = StaticTile(tile_size, x, y, tile_surface, 0)
-                        else : sprite = TileLevel5(self.tile_size, x, y, tile_surface, val)
+                        else: sprite = TileLevel5(self.tile_size, x, y, tile_surface, val)
                         
                     if type == 'item':  # item0 item1 item2
                         # sprite = AnimatedTile(tile_size, x, y, '../../niveaux/nv_1_apollon/object')
@@ -235,13 +235,13 @@ class Level :
         
     def player_setup(self,layout, change_health):
         for row_index, row in enumerate(layout): 
-            for col_index,val in enumerate(row):
+            for col_index, val in enumerate(row):
                 x = col_index * tile_size
                 y = row_index * tile_size
                 if val == '1':  # le player
                     if self.current_level == 5:
-                        sprite = Player((x, screen_height*(5/6)), change_health, self.level_data) #y - self.taille
-                    else : 
+                        sprite = Player((x, screen_height*(5/6)), change_health, self.level_data)  #y - self.taille
+                    else:
                         sprite = Player((x,y), change_health, self.level_data)
                     self.player.add(sprite)
                 if val == '0':  # le goal
@@ -249,17 +249,17 @@ class Level :
                     if self.current_level == 3:
                         fin_surface = pygame.transform.flip(fin_surface, False, True)
                     if self.current_level == 5:
-                        sprite = TileLevel5(tile_size, x +72, y - self.taille, fin_surface, 0) # - self.taille + (1.9)*704
-                    else : 
+                        sprite = TileLevel5(tile_size, x +72, y - self.taille, fin_surface, 0)  # - self.taille + (1.9)*704
+                    else:
                         sprite = StaticTile(tile_size, x, y, fin_surface, 0)
                     self.goal.add(sprite)
     
     def enemy_collision_reverse(self):
         for enemy in self.enemy_sprites.sprites():
-            if pygame.sprite.spritecollide(enemy, self.constraint_sprites,False):
+            if pygame.sprite.spritecollide(enemy, self.constraint_sprites, False):
                 enemy.reverse()
                 
-    def stalactite_fall(self): #le stalactite tome quand le player arrive au piege 
+    def stalactite_fall(self):  # le stalactite tombe quand le player arrive au piege
         collided_piege = pygame.sprite.spritecollide(self.player.sprite, self.piege_sprites, True)
         if collided_piege:
             for piege in collided_piege:
@@ -298,14 +298,16 @@ class Level :
             if sprite.rect.colliderect(player.rect):
                 if player.direction.y > 0:  # si le perso touche un truc alors qu'il va vers le bas
                     player.rect.bottom = sprite.rect.top 
-                    player.direction.y = 0 # cela evite que la gravité augmente trop et fait passer le pero a travers les plateformes
+                    player.direction.y = 0  # cela evite que la gravité augmente trop et fait passer le pero a travers les plateformes
                     player.on_ground = True  # il est bien sur le sol
                     player.on_ceiling = False  # A RETIRER SI BESOIN
+                    #print("ground")
                 elif player.direction.y < 0:  # si le perso touche qqch alors qu'il va vers le haut
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
                     player.on_ceiling = True
                     player.on_ground = False  # A RETIRER SI BESOIN
+                    #print("ceiling")
 
             # Remet chrono a 0 apres respiration
             if self.current_level == 2 and player.rect.top < 20:
@@ -327,6 +329,7 @@ class Level :
             player.apply_gravity()  # evite qu'Hermes "colle" au plafond
             player.direction.y = 0
             player.on_ceiling = True
+            print("plafond collision")
             player.on_ground = False
         
     def scroll_x(self):  # on fait en sorte que le niveau scroll si le perso avance
@@ -392,10 +395,10 @@ class Level :
             self.fond = self.fond.convert()
             if (self.x_fond > screen_width) or (self.x_fond < -screen_width):
                 self.x_fond = 0
-            self.fond0 = surface.blit(self.fond, (self.x_fond, 0))
+            self.fond0 = surface.blit(pygame.transform.flip(self.fond, True, False), (self.x_fond, 0))  # background
             self.fond1 = surface.blit(self.fond, (self.x_fond - screen_width, 0))
-            self.fond2 = surface.blit(self.fond, (self.x_fond + screen_width, 0))
-            
+            self.fond2 = surface.blit(self.fond, (self.x_fond + screen_width, 0))  # terrain
+
        
     def check_item_collisions(self):
         collided_item = pygame.sprite.spritecollide(self.player.sprite, self.item_sprites, True)
