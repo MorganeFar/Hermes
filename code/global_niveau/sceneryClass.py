@@ -1,14 +1,20 @@
+"""
+scenery 
+"""
 
+# ---------------- IMPORTATIONS ----------------
 import pygame, sys
 from settings import screen_height, screen_width
 screen = pygame.display.set_mode((screen_width, screen_height))
+# ----------------------------------------------
 
+# Class pour mettre en place des scenes 
 class Scenery(pygame.sprite.Sprite):
     def __init__(self, pos_x_coef, pos_y_coef, widthCoef, heightCoef, pics):
         super().__init__()
         self.sprites = []
         self.current_sprite = 0
-        self.begin = True #correspond à toLeft pour charon et zoomIn pour retry
+        self.begin = True # Correspond à toLeft pour charon et zoomIn pour retry
         self.move = 0
         self.moveX = 1
         for pic in pics:
