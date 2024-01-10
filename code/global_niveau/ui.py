@@ -2,27 +2,30 @@
 """
 UI (user interface)
 """
-
+# ---------------- IMPORTATIONS ----------------
 import pygame
+# ----------------------------------------------
 
+# CLass pour gerer l'interface utilisateur 
 class UI: 
     def __init__(self, surface, current_level):
-        #setup
+        # Setup
         self.display_surface = surface 
         
-        #level
+        # Level
         self.current_level = current_level
         
-        #couleur du texte des objets :
+        # Couleur du texte des objets :
         self.couleur = 'black'
         if self.current_level == 4:
             self.couleur = 'white'
         
-        #item (pas forcement besoin, a voi ce qu'il va faire avec)
+        # Item
         self.item = pygame.image.load('../../design/ui/backpack.png').convert_alpha()
         self.item_rect = self.item.get_rect(topleft = (20,61))
         self.font = pygame.font.Font("freesansbold.ttf", 20)
-        
+
+    # Montre a l'ecran les points de vie du joueur 
     def show_health(self,current):
         if current == 3:
             self.health_bar = pygame.image.load('../../design/ui/heart/6.png').convert_alpha()
@@ -33,7 +36,8 @@ class UI:
         else:
             self.health_bar = pygame.image.load('../../design/ui/heart/0.png').convert_alpha()
         self.display_surface.blit(self.health_bar,(20,20))
-    
+
+    # Montre a l'ecran ce que le jouer a ramasse 
     def show_item(self,lequel):
         self.display_surface.blit(self.item, self.item_rect)
         item_text_surf = self.font.render(lequel,False,self.couleur)
