@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-clear code le platformer complet, partie 2 sur le visual level editor, game_data
+game_data
 """
 
-#attention, a changer suivant les niveaux 
 level_1 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
            'item': '../../design/niveau1/map/level_1_map_items.csv',
            'enemies': '../../design/niveau1/map/level_1_map_enemies.csv',
@@ -49,7 +48,7 @@ level_1 = {'terrain': '../../design/niveau1/map/level_1_map_terrain.csv',
                            "Apollon – Alors va retrouver ma lyre, je l'ai perdu il y a quelques jours. Et si tu la retrouves, je te donnerai ce que tu veux.",
                            "*défaite, retour au début du niveau* *appuyez sur 'e' pour sortir*"],
            'dialogue_recom': ["Apollon – Alors tu l'as trouvé ?"]
-           } #design/
+           } 
 
 level_2 = {'terrain': '../../design/niveau2/map/level_2_map_terrain.csv',
            'item': '../../design/niveau2/map/level_2_map_items.csv',
@@ -258,6 +257,7 @@ the_end = {'dieu': ['../../design/the_end/zeus.png'],
            'dialogue_recom': ["*Victoire ! Toutes mes félicitations voyageur, vous avez réussi à conquérir l'Olympe !*"]
            }
 
+# Toutes les informations reatives aux niveaux sont contenus dans ce dictionnaire 
 levels = {
     1: level_1,
     2: level_2,
@@ -265,5 +265,3 @@ levels = {
     4: level_4,
     5: level_5,
     6: the_end}
-
-
