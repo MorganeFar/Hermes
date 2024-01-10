@@ -17,12 +17,11 @@ from game_data import levels
 
 # -----------------------------------------------
 
-
 pygame.init()
 
+# Informations specifiques pour le niveau 5 
 TAILLE_NIVEAU_COMPLET = 11664
 TAILLE_ECRAN = 704
-
 
 # -------------- NIVEAU 2 --------------
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -34,8 +33,8 @@ class Level:
     def __init__(self, current_level, surface, create_overworld, change_item, change_health, create_dialogue):
         # General setup
         self.display_surface = surface 
-        self.world_shift = 0
-        self.current_x = None
+        self.world_shift = 0 # Le déplacement du monde 
+        self.current_x = None # La position actuelle du joueur
         self.tile_size = tile_size      # Taille des blocs
         
         # Audio
@@ -82,7 +81,7 @@ class Level:
             self.the_fond = pygame.image.load('../../design/niveau' + str(self.current_level) + '/background.png').convert_alpha()
         
         if self.current_level !=5:
-            self.tab_level = self.level_data['items']
+            self.tab_level = self.level_data['items'] # Tableau avec les différents items du niveau 
 
         # Respiration niveau 2
         if self.current_level == 2:
@@ -91,9 +90,9 @@ class Level:
             # cf. epoch = 'moment ou le temps commence' => 1 janvier 1970 00:00:00
             self.timer()  # Lance le chrono
 
-        # Replacement pour le niveau 5
+        # Replacement des positions des layout du niveau 5 pour correspondre a la position de la camera
         self.replace = False 
-        self.taille = TAILLE_NIVEAU_COMPLET - TAILLE_ECRAN  # En haute (en y)
+        self.taille = TAILLE_NIVEAU_COMPLET - TAILLE_ECRAN  # En hauteur (en y)
 
         # Monstres
         if self.current_level != 5:  # Pas de monstre dans le niveau 5 seulement
@@ -131,7 +130,7 @@ class Level:
             enemy_layout = import_csv_layout(self.level_data['enemies'])
             self.enemy_sprites = self.create_tile_group(enemy_layout, 'enemies')
             
-            # Constraintes
+            # Constraints
             constraint_layout = import_csv_layout(self.level_data['constraints'])
             self.constraint_sprites = self.create_tile_group(constraint_layout, 'constraints')
             
@@ -146,9 +145,10 @@ class Level:
             self.lava_sprites = self.create_tile_group(lava_layout, 'lava')
 
             # Pieges niveau 4
+                # Le piege qui met des degats au joueur
             stalactite_layout = import_csv_layout(self.level_data['stalactite'])
             self.stalactite_sprites = self.create_tile_group(stalactite_layout, 'stalactite')
-            
+                # Ce qui active les pieges 
             piege_layout = import_csv_layout(self.level_data['piege'])
             self.piege_sprites = self.create_tile_group(piege_layout, 'piege')
         
@@ -177,7 +177,7 @@ class Level:
                 if val != '-1':  # s'il y a quelque chose dans la case
 
                     if self.current_level == 5:
-                        self.tile_size = 72     # Taille des briques differentes
+                        self.tile_size = 72     # Taille des briques differentes pour le niveau 5
                     # Coordonnees de l'element avec mise a l'echelle de la dimension
                     x = col_index * self.tile_size  
                     y = row_index * self.tile_size 
@@ -236,13 +236,13 @@ class Level:
                         tile_surface = piege_tile_list[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface, int(val))
                         
-                    if type == 'death_line':
+                    if type == 'death_line': # Place le ligne de game over du niveau 5 (cas ou le joueur rate le drapeau)
                         path = '../../design/global'
                         death_line_tile_list = import_folder(path)
                         tile_surface = death_line_tile_list[int(val)]
                         sprite = TileLevel5(self.tile_size, x, y, tile_surface, val)
                         
-                    sprite_group.add(sprite)
+                    sprite_group.add(sprite) # Ajout des sprites au groupe 
                     
         return sprite_group
 
@@ -256,10 +256,10 @@ class Level:
 
                 if val == '1':  # Joueur
                     if self.current_level == 5:
-                        # Place le joueur en bas au centre de la fenetre
-                        sprite = Player((x, screen_height*(5/6)), change_health, self.level_data)  #y - self.taille
+                        # Place le joueur en bas au centre de la fenetre, mis manuellement 
+                        sprite = Player((x, screen_height*(5/6)), change_health, self.level_data)
                     else:
-                        # Place le joueur en bas a gauche de la fenetre
+                        # Place le joueur en bas a gauche de la fenetre (endroit predetermine dans le layout)
                         sprite = Player((x,y), change_health, self.level_data)
                     self.player.add(sprite)
 
@@ -269,7 +269,7 @@ class Level:
                         # Drapeau retourne pour la gravite inversee
                         fin_surface = pygame.transform.flip(fin_surface, False, True)
                     if self.current_level == 5:
-                        # Drapeau centre
+                        # Drapeau centre, mis manuellement 
                         sprite = TileLevel5(tile_size, x + 72, y - self.taille, fin_surface, 0)  # - self.taille + (1.9)*704
                     else:
                         # Drapeau place a la fin du niveau classiquement
@@ -280,11 +280,11 @@ class Level:
     def enemy_collision_reverse(self):
         for enemy in self.enemy_sprites.sprites():
             if pygame.sprite.spritecollide(enemy, self.constraint_sprites, False):
-                enemy.reverse()  # Le monstre par dans le sens inverse
+                enemy.reverse()  # Le monstre part dans le sens inverse
 
     # Stalactite tombe quand le joueur arrive au piege
     def stalactite_fall(self):
-        # Le joueur entre dans le piege
+        # Le joueur entre dans le piege (ce qui le declanche)
         collided_piege = pygame.sprite.spritecollide(self.player.sprite, self.piege_sprites, True)
         if collided_piege:
             for piege in collided_piege:
@@ -294,7 +294,7 @@ class Level:
                     if stalactite.value == piege.value:
                         stalactite.active(True)
 
-    # Collision horizontale du joueur avec une brique
+    # Collision horizontale du joueur avec une brique (le terrain)
     def horizontal_mouvement_collision(self):
         player = self.player.sprite     # Recupere le joueur
         player.rect.x += player.direction.x * player.speed  # Applique mouvement horizontal
@@ -427,9 +427,7 @@ class Level:
         # Touche le drapeau
         if pygame.sprite.spritecollide(self.player.sprite, self.goal, False):
             self.win_sound.play()
-            self.create_dialogue(6)  # Dialogue de fin
-            # Carte termine
-            # Carte terminee
+            self.create_dialogue(6)  # Dialogue de fin avec Zeus 
             self.create_overworld(self.current_level, self.new_max_level, 'gagne')
 
     # Gestion du fond parallaxe
@@ -479,15 +477,15 @@ class Level:
             for stalactite in stalactite_collisions:
                 self.player.sprite.get_damage()     # Il perde une vie
 
-    ##### OU JE ME SUIS ARRETEE #####
+     # Verifie la collision entre le joueur et les blocs de terrain du niveau 5
     def check_collision_niv5(self):
         objet_collisions = pygame.sprite.spritecollide(self.player.sprite, self.terrain_sprites, False)
         if objet_collisions:
             self.hit_sound.play()
             for objet in objet_collisions:
-                self.player.sprite.get_damage()
+                self.player.sprite.get_damage()     # Il perde une vie
 
-    ### TIMER LEVEL 2 ###
+    # Met un timer pour le niveau 2
     def timer(self):
         time_before = self.current_time
         self.current_time = round(time.time())
@@ -497,14 +495,14 @@ class Level:
             time_left = TIME_TO_BREATH - (self.current_time - self.timeSinceLastBreath)
             time_text = timeFont.render(f"{time_left}", False, (0, 0, 0))
             if time_left <= 5:
-                self.no_time_sound.play()
-        screen.blit(time_text, (20, 110))  # print time before death
+                self.no_time_sound.play() # Si le temps est inferieur a 5 il y a un son d'avertissement 
+        screen.blit(time_text, (20, 110))  # Print time before death
         if time_left <= 0:
             self.isDead = True
             
-    # hera pour le niveau 5
+    # Mise en place d'Hera pour le niveau 5
     def hera_ai(self):
-        # on fait en sorte que hera bouge en suivant le joueur
+        # Fait en sorte que hera bouge en suivant le joueur
         player = self.player.sprite 
         player_x = player.rect.centerx
         if self.hera_x < player_x:
@@ -513,44 +511,44 @@ class Level:
             self.hera_x -= 5
         self.hera_rect = self.hera.get_rect(topleft=(self.hera_x, self.hera_y))
 
-    def run(self): #a refaire niv 5 
-        # run the entier game/level
+    def run(self):
+        # Run the entier game/level
         if self.current_level !=5:
-            # fond
+            # Fond
             self.draw_back(self.display_surface)
             
-            #air
+            # Air
             if self.current_level == 2 :
                 self.air_sprites.draw(self.display_surface)
                 self.air_sprites.update(self.world_shift)
                 
-            #lava
+            # Lave
             if self.current_level == 4 :
                 self.lava_sprites.draw(self.display_surface)
                 self.lava_sprites.update(self.world_shift)
     
-            # terrain
+            # Terrain
             self.terrain_sprites.draw(self.display_surface)
             self.terrain_sprites.update(self.world_shift)
     
-            # enemy
+            # Ennemies
             self.enemy_sprites.update(self.world_shift)
             self.constraint_sprites.update(self.world_shift)  # on ne dessine pas les constraints car on ne veux pas les voir mais on veut qu'elles existent
             self.enemy_collision_reverse()
             self.enemy_sprites.draw(self.display_surface)
             
-            #stalactite
+            # Stalactite
             if self.current_level == 4:
                 self.stalactite_sprites.update(self.world_shift)
                 self.piege_sprites.update(self.world_shift)  # on ne dessine pas les pieges car on ne veux pas les voir mais on veut qu'elles existent
                 self.stalactite_fall()
                 self.stalactite_sprites.draw(self.display_surface)
     
-            # item
+            # Item
             self.item_sprites.update(self.world_shift)
             self.item_sprites.draw(self.display_surface)
     
-            # player sprite
+            # Player sprite
             self.player.update()
             if (self.current_level == 2) or (self.current_level == 4): self.plafond_collison_niv24()
             self.scroll_x()
@@ -562,41 +560,43 @@ class Level:
             if self.current_level == 2 and not self.isBreathing: self.timer()  # check le temps et s'il est a court des respiration
             self.check_death()
             self.check_win()
-    
+
+            # Verifie les collisions 
             self.check_item_collisions()
             self.check_ennemy_collisions()
             if self.current_level == 4:
                 self.check_stalactite_collision()
         else: 
-            if not self.replace:
+            if not self.replace: # A la creation du niveau on decale les layout pour correspondre a la position de la camera
                 self.terrain_sprites.update(self.taille)
                 self.death_line.update(self.taille)
                 self.replace = True
-                #on cree le dialogue du debut 
+                # On cree le dialogue du debut 
                 self.create_dialogue(5)
             
-            # fond
+            # Fond
             self.draw_back(self.display_surface)
             self.y_fond += 1.5
             
-            # terrain
+            # Terrain
             self.terrain_sprites.draw(self.display_surface)
             self.terrain_sprites.update(-self.world_shift)
             
-            #death line
+            # Death line
             self.death_line.update(-self.world_shift)
             
-            #hera
+            # Hera
             self.display_surface.blit(self.hera, (self.hera_x, self.hera_y))
             self.hera_ai()
             
-            # player sprite
+            # Player sprite
             self.player.update()
             self.player.draw(self.display_surface)
             self.goal.update(-self.world_shift)
             self.goal.draw(self.display_surface)
             self.check_death_niv5()
             self.check_win_niv5()
-            
+
+            # Verifie les collisions 
             self.check_collision_niv5()
 
