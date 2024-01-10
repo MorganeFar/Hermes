@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos, change_health, level_data):
         super().__init__()
         self.import_character_assets()
-        self.frame_index = 0
+        self.frame_index = 0 # Indice de l'image pour l'animation 
         self.level_data = level_data    # Donnees du niveau
         self.noLevel = self.level_data['unlock'] - 1    # Numero du niveau actuel
         self.animation_speed = self.level_data['animation_speed']  # Vitesse de l'animation
@@ -89,10 +89,11 @@ class Player(pygame.sprite.Sprite):
         else:  # Retrourne les images si on va vers la gauche
             flipped_image = pygame.transform.flip(image, True, False)  # flip(picture, horizontaly(x), verticaly(y))
             self.image = flipped_image
-        
+
+        # Cas ou le personnage es tinvincible temporairement 
         if self.invincible:
-            alpha = self.wave_value()
-            self.image.set_alpha(alpha)
+            alpha = self.wave_value() 
+            self.image.set_alpha(alpha) # Fait en sorte que le perso clignotte 
         else:
             self.image.set_alpha(255)
 
@@ -222,9 +223,10 @@ class Player(pygame.sprite.Sprite):
             current_time = pygame.time.get_ticks()
             if current_time - self.hurt_time >= self.invincibility_duration:
                 self.invincible = False
-    
+
+    # Permet d'avoir le clignottement du joueur quand il est invincible 
     def wave_value(self):
-        value = sin(pygame.time.get_ticks())
+        value = sin(pygame.time.get_ticks()) # On utilise la sonction sinus pour créer 2 états différents pour le clignottement 
         if value >= 0: return 255
         else: return 0
 
