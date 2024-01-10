@@ -1,6 +1,12 @@
+"""
+welcome 
+"""
+
+# ---------------- IMPORTATIONS ----------------
 from settings import screen_height, screen_width, hermes_logo, play_button, menu_bg
 import sys, pygame
 from sceneryClass import Scenery
+# ----------------------------------------------
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -12,16 +18,17 @@ pygame.display.set_caption('Welcome')
 
 ### SCENERY ###
 welcomeGroup = pygame.sprite.Group()
-background = pygame.image.load(menu_bg[0])
+background = pygame.image.load(menu_bg[0]) # Le fond 
 background = pygame.transform.scale(background,(screen_width,screen_height))
 
-    
+# Le titre 
 TITLE_POS_X_COEF = 0.15
 TITLE_POS_Y_COEF = 0.15
 TITLE_WIDTH_COEF = 0.7
 TITLE_HEIGHT_COEF = 0.3
 title = Scenery(TITLE_POS_X_COEF, TITLE_POS_Y_COEF,TITLE_WIDTH_COEF, TITLE_HEIGHT_COEF, hermes_logo)
-    
+
+# Le bouton play
 PLAY_POS_X_COEF = 0.345
 PLAY_POS_Y_COEF = 0.53
 PLAY_WIDTH_COEF = 0.3
@@ -32,12 +39,13 @@ welcomeGroup.add(title, play)
 
 def welcomeMenu():
     while True:
-        #Handling input
+        # Handling input
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit() #ferme la fenetre/ jeux
-                sys.exit() #arrête tout le programme
-            
+                pygame.quit() # Ferme la fenetre/ jeux
+                sys.exit() # Arrête tout le programme
+
+            # Si on clique sur le bouton play, on commmence le jeu
             if event.type == pygame.MOUSEBUTTONDOWN:
                 posMouse = pygame.mouse.get_pos()
                 minX = PLAY_POS_X_COEF * screen_width
@@ -48,19 +56,20 @@ def welcomeMenu():
                     and minY <= posMouse[1] <= maxY):
                     # PERMET DE LANCER LE NIVEAU 1
                     return 'start'
-            
+
+            # Si on clique sur entrer, on commence le jeu 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     return 'start'
             
         
-        #logic
+        # Logic
         play.zoom()
-        play.update(0.030, 1.9) #a changer pour la vitesse 
+        play.update(0.030, 1.9) 
         
         screen.blit(background,(0,0))
         welcomeGroup.draw(screen)
        
         pygame.display.flip()
-        clock.tick(60)# controle la vite de maj
+        clock.tick(60) # Controle la vitesse de maj
         
