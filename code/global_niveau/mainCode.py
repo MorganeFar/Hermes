@@ -21,8 +21,8 @@ import maia_dialogue
 class Game:
     def __init__(self):
         # Attributs du jeu
-        self.max_level = 1      # niveau maximum atteind par le joueur (au debut il n'y a que le 1)
-        self.max_health = 3     # nombre de vies (coeurs) maximum autorise
+        self.max_level = 1      # Niveau maximum atteind par le joueur (au debut il n'y a que le 1)
+        self.max_health = 3     # Nombre de vies (coeurs) maximum autorise
         self.cur_health = 3     # Le joueur ne s'est pas encore fait touche donc il a le max de vies
         self.item = None        # Aucun objet recuperer au debut
         self.cur_levl = 1       # niveau actuel => a l'initialisation c'est le 1
@@ -72,16 +72,16 @@ class Game:
     def create_overworld(self, current_level, new_max_level, final):
         self.bg_music.stop()
         self.dialogue_sound.stop()
-        if final == 'gagne':        # le joueur a reussi le niveau
-            self.cur_health = 3     # remise a 0 du compteur de vie pour le niveau suivant
+        if final == 'gagne':        # Le joueur a reussi le niveau
+            self.cur_health = 3     # Remise a 0 du compteur de vie pour le niveau suivant
             if new_max_level > self.max_level:
-                self.max_level = new_max_level  # mis a jour niveau max
+                self.max_level = new_max_level  # Mise a jour niveau max
                 if self.fini:
                     self.max_level = 5
-        else:                       # le joueur n'a pas reussi le niveau
+        else:                       # Le joueur n'a pas reussi le niveau
             self.dead_sound.play()
             self.gameOver_sound.play(loops=-1)
-            gameOver.over()         # affichage de la page du game over
+            gameOver.over()         # Affichage de la page du game over
             self.gameOver_sound.stop()
         self.overworld = Overworld(current_level, self.max_level, screen, self.create_level, self.fini)
         self.status = 'overworld'
@@ -99,7 +99,8 @@ class Game:
     # Collecte des objets
     def change_item(self, lequel):
         self.item = lequel 
-        
+
+    # Changement du niveau de vie 
     def change_health(self, amount):
         self.cur_health += amount 
 
@@ -122,7 +123,7 @@ class Game:
 
     # Methode coordonnant les methodes pour jouer
     def run(self):
-        if self.status == 'overworld':  # switch entre les différents niveaux et la carte (l'overworld)
+        if self.status == 'overworld':  # Switch entre les différents niveaux et la carte (l'overworld)
             self.overworld.run()
         else:
             self.level.run()    # Lancement du niveau
