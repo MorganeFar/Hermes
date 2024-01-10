@@ -12,8 +12,8 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 class Scenery(pygame.sprite.Sprite):
     def __init__(self, pos_x_coef, pos_y_coef, widthCoef, heightCoef, pics):
         super().__init__()
-        self.sprites = []
-        self.current_sprite = 0
+        self.sprites = [] # Les sprites sont au depart un tableau vide 
+        self.current_sprite = 0 # L'imae actuelle 
         self.begin = True # Correspond à toLeft pour charon et zoomIn pour retry
         self.move = 0
         self.moveX = 1
@@ -24,20 +24,21 @@ class Scenery(pygame.sprite.Sprite):
         pygame.draw.rect(screen, (0, 0, 255), self.image.get_rect(), 2)
         self.rect.topleft = [pos_x_coef*screen_width, pos_y_coef*screen_height]
         
-        
     def update(self, speed, move):
         self.move = move
         if self.moveX >= move:
             self.begin = not self.begin
             self.moveX = 0
         self.moveX += speed 
-        
+
+    # Fait en sorte que Charon bouge 
     def move_left(self):
         if self.begin:
             self.rect.x -= int(self.move)
         else:
             self.rect.x += int(self.move)  
-    
+
+    # Fait en sorte que le bouton retry zoom et dezoom 
     def zoom(self):
-        # fait un changement d'image entre l'une petite et l'autre plus grande
+        # Fait un changement d'image entre l'une petite et l'autre plus grande
         self.image = self.sprites[int(self.moveX)]
