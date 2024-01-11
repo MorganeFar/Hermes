@@ -3,7 +3,7 @@
 Step into the shoes of Hermes, messenger of the gods in this fantastic conquest of the Olympus ! Your goal is to 
 establish yourself as the twelfth god of Olympus and face Zeus himself. To succeed you will have to be cunning in order
 to avoid danger, collect parts of your throne and forge it. Among fabulous but dangerous landscapes, monsters, deals with the 
-gods and the wrath of Hera, will you be able to conquer Olympus?
+gods and the wrath of Hera, will you be able to conquer Olympus ?
 
 Getting started
 ---------------
@@ -43,7 +43,8 @@ Press the up arrow or the space key to jump.
 ### Items
 Throughout your odyssey you will be able to collect items. All you have to do is to pass over the item and it will be
 automatically picked up. However be careful young traveller your backpack is small and can hold one item at the
-time, the old one will be lost forever in the void.
+time, the old one will be lost forever in the void. Pay attention to all your conversations, so you don't miss any
+clues.
 
 ![Collect_itme](design/tuto/collectItem.gif)
 
