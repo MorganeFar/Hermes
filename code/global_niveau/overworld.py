@@ -14,10 +14,12 @@ from game_data import levels
 posButtonLevel1 = [(16, 358), (260, 438)]  # positions de la chaussure Niveau1 = (140, 400)
 posButtonLevel2 = [(209, 188), (451, 269)]
 posButtonLevel3 = [(388, 569), (630, 650)]
+posButtonLevel4 = [(516, 314), (763, 394)]
+posButtonLevel5 = [(788, 171), (1031, 249)]
             # level1    level2      level3
 posShoe = [(140, 400), (330, 782), (512.29, 612.485)]
 # Tableau des positions de la souris
-tabLevelsPos = [posButtonLevel1, posButtonLevel2, posButtonLevel3]
+tabLevelsPos = [posButtonLevel1, posButtonLevel2, posButtonLevel3, posButtonLevel4, posButtonLevel5]
 
 # Classe pour les faire si oui ou non les niveau son debloques 
 class Node(pygame.sprite.Sprite):
@@ -45,7 +47,7 @@ class Icon(pygame.sprite.Sprite):
         super().__init__()
         self.pos = pos 
         self.image = pygame.image.load('../../design/overworld/shoe.png').convert_alpha()
-        self.rect = self.image.get_rect(center = pos)
+        self.rect = self.image.get_rect(center=pos)
         
     def update(self):
         self.rect.center = self.pos 
