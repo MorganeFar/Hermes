@@ -29,6 +29,7 @@ timeFont = pygame.font.Font(None, 50)   # Font pour afficher le chronometre
 TIME_TO_BREATH = 20     # Temps de respiration
 # --------------------------------------
 
+
 class Level:
     def __init__(self, current_level, surface, create_overworld, change_item, change_health, create_dialogue):
         # General setup
@@ -539,7 +540,7 @@ class Level:
     
             # Ennemis
             self.enemy_sprites.update(self.world_shift)
-            # on ne dessine pas les constraints car on ne veux pas les voir mais on veut qu'elles existent
+            # On ne dessine pas les constraints car on ne veux pas les voir mais on veut qu'elles existent
             self.constraint_sprites.update(self.world_shift)
             self.enemy_collision_reverse()
             self.enemy_sprites.draw(self.display_surface)

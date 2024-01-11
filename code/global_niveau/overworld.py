@@ -37,15 +37,16 @@ class Node(pygame.sprite.Sprite):
         if self.status == 'available':
             self.image = self.image 
         else:
-            tint_surf = self.image.copy() # On change la teinte de la surface si le niveau n'est pas debloque 
-            tint_surf.fill('black',None,pygame.BLEND_RGBA_MULT)
-            self.image.blit(tint_surf,(0,0))
+            tint_surf = self.image.copy()  # On change la teinte de la surface si le niveau n'est pas debloque
+            tint_surf.fill('black', None, pygame.BLEND_RGBA_MULT)
+            self.image.blit(tint_surf, (0, 0))
             
 # Class pour faire l'icone de la chaussure 
 class Icon(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
-        self.pos = pos 
+        self.pos = pos
+        # Curseur du joueur sur la carte
         self.image = pygame.image.load('../../design/overworld/shoe.png').convert_alpha()
         self.rect = self.image.get_rect(center=pos)
         
@@ -57,7 +58,7 @@ class Overworld:
     def __init__(self, start_level, max_level, surface, create_level, fini):
         # Setup 
         self.display_surface = surface 
-        if fini == True : # Si le joueur fini le jeu alors il a acces a tous les nieaux 
+        if fini == True :  # Si le joueur fini le jeu alors il a acces a tous les nieaux
             self.max_level = 5
         else : 
             self.max_level = max_level
@@ -65,9 +66,10 @@ class Overworld:
         self.create_level = create_level 
         
         # Mouvement logic
-        self.moving = False # Il ne bouge pas au depart 
-        self.move_direction = pygame.math.Vector2(0,0) # On utilise des vecteurs pour faire se deplacer l'icone de la chaussure 
-        self.speed = 8 # La vitesse de l'icone 
+        self.moving = False  # Il ne bouge pas au depart
+        # On utilise des vecteurs pour faire se deplacer l'icone de la chaussure
+        self.move_direction = pygame.math.Vector2(0, 0)
+        self.speed = 8  # La vitesse de l'icone
         
         # Mise en place des noeuds et de l'icone  
         self.setup_nodes()
@@ -82,26 +84,26 @@ class Overworld:
         self.timer_length = 500
 
     # Fond 
-    def draw_back(self,surface):
-        self.fond = surface.blit(self.the_fond,(0,0))
+    def draw_back(self, surface):
+        self.fond = surface.blit(self.the_fond, (0, 0))
 
     # Les noeuds
     def setup_nodes(self):
         self.nodes = pygame.sprite.Group()
         
         for index, node_data in enumerate(levels.values()):
-            if index != 5 :
-                if index+1 <= self.max_level: # Si le niveau est debloque 
-                    node_sprite = Node(node_data['node_pos'], 'available', self.speed,node_data['node_graphics'])         
-                else: # Sinon 
+            if index != 5:
+                if index+1 <= self.max_level:  # Si le niveau est debloque
+                    node_sprite = Node(node_data['node_pos'], 'available', self.speed, node_data['node_graphics'])
+                else:
                     node_sprite = Node(node_data['node_pos'], 'locked', self.speed, node_data['node_graphics'])         
                 self.nodes.add(node_sprite)
 
     # Dessine les liens entre les niveaux debloques 
     def draw_paths(self):
-        if self.max_level >1:
-             points = [node['node_pos'] for index,node in enumerate(levels.values()) if index+1 <= self.max_level]
-             pygame.draw.lines(self.display_surface, '#a04f45', False, points, 6) # La ligne
+        if self.max_level > 1:
+             points = [node['node_pos'] for index, node in enumerate(levels.values()) if index+1 <= self.max_level]
+             pygame.draw.lines(self.display_surface, '#a04f45', False, points, 6)  # La ligne
        
     # Mise en place de l'icone 
     def setup_icon(self):
@@ -112,17 +114,17 @@ class Overworld:
     # Interactions avec les touches du clavier 
     def input(self):
         keys = pygame.key.get_pressed()
-        if not self.moving and self.allow_input: # Si la chaussure ne bouge pas  
+        if not self.moving and self.allow_input:  # Si la chaussure ne bouge pas
             posMouse = pygame.mouse.get_pos()
-            if self.current_level < self.max_level and keys[pygame.K_RIGHT] : # On bouge la chaussure vers la droite 
+            if self.current_level < self.max_level and keys[pygame.K_RIGHT]:  # La chaussure bouge vers la droite
                 self.move_direction = self.get_mouvement_data('next')
                 self.current_level += 1
                 self.moving = True 
-            elif keys[pygame.K_LEFT] and self.current_level > 1: # On bouge la chaussure vers la gauche
+            elif keys[pygame.K_LEFT] and self.current_level > 1:  # La chaussure bouge vers la gauche
                 self.move_direction = self.get_mouvement_data('previous')
                 self.current_level -= 1
                 self.moving = True 
-            elif keys[pygame.K_RETURN]: # On clique sur le niveau 
+            elif keys[pygame.K_RETURN]:  # On clique sur le niveau
                 self.create_level(self.current_level)
             # Si on clique avec le souris pour choisir le niveau
             elif pygame.mouse.get_pressed()[0]:
@@ -134,21 +136,24 @@ class Overworld:
 
     # Fait en sorte que la chaussure bouge d'un niveau a l'autre en suivant un vecteur 
     def get_mouvement_data(self, target):
-        start = pygame.math.Vector2(self.nodes.sprites()[self.current_level -1].rect.center) # On fait des -1 parce qu'on prend que des indices (c'est donc l'indice du niveau courant) 
+        # On fait -1 parce qu'on prend que des indices (c'est donc l'indice du niveau courant)
+        start = pygame.math.Vector2(self.nodes.sprites()[self.current_level - 1].rect.center)
         if target == 'next':
-            end = pygame.math.Vector2(self.nodes.sprites()[self.current_level].rect.center) # Pas d'indice parce que c'est l'indice du niveau n+1
-        else: 
-            end = pygame.math.Vector2(self.nodes.sprites()[self.current_level -2].rect.center)  # Indice -2 car c'est l'indice du niveau n-1
+            # Pas d'indice parce que c'est l'indice du niveau n+1
+            end = pygame.math.Vector2(self.nodes.sprites()[self.current_level].rect.center)
+        else:
+            # Indice -2 car c'est l'indice du niveau n-1
+            end = pygame.math.Vector2(self.nodes.sprites()[self.current_level - 2].rect.center)
         return (end-start).normalize()
 
     # Fait en sorte que la chaussure avance d'un niveau a l'autre et va au centre du niveau 
     def update_icon_pos(self):
         if self.moving and self.move_direction:
-            self.icon.sprite.pos += self.move_direction * self.speed # On ajoute la vitesse a l'icone 
-            target_node = self.nodes.sprites()[self.current_level -1]
+            self.icon.sprite.pos += self.move_direction * self.speed  # Ajoute la vitesse a l'icone
+            target_node = self.nodes.sprites()[self.current_level - 1]
             if target_node.detection_zone.collidepoint(self.icon.sprite.pos):
                 self.moving = False
-                self.move_direction = pygame.math.Vector2(0,0) # Il bouge selon le vecteur (0,0)
+                self.move_direction = pygame.math.Vector2(0, 0)  # Bouge selon le vecteur (0,0)
 
     # Met en place un timer pour que l'animation de la chaussure ne soit pas trop rapide 
     def input_timer(self):

@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos, change_health, level_data):
         super().__init__()
         self.import_character_assets()
-        self.frame_index = 0 # Indice de l'image pour l'animation 
+        self.frame_index = 0  # Indice de l'image pour l'animation
         self.level_data = level_data    # Donnees du niveau
         self.noLevel = self.level_data['unlock'] - 1    # Numero du niveau actuel
         self.animation_speed = self.level_data['animation_speed']  # Vitesse de l'animation
@@ -24,7 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
         
         # Deplacement du joueur
-        self.direction = pygame.math.Vector2(0,0)   # Vecteur direction du joueur
+        self.direction = pygame.math.Vector2(0, 0)   # Vecteur direction du joueur
         self.speed = self.level_data['speed']   # Vitesse de deplacement
         self.gravity = self.level_data['gravity']   # Gravite applique
         self.jump_speed = self.level_data['jump_speed']  # Hauteur des sauts
@@ -93,7 +93,7 @@ class Player(pygame.sprite.Sprite):
         # Cas ou le personnage es tinvincible temporairement 
         if self.invincible:
             alpha = self.wave_value() 
-            self.image.set_alpha(alpha) # Fait en sorte que le perso clignotte 
+            self.image.set_alpha(alpha)  # Fait en sorte que le joueur clignotte
         else:
             self.image.set_alpha(255)
 
@@ -226,7 +226,8 @@ class Player(pygame.sprite.Sprite):
 
     # Permet d'avoir le clignottement du joueur quand il est invincible 
     def wave_value(self):
-        value = sin(pygame.time.get_ticks()) # On utilise la sonction sinus pour créer 2 états différents pour le clignottement 
+        # Utilise la fonction sinus pour créer 2 états différents pour le clignottement
+        value = sin(pygame.time.get_ticks())
         if value >= 0: return 255
         else: return 0
 

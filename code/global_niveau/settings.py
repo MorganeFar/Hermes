@@ -12,7 +12,7 @@ screen_width = 1080
 #### PICTURES PATHS TABLES ####
 
 ## Backgrounds ##
-menu_bg = ["..\\..\\design\\menu\\fond_menu.png"] #../../design/menu/fond_menu.png
+menu_bg = ["..\\..\\design\\menu\\fond_menu.png"]
 
 ## Logos ##
 hermes_logo = ["../../design/menu/titre_7.png"]

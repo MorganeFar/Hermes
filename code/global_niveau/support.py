@@ -10,11 +10,12 @@ from settings import tile_size
 from os import walk
 # ----------------------------------------------
 
+
 # Permet d'importer des dossiers 
 def import_folder(path):
     surface_list = []
     for _, __, image_files in walk(path):
-        for image in image_files:  # On a le nom de chaque image qu'il y a dans le dossier du path
+        for image in image_files:  # On a le nom de chaque image qu'il y a dans le dossier du chemin
             full_path = path + '/' + image 
             image_surf = pygame.image.load(full_path).convert_alpha()
             surface_list.append(image_surf)
@@ -29,7 +30,7 @@ def import_csv_layout(path):
             terrain_map.append(list(row))
         return terrain_map 
 
-# Permet d'importer des images qu'on va ensuite recouper pour correspondre aux tiles du niveau 
+# Permet d'importer des images qu'on va ensuite recouper pour correspondre aux briques du niveau
 def import_cut_graphic(path):
     surface = pygame.image.load(path).convert_alpha()
     tile_num_x = int(surface.get_size()[0] / tile_size) 

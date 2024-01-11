@@ -9,17 +9,18 @@ from tiles import AnimatedTile
 from random import randint
 # ----------------------------------------------
 
+
 class Enemy(AnimatedTile):
-    def __init__(self,size,x,y,path):
-        super().__init__(size,x,y,path)
-        if path == '../../design/niveau2/monster/poulpe': # Cas particulier du poulpe
+    def __init__(self, size, x, y, path):
+        super().__init__(size, x, y, path)
+        if path == '../../design/niveau2/monster/poulpe':  # Cas particulier du poulpe
             self.rect = self.image.get_rect(midtop=(x, y)) 
             self.rect[3] = self.rect[3]-15  # Reduit taille du rect de collision avec le pouple
             self.rect.y += size - self.image.get_size()[1]  # Reposotionne les enemies
         else:
             self.rect = self.image.get_rect(midtop=(x, y))
             self.rect.y += size - self.image.get_size()[1]  # Reposotionne les enemies
-        self.speed = randint(2, 3) # La vitesse des ennemies est aleatoire entre 2 et 3
+        self.speed = randint(2, 3)  # La vitesse des ennemies est aleatoire entre 2 et 3
 
     # Fait en sorte que l'enneie bouge 
     def move(self):
@@ -35,7 +36,7 @@ class Enemy(AnimatedTile):
         self.speed *= -1
 
     # Ce qui est constament recalculer pour update les ennemies 
-    def update(self,shift):
+    def update(self, shift):
         self.rect.x += shift 
         self.animate()
         self.move()

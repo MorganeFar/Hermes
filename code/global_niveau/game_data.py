@@ -213,10 +213,8 @@ level_5 = {'terrain': '../../design/niveau5/map/level_5_map_terrain.csv',
            'NoNiveau':5,
            'gravity': 0.8,
            'jump_speed': -16,
-            #'items' : [None, None, None], #y'a pas d'item au niveau 5 enfaite,
-            'rotation':0,
-            #'objets': ['../../design/niveau5/object/caillou', '../../design/niveau1/monster/satyr', '../../design/niveau1/monster/cow_1', '../../design/niveau1/monster/cow_2']
-           'dieu': ['../../design/niveau5/hera_2.png'], 
+            'rotation': 0,
+           'dieu': ['../../design/niveau5/hera_2.png'],
            'place_dieu': [0.55, 0.13, 0.15, 0.5],
            'bon_obj': None,
            'mauv_obj1': None,
@@ -257,11 +255,12 @@ the_end = {'dieu': ['../../design/the_end/zeus.png'],
            'dialogue_recom': ["*Victoire ! Toutes mes félicitations voyageur, vous avez réussi à conquérir l'Olympe !*"]
            }
 
-# Toutes les informations reatives aux niveaux sont contenus dans ce dictionnaire 
+# Toutes les informations relatives aux niveaux sont contenues dans ce dictionnaire
 levels = {
     1: level_1,
     2: level_2,
     3: level_3,
     4: level_4,
     5: level_5,
-    6: the_end}
+    6: the_end
+}
