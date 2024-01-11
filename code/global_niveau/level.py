@@ -475,7 +475,7 @@ class Level:
         if stalactite_collisions:  # Le joueur est touche
             self.hit_sound.play()
             for stalactite in stalactite_collisions:
-                self.player.sprite.get_damage()     # Il perde une vie
+                self.player.sprite.get_damage()     # Le joueur perd une vie
 
      # Verifie la collision entre le joueur et les blocs de terrain du niveau 5
     def check_collision_niv5(self):
@@ -483,22 +483,26 @@ class Level:
         if objet_collisions:
             self.hit_sound.play()
             for objet in objet_collisions:
-                self.player.sprite.get_damage()     # Il perde une vie
+                self.player.sprite.get_damage()     # Le joueur perd une vie
 
-    # Met un timer pour le niveau 2
+    # Met un chronometre pour le niveau 2
     def timer(self):
-        time_before = self.current_time
-        self.current_time = round(time.time())
-        time_left = TIME_TO_BREATH - (self.current_time - self.timeSinceLastBreath)
-        time_text = timeFont.render(f"{time_left}", False, (0, 0, 0))
-        if time_before != self.current_time:
-            time_left = TIME_TO_BREATH - (self.current_time - self.timeSinceLastBreath)
-            time_text = timeFont.render(f"{time_left}", False, (0, 0, 0))
+        time_before = self.current_time     # Temps permettant de detecter passage d'une seconde a l'autre
+        self.current_time = round(time.time())  # Heure actuelle
+        time_left = TIME_TO_BREATH - (self.current_time - self.timeSinceLastBreath)     # Calcul du temps
+        time_text = timeFont.render(f"{time_left}", False, (0, 0, 0))   # Ecriture du temps
+
+        if time_before != self.current_time:    # Une seconde s'est ecoulee environ
+            time_left = TIME_TO_BREATH - (self.current_time - self.timeSinceLastBreath)     # Calcul du temps restant
+            time_text = timeFont.render(f"{time_left}", False, (0, 0, 0))       # Affichage du chronometre
+
             if time_left <= 5:
-                self.no_time_sound.play() # Si le temps est inferieur a 5 il y a un son d'avertissement 
-        screen.blit(time_text, (20, 110))  # Print time before death
-        if time_left <= 0:
-            self.isDead = True
+                self.no_time_sound.play()  # Si le temps restant est inferieur a 5 il y a un son d'avertissement
+
+        screen.blit(time_text, (20, 110))  # Affiche le chronometre
+
+        if time_left <= 0:      # Le temps autorise est atteint
+            self.isDead = True  # Le joueur meurt
             
     # Mise en place d'Hera pour le niveau 5
     def hera_ai(self):
@@ -512,18 +516,20 @@ class Level:
         self.hera_rect = self.hera.get_rect(topleft=(self.hera_x, self.hera_y))
 
     def run(self):
-        # Run the entier game/level
-        if self.current_level !=5:
+        # Gere le jeu/niveau
+
+        # Affiche les elements propres aux niveaux
+        if self.current_level != 5:
             # Fond
             self.draw_back(self.display_surface)
             
             # Air
-            if self.current_level == 2 :
+            if self.current_level == 2:
                 self.air_sprites.draw(self.display_surface)
                 self.air_sprites.update(self.world_shift)
                 
             # Lave
-            if self.current_level == 4 :
+            if self.current_level == 4:
                 self.lava_sprites.draw(self.display_surface)
                 self.lava_sprites.update(self.world_shift)
     
@@ -531,24 +537,26 @@ class Level:
             self.terrain_sprites.draw(self.display_surface)
             self.terrain_sprites.update(self.world_shift)
     
-            # Ennemies
+            # Ennemis
             self.enemy_sprites.update(self.world_shift)
-            self.constraint_sprites.update(self.world_shift)  # on ne dessine pas les constraints car on ne veux pas les voir mais on veut qu'elles existent
+            # on ne dessine pas les constraints car on ne veux pas les voir mais on veut qu'elles existent
+            self.constraint_sprites.update(self.world_shift)
             self.enemy_collision_reverse()
             self.enemy_sprites.draw(self.display_surface)
             
             # Stalactite
             if self.current_level == 4:
                 self.stalactite_sprites.update(self.world_shift)
-                self.piege_sprites.update(self.world_shift)  # on ne dessine pas les pieges car on ne veux pas les voir mais on veut qu'elles existent
+                # on ne dessine pas les pieges car on ne veux pas les voir mais on veut qu'elles existent
+                self.piege_sprites.update(self.world_shift)
                 self.stalactite_fall()
                 self.stalactite_sprites.draw(self.display_surface)
     
-            # Item
+            # Objets
             self.item_sprites.update(self.world_shift)
             self.item_sprites.draw(self.display_surface)
     
-            # Player sprite
+            # Sprite du joueur
             self.player.update()
             if (self.current_level == 2) or (self.current_level == 4): self.plafond_collison_niv24()
             self.scroll_x()
@@ -557,7 +565,8 @@ class Level:
             self.vertical_mouvement_collision()
             self.goal.update(self.world_shift)
             self.goal.draw(self.display_surface)
-            if self.current_level == 2 and not self.isBreathing: self.timer()  # check le temps et s'il est a court des respiration
+            # Verifie le temps et si dans le niveau 2 le joueur est a court des respiration
+            if self.current_level == 2 and not self.isBreathing: self.timer()
             self.check_death()
             self.check_win()
 
@@ -566,12 +575,13 @@ class Level:
             self.check_ennemy_collisions()
             if self.current_level == 4:
                 self.check_stalactite_collision()
-        else: 
-            if not self.replace: # A la creation du niveau on decale les layout pour correspondre a la position de la camera
+        else:
+            # A la creation du niveau on decale les layout pour correspondre a la position de la camera
+            if not self.replace:
                 self.terrain_sprites.update(self.taille)
                 self.death_line.update(self.taille)
                 self.replace = True
-                # On cree le dialogue du debut 
+                # Creation du dialogue de debut
                 self.create_dialogue(5)
             
             # Fond
@@ -589,7 +599,7 @@ class Level:
             self.display_surface.blit(self.hera, (self.hera_x, self.hera_y))
             self.hera_ai()
             
-            # Player sprite
+            # Sprite joueur
             self.player.update()
             self.player.draw(self.display_surface)
             self.goal.update(-self.world_shift)

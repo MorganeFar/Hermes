@@ -6,17 +6,17 @@ overworld
 # ---------------- IMPORTATIONS ----------------
 import pygame
 from game_data import levels 
-from support import import_folder
 # ----------------------------------------------
 
 # Informations pour cliquer sur les niveaux avec la souri 
-  # La position des levels 
+# La position des niveaux sur la carte
                   # top left  bottom right
-posButtonLevel1 = [(16, 358), (260, 438)] # pos shoe level1 = (140, 400)
+posButtonLevel1 = [(16, 358), (260, 438)]  # positions de la chaussure Niveau1 = (140, 400)
 posButtonLevel2 = [(209, 188), (451, 269)]
 posButtonLevel3 = [(388, 569), (630, 650)]
             # level1    level2      level3
 posShoe = [(140, 400), (330, 782), (512.29, 612.485)]
+# Tableau des positions de la souris
 tabLevelsPos = [posButtonLevel1, posButtonLevel2, posButtonLevel3]
 
 # Classe pour les faire si oui ou non les niveau son debloques 
@@ -24,12 +24,11 @@ class Node(pygame.sprite.Sprite):
     def __init__(self, pos, status, icon_speed, path):
         super().__init__()
         self.image = pygame.image.load(path).convert_alpha()
-        if status == 'available': # Si le niveau est debloque 
+        if status == 'available':  # Si le niveau est debloque
             self.status = 'available'
-            self.tableLevel = [posButtonLevel1]
-        else: # Sinon 
+        else:
             self.status = 'locked'
-        self.rect = self.image.get_rect(center = pos)
+        self.rect = self.image.get_rect(center=pos)
         self.detection_zone = pygame.Rect(self.rect.centerx - (icon_speed/2), self.rect.centery - (icon_speed/2), icon_speed, icon_speed)
         
     def update(self):
