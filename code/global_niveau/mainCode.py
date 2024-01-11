@@ -42,7 +42,7 @@ class Game:
         self.dialogue_sound.play(loops=-1)
         maia_dialogue.run()         # Lancement du premier dialogue
         self.dialogue_sound.stop()
-        self.fini = True#False           # Etat du jeu : en cours ou fini
+        self.fini = False           # Etat du jeu : en cours ou fini
         # Creation de la carte (overworld)
         self.overworld = Overworld(1, self.max_level, screen, self.create_level, self.fini)
         self.status = 'overworld'  # Status d'ou se trouve le joueur
